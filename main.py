@@ -13,7 +13,7 @@ from cogs.data import Data
 # initialize
 TOKEN = open("tmp/token.txt", "r").read()
 
-cogs = ["cogs.score", "cogs.data", "cogs.misc"]  # , "cogs.error"
+cogs = ["cogs.score", "cogs.data", "cogs.misc", "cogs.error"]  #
 
 client = commands.Bot(
     command_prefix="tao ",
