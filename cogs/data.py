@@ -332,6 +332,7 @@ class Data(commands.Cog):
 
 
     @commands.command(pass_context=True)
+    @commands.has_permissions(administrator=True)
     async def score(self, ctx, args: str = ""):
         guild = ctx.guild
 
