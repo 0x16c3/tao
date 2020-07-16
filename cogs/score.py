@@ -116,7 +116,8 @@ class Score(commands.Cog):
         if not flag_type:
             flag_type = 0
         if flag_type == -1:
-            await target.add_roles(member_role, "tao: Approved account")
+            if member_role is not everyone_role:
+                await target.add_roles(member_role, "tao: Approved account")
         if flag_type == 0:
             string = "Suspicious user"
             color = color_done
@@ -145,33 +146,32 @@ class Score(commands.Cog):
             string = "Banned user"
             color = color_errr
 
-            embed = discord.Embed(
+            embed1 = discord.Embed(
                 title="You have been banned", description="", color=color
             )
-            embed.add_field(
+            embed1.add_field(
                 name="You have been detected as an alt account",
                 value="If wrong, contact a staff member",
                 inline=False,
             )
-            embed.add_field(name="User score", value=str(score_val), inline=False)
+            embed1.add_field(name="User score", value=str(score_val), inline=False)
             try:
-                await target.send(embed=embed)
+                await target.send(embed=embed1)
             except:
                 pass
 
             await target.ban(reason="tao: Alt account")
 
-        embed = discord.Embed(title="User flagged", description="", color=color)
-        embed.add_field(
-            name=string,
-            value=target.mention + " | id: " + str(target.id),
-            inline=False,
-        )
-        embed.add_field(name="User score", value=str(score_val), inline=False)
-        await channel.send(embed=embed)
+        if flag_type != -1:
+            embed = discord.Embed(title="User flagged", description="", color=color)
+            embed.add_field(
+                name=string,
+                value=target.mention + " | id: " + str(target.id),
+                inline=False,
+            )
+            embed.add_field(name="User score", value=str(score_val), inline=False)
+            await channel.send(embed=embed)
 
-    @commands.command()
-    @commands.has_permissions(administrator=True)
     async def sort_user_auto(
         self, channel: discord.channel.TextChannel, target: discord.Member = None
     ):
@@ -179,13 +179,13 @@ class Score(commands.Cog):
 
         if score_val >= 0.5:
             # flag user
-            await self.flag_member(-1, score_val, channel, target)
+            await self.flag_member(self,-1, score_val, channel, target)
         elif score_val < 0.5 and score_val >= 0.2:
             # flag user
-            await self.flag_member(0, score_val, channel, target)
+            await self.flag_member(self,0, score_val, channel, target)
         elif score_val < 0.2 and score_val >= 0.1:
             # add to the manual check queue
-            await self.flag_member(1, score_val, channel, target)
+            await self.flag_member(self,1, score_val, channel, target)
         elif score_val < 0.1 and score_val >= 0.0:
             # ban user
             await self.flag_member(self, 2, score_val, channel, target)
