@@ -9,9 +9,13 @@
 
 # Tao
 
+[![Invite Tao](https://img.shields.io/badge/Invite-Tao-000000?style=flat&colorA=000000&colorB=000000)](https://discord.com/oauth2/authorize?client_id=732330652539682857&scope=bot&permissions=8)
+
+
 ```
 commands:
     tao                  : meta information
-    tao info @[user]     : user information
-    tao init @[role]     : configure role permissions and create relevant channels
+    tao info [@user]     : user information
+
+    tao init             : configure role permissions and create relevant channels
 ```
