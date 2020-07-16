@@ -14,8 +14,8 @@
 ```
 commands:
     tao                          : meta information
-    tao info [@user]             : user information
+    tao info [@user]             : user information                                          [requires: ban_members]
 
-    tao init                     : configure role permissions and create relevant channels
-    tao score [-enable/-disable] : enable or disable the scoring system
+    tao init                     : configure role permissions and create relevant channels   [requires: administator]
+    tao score [-enable/-disable] : enable or disable the scoring system                      [requires: administator]
 ```
