@@ -51,7 +51,7 @@ async def on_member_join(member):
     channel = client.get_channel(data_ch)
 
     if data_state == True:
-        await Score.sort_user_auto(Score, channel, member)
+        await Score.sort_user_auto(channel, member)
 
 
 @client.event
