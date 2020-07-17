@@ -139,11 +139,10 @@ class Data(commands.Cog):
             if embed is not None:
                 embed.add_field(name="Created role", value=role.mention, inline=False)
 
+
     @commands.command(pass_context=True)
     @commands.has_permissions(administrator=True)
     async def update_perms(self, ctx, guild: discord.Guild, embed: discord.Embed):
-        approval_role = discord.utils.get(guild.roles, name="tao-approval")
-
         # update file
         with open(data_file, "r") as f:
             guilds = json.load(f)
@@ -158,9 +157,6 @@ class Data(commands.Cog):
 
         approve_role = discord.utils.get(guild.roles, id=approve_id)
         member_role = discord.utils.get(guild.roles, id=member_id)
-
-        if approve_role == member_role:
-            print("dbg")
 
         approve_channel = discord.utils.get(
             self.client.get_all_channels(), guild__name=guild.name, id=ch_approve_id,
@@ -180,34 +176,42 @@ class Data(commands.Cog):
             voice_channel_list.append(channel)
 
         for ch in text_channel_list:
-            await ch.set_permissions(
-                approval_role, read_messages=False, read_message_history=False
-            )
+            if ch.overwrites_for(approve_role).read_messages != False:
+                await ch.set_permissions(
+                    approve_role, read_messages=False, read_message_history=False
+                )
             time.sleep(1)
-            await ch.set_permissions(
-                member_role, read_messages=True, read_message_history=True
-            )
+            if ch.overwrites_for(member_role).read_messages != False:
+                await ch.set_permissions(
+                    member_role, read_messages=True, read_message_history=True
+                )
 
         for ch_v in voice_channel_list:
-            await ch_v.set_permissions(approval_role, view_channel=False, speak=False)
+            if ch_v.overwrites_for(approve_role).view_channel != False:
+                await ch_v.set_permissions(approve_role, view_channel=False, speak=False)
             time.sleep(1)
-            await ch_v.set_permissions(member_role, view_channel=True, speak=True)
+            if ch_v.overwrites_for(member_role).view_channel != False:
+                await ch_v.set_permissions(member_role, view_channel=True, speak=True)
 
-        await approve_channel.set_permissions(
-            approval_role, view_channel=True, read_message_history=True
-        )
+        if approve_channel.overwrites_for(approve_role).view_channel != False:
+            await approve_channel.set_permissions(
+                approve_role, view_channel=True, read_message_history=True
+            )
         time.sleep(1)
-        await approve_channel.set_permissions(
-            member_role, view_channel=False, read_message_history=False
-        )
+        if approve_channel.overwrites_for(member_role).view_channel != False:
+            await approve_channel.set_permissions(
+                member_role, view_channel=False, read_message_history=False
+            )
 
-        await approve_voice_channel.set_permissions(
-            approval_role, view_channel=True, speak=True
-        )
+        if approve_voice_channel.overwrites_for(approve_role).view_channel != False:
+            await approve_voice_channel.set_permissions(
+                approve_role, view_channel=True, speak=True
+            )
         time.sleep(1)
-        await approve_voice_channel.set_permissions(
-            member_role, view_channel=False, speak=False
-        )
+        if approve_voice_channel.overwrites_for(member_role).view_channel != False:
+            await approve_voice_channel.set_permissions(
+                member_role, view_channel=False, speak=False
+            )
 
         if embed is not None:
             embed.add_field(

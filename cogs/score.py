@@ -166,7 +166,7 @@ class Score(commands.Cog):
             embed = discord.Embed(title="User flagged", description="", color=color)
             embed.add_field(
                 name=string,
-                value=target.mention + " | id: " + str(target.id),
+                value=target.name + "#" + target.discriminator + " | id: " + str(target.id),
                 inline=False,
             )
             embed.add_field(name="User score", value=str(score_val), inline=False)
@@ -179,13 +179,13 @@ class Score(commands.Cog):
 
         if score_val >= 0.5:
             # flag user
-            await self.flag_member(self,-1, score_val, channel, target)
+            await self.flag_member(self, -1, score_val, channel, target)
         elif score_val < 0.5 and score_val >= 0.2:
             # flag user
-            await self.flag_member(self,0, score_val, channel, target)
+            await self.flag_member(self, 0, score_val, channel, target)
         elif score_val < 0.2 and score_val >= 0.1:
             # add to the manual check queue
-            await self.flag_member(self,1, score_val, channel, target)
+            await self.flag_member(self, 1, score_val, channel, target)
         elif score_val < 0.1 and score_val >= 0.0:
             # ban user
             await self.flag_member(self, 2, score_val, channel, target)
