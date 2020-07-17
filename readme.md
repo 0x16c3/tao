@@ -13,10 +13,19 @@
 
 ```
 commands:
-    tao                          : meta information
-    tao info [@user]             : user information
+    tao                            : meta information
+    tao info [@user]               : user information
 
-    tao init [-reset]            : configure role permissions and create relevant channels
-             ⤷                   : reset and rebuild permissions & guild configuration
-    tao score [-enable/-disable] : enable or disable the scoring system
+    tao init                       : configure role permissions and create relevant channels
+    tao init [-reset]              : reset and rebuild permissions & guild configuration
+    tao score [-enable/-disable]   : enable or disable the scoring system
+
+    tao run [-get_score] [@user]   : get user score
+    tao run [-set_flag] [-0,1,2,3] : set user flag
+
+    Flags:
+    -0 = send notification
+    -1 = send to manual approval
+    -2 = ban
+    -3 = valid account (no action)
 ```
