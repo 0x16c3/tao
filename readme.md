@@ -22,6 +22,7 @@ commands:
 
     tao run [-get_score] [@user]   : get user score
     tao run [-set_flag] [-0,1,2,3] : set user flag
+    tao run [-sort] [@user]        : manually sort user
 
     Flags:
     -0 = send notification
