@@ -166,7 +166,11 @@ class Score(commands.Cog):
             embed = discord.Embed(title="User flagged", description="", color=color)
             embed.add_field(
                 name=string,
-                value=target.name + "#" + target.discriminator + " | id: " + str(target.id),
+                value=target.name
+                + "#"
+                + target.discriminator
+                + " | id: "
+                + str(target.id),
                 inline=False,
             )
             embed.add_field(name="User score", value=str(score_val), inline=False)

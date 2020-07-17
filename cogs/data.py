@@ -139,7 +139,6 @@ class Data(commands.Cog):
             if embed is not None:
                 embed.add_field(name="Created role", value=role.mention, inline=False)
 
-
     @commands.command(pass_context=True)
     @commands.has_permissions(administrator=True)
     async def update_perms(self, ctx, guild: discord.Guild, embed: discord.Embed):
@@ -188,7 +187,9 @@ class Data(commands.Cog):
 
         for ch_v in voice_channel_list:
             if ch_v.overwrites_for(approve_role).view_channel != False:
-                await ch_v.set_permissions(approve_role, view_channel=False, speak=False)
+                await ch_v.set_permissions(
+                    approve_role, view_channel=False, speak=False
+                )
             time.sleep(1)
             if ch_v.overwrites_for(member_role).view_channel != False:
                 await ch_v.set_permissions(member_role, view_channel=True, speak=True)
@@ -220,7 +221,6 @@ class Data(commands.Cog):
                 inline=False,
             )
 
-
     @commands.command(pass_context=True)
     @commands.has_permissions(administrator=True)
     async def init(self, ctx, args: str = ""):
@@ -250,6 +250,7 @@ class Data(commands.Cog):
         def check(author):
             def inner_check(message):
                 return message.author == author
+
             return inner_check
 
         # if user role is not set
@@ -263,7 +264,9 @@ class Data(commands.Cog):
             )
             await ctx.send(embed=embed_brk)
 
-            reply = await self.client.wait_for('message', check=check(ctx.author), timeout=30)
+            reply = await self.client.wait_for(
+                "message", check=check(ctx.author), timeout=30
+            )
 
             if reply is not None:
                 content = reply.content
@@ -275,23 +278,31 @@ class Data(commands.Cog):
 
                 if role_existing is not None or content == "everyone":
                     # create embed
-                    embed = discord.Embed(title="Done!", description="", color=color_done)
+                    embed = discord.Embed(
+                        title="Done!", description="", color=color_done
+                    )
 
                     # update file
                     with open(data_file, "r") as f:
                         guilds = json.load(f)
 
                     if content != "everyone":
-                        await self.update_id_role(guilds, guild, role_existing, "role_member")
+                        await self.update_id_role(
+                            guilds, guild, role_existing, "role_member"
+                        )
                     elif content == "everyone":
-                        await self.update_id_role(guilds, guild, role_everyone, "role_member")
+                        await self.update_id_role(
+                            guilds, guild, role_everyone, "role_member"
+                        )
 
                     with open(data_file, "w") as f:
                         json.dump(guilds, f)
 
                     if content != "everyone":
                         embed.add_field(
-                            name="User role set as", value=role_existing.mention, inline=False
+                            name="User role set as",
+                            value=role_existing.mention,
+                            inline=False,
                         )
                     elif content == "everyone":
                         embed.add_field(
@@ -305,14 +316,20 @@ class Data(commands.Cog):
                     waiting_msg = await ctx.send(embed=embed_waiting)
                 else:
                     # create embed
-                    embed = discord.Embed(title="Error", description="", color=color_errr)
-                    embed.add_field(name="Could not find role", value=content, inline=False)
+                    embed = discord.Embed(
+                        title="Error", description="", color=color_errr
+                    )
+                    embed.add_field(
+                        name="Could not find role", value=content, inline=False
+                    )
                     await ctx.send(embed=embed)
                     return
 
         if role_set:
             # create role
-            await self.create_role(ctx, "tao-approval", "role_approve", color_warn, embed)
+            await self.create_role(
+                ctx, "tao-approval", "role_approve", color_warn, embed
+            )
 
             # create channels
             await self.create_channel(
@@ -329,13 +346,19 @@ class Data(commands.Cog):
 
             embed.add_field(name="User role set", value="Setup complete!", inline=False)
 
-            embed.add_field(name="WARNING", value="User checks are `enabled` by default. Type `tao score -disable` to disable it.", inline=False)
+            embed.add_field(
+                name="WARNING",
+                value="User checks are `enabled` by default. Type `tao score -disable` to disable it.",
+                inline=False,
+            )
 
             await waiting_msg.delete()
             await ctx.send(embed=embed)
         elif not role_set and user_id != 0 and args == "-reset":
             # create role
-            await self.create_role(ctx, "tao-approval", "role_approve", color_warn, embed)
+            await self.create_role(
+                ctx, "tao-approval", "role_approve", color_warn, embed
+            )
 
             # create channels
             await self.create_channel(
@@ -355,7 +378,6 @@ class Data(commands.Cog):
             await waiting_msg.delete()
             await ctx.send(embed=embed)
 
-
     @commands.command(pass_context=True)
     @commands.has_permissions(administrator=True)
     async def score(self, ctx, args: str = ""):
@@ -364,11 +386,13 @@ class Data(commands.Cog):
         if args == "":
             embed_errr = discord.Embed(title="Error", description="", color=color_errr)
             embed_errr.add_field(
-                name="Invalid argument", value="Available arguments: `-enable`, `-disable`", inline=False,
+                name="Invalid argument",
+                value="Available arguments: `-enable`, `-disable`",
+                inline=False,
             )
             await ctx.send(embed=embed_errr)
 
-         # update file
+        # update file
         with open(data_file, "r") as f:
             guilds = json.load(f)
 
@@ -380,13 +404,17 @@ class Data(commands.Cog):
 
         if args == "-enable":
             if state == True:
-                embed_warn = discord.Embed(title="Info", description="", color=color_done)
+                embed_warn = discord.Embed(
+                    title="Info", description="", color=color_done
+                )
                 embed_warn.add_field(
-                    name="Already enabled", value="This function has already been enabled", inline=False,
+                    name="Already enabled",
+                    value="This function has already been enabled",
+                    inline=False,
                 )
                 await ctx.send(embed=embed_warn)
             elif state == False:
-                 # update file
+                # update file
                 with open(data_file, "r") as f:
                     guilds = json.load(f)
 
@@ -396,20 +424,28 @@ class Data(commands.Cog):
                 with open(data_file, "w") as f:
                     json.dump(guilds, f)
 
-                embed_done = discord.Embed(title="Done!", description="", color=color_done)
+                embed_done = discord.Embed(
+                    title="Done!", description="", color=color_done
+                )
                 embed_done.add_field(
-                    name="Enabled function", value="Successfully enabled the function", inline=False,
+                    name="Enabled function",
+                    value="Successfully enabled the function",
+                    inline=False,
                 )
                 await ctx.send(embed=embed_done)
         elif args == "-disable":
             if state == False:
-                embed_warn = discord.Embed(title="Info", description="", color=color_done)
+                embed_warn = discord.Embed(
+                    title="Info", description="", color=color_done
+                )
                 embed_warn.add_field(
-                    name="Already disabled", value="This function has already been disabled", inline=False,
+                    name="Already disabled",
+                    value="This function has already been disabled",
+                    inline=False,
                 )
                 await ctx.send(embed=embed_warn)
             elif state == True:
-                 # update file
+                # update file
                 with open(data_file, "r") as f:
                     guilds = json.load(f)
 
@@ -419,12 +455,15 @@ class Data(commands.Cog):
                 with open(data_file, "w") as f:
                     json.dump(guilds, f)
 
-                embed_done = discord.Embed(title="Done!", description="", color=color_done)
+                embed_done = discord.Embed(
+                    title="Done!", description="", color=color_done
+                )
                 embed_done.add_field(
-                    name="Disabled function", value="Successfully disabled the function", inline=False,
+                    name="Disabled function",
+                    value="Successfully disabled the function",
+                    inline=False,
                 )
                 await ctx.send(embed=embed_done)
-
 
 
 def setup(client):
