@@ -172,10 +172,10 @@ class Score(commands.Cog):
     ):
         score_val = await self.get_score(self, target)
 
-        if score_val >= 0.6:
+        if score_val >= 0.5:
             # flag user
             await self.flag_member(self, -1, score_val, channel, target)
-        elif score_val < 0.6 and score_val >= 0.3:
+        elif score_val < 0.5 and score_val >= 0.3:
             # flag user
             await self.flag_member(self, 0, score_val, channel, target)
         elif score_val < 0.3 and score_val >= 0.1:
