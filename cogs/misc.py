@@ -149,13 +149,13 @@ class Misc(commands.Cog):
                 name="User score:", value=str(scr_val), inline=False,
             )
             embed_info.add_field(
-                name="Account age:", value=str(scr_val), inline=False,
+                name="Account age:", value=str(acc_val), inline=False,
             )
             embed_info.add_field(
-                name="Join age:", value=str(scr_val), inline=False,
+                name="Join age:", value=str(gld_val), inline=False,
             )
             embed_info.add_field(
-                name="Custom avatar:", value=str(scr_val), inline=False,
+                name="Custom avatar:", value=str(avt_val), inline=False,
             )
             await ctx.send(embed=embed_info)
 
