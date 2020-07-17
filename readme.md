@@ -17,6 +17,6 @@ commands:
     tao info [@user]             : user information
 
     tao init [-reset]            : configure role permissions and create relevant channels
-	         ⤷                   : reset and rebuild permissions & guild configuration
+             ⤷                   : reset and rebuild permissions & guild configuration
     tao score [-enable/-disable] : enable or disable the scoring system
 ```
