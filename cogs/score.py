@@ -59,17 +59,17 @@ class Score(commands.Cog):
         # 2:
         # account created - server joined
         diff = await self.get_date_diff(self, target)
-        diff_clamped = max(min(diff, 100), 0)
+        diff_clamped = max(min(diff, 125), 0)
         score += diff_clamped / 100
 
         # 3:
         # account age
         age = await self.get_age_account(self, target)
-        age_clamped = max(min(age, 100), 0)
+        age_clamped = max(min(age, 125), 0)
         score += age_clamped / 100
 
         # normalize total score
-        score = score / 3
+        score = max(min(score / 3, 1), 0)
 
         # don't flag bots
         if target.bot:
