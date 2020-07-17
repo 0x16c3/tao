@@ -12,8 +12,6 @@ class Score(commands.Cog):
     def __init__(self, client):
         self.client = client
 
-    @commands.command(pass_context=True)
-    @commands.has_permissions(administrator=True)
     async def get_age_account(self, target: discord.Member = None):
         # return account age
         get_today = datetime.now()
@@ -21,8 +19,6 @@ class Score(commands.Cog):
 
         return (get_today - get_created).days
 
-    @commands.command(pass_context=True)
-    @commands.has_permissions(administrator=True)
     async def get_age_guild(self, target: discord.Member = None):
         # return server age
         get_today = datetime.now()
@@ -30,8 +26,6 @@ class Score(commands.Cog):
 
         return (get_today - get_joined).days
 
-    @commands.command(pass_context=True)
-    @commands.has_permissions(administrator=True)
     async def get_date_diff(self, target: discord.Member = None):
         get_create_days = await self.get_age_account(self, target)
         get_joined_days = await self.get_age_guild(self, target)
@@ -40,8 +34,6 @@ class Score(commands.Cog):
 
         return diff
 
-    @commands.command()
-    @commands.has_permissions(administrator=True)
     async def get_avatar(self, target: discord.Member = None):
 
         avatar_url = target.avatar_url
@@ -53,8 +45,6 @@ class Score(commands.Cog):
         else:
             return True
 
-    @commands.command(pass_context=True)
-    @commands.has_permissions(administrator=True)
     async def get_score(self, target: discord.Member = None):
         score = 0
 
@@ -62,7 +52,7 @@ class Score(commands.Cog):
         # if the user has an avatar
         avatar = await self.get_avatar(self, target)
         if avatar:
-            score += 1.0
+            score += 0.5
         else:
             score += 0.0
 
@@ -117,17 +107,17 @@ class Score(commands.Cog):
             flag_type = 0
         if flag_type == -1:
             if member_role is not everyone_role:
-                await target.add_roles(member_role, "tao: Approved account")
+                await target.add_roles(member_role)
         if flag_type == 0:
             string = "Suspicious user"
             color = color_done
         elif flag_type == 1:
             string = "Sent to manual approval"
             color = color_warn
-            await target.add_roles(approve_role, "tao: Suspicious account")
+            await target.add_roles(approve_role)
 
             if member_role != everyone_role:
-                await target.remove_roles(member_role, "tao: Suspicious account")
+                await target.remove_roles(member_role)
 
             embed = discord.Embed(
                 title="You have been flagged", description="", color=color
@@ -176,6 +166,7 @@ class Score(commands.Cog):
             embed.add_field(name="User score", value=str(score_val), inline=False)
             await channel.send(embed=embed)
 
+
     async def sort_user_auto(
         self, channel: discord.channel.TextChannel, target: discord.Member = None
     ):
@@ -193,6 +184,7 @@ class Score(commands.Cog):
         elif score_val < 0.1 and score_val >= 0.0:
             # ban user
             await self.flag_member(self, 2, score_val, channel, target)
+
 
 
 def setup(client):

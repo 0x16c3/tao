@@ -13,7 +13,7 @@ from cogs.data import Data
 # initialize
 TOKEN = open("tmp/token.txt", "r").read()
 
-cogs = ["cogs.score", "cogs.data", "cogs.misc", "cogs.error"]  #
+cogs = ["cogs.score", "cogs.data", "cogs.misc"]  #, "cogs.error"
 
 client = commands.Bot(
     command_prefix="tao ",
@@ -51,7 +51,7 @@ async def on_member_join(member):
     channel = client.get_channel(data_ch)
 
     if data_state == True:
-        await Score.sort_user_auto(Score, channel, member)
+        await Score.sort_user_auto(Score ,channel, member)
 
 
 @client.event

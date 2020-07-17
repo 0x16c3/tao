@@ -41,7 +41,7 @@ class Error(commands.Cog):
 
             embed.add_field(
                 name="Details",
-                value=f"`{error.param.name}` must be `{error.name}`",
+                value=f"`Bad argument`",
                 inline=False,
             )
 
