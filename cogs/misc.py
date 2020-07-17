@@ -171,7 +171,7 @@ class Misc(commands.Cog):
                 await ctx.send(embed=embed_errr)
                 return 1
             else:
-                await Score.sort_user_auto(Score ,channel, target)
+                await Score.sort_user_auto(Score, channel, target)
 
 
 def setup(client):

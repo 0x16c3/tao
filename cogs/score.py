@@ -166,7 +166,6 @@ class Score(commands.Cog):
             embed.add_field(name="User score", value=str(score_val), inline=False)
             await channel.send(embed=embed)
 
-
     async def sort_user_auto(
         self, channel: discord.channel.TextChannel, target: discord.Member = None
     ):
@@ -184,7 +183,6 @@ class Score(commands.Cog):
         elif score_val < 0.1 and score_val >= 0.0:
             # ban user
             await self.flag_member(self, 2, score_val, channel, target)
-
 
 
 def setup(client):
