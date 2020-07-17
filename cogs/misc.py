@@ -103,7 +103,7 @@ class Misc(commands.Cog):
             embed_errr = discord.Embed(title="Error", description="", color=color_errr)
             embed_errr.add_field(
                 name="Invalid argument",
-                value="Available arguments: `-set_flag`, `-get_score`",
+                value="Available arguments: `-set_flag`, `-get_score`, `-sort`",
                 inline=False,
             )
             await ctx.send(embed=embed_errr)
@@ -158,6 +158,20 @@ class Misc(commands.Cog):
                 name="Custom avatar:", value=str(avt_val), inline=False,
             )
             await ctx.send(embed=embed_info)
+        elif command == "-sort":
+            if target is None:
+                embed_errr = discord.Embed(
+                    title="Error", description="", color=color_errr
+                )
+                embed_errr.add_field(
+                    name="Invalid argument",
+                    value="`target` cannot be `None`",
+                    inline=False,
+                )
+                await ctx.send(embed=embed_errr)
+                return 1
+            else:
+                await Score.sort_user_auto(Score ,channel, target)
 
 
 def setup(client):
