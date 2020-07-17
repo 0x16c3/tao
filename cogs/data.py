@@ -223,7 +223,7 @@ class Data(commands.Cog):
 
     @commands.command(pass_context=True)
     @commands.has_permissions(administrator=True)
-    async def init(self, ctx):
+    async def init(self, ctx, args: str = ""):
         guild = ctx.message.guild
         role_set = False
 
@@ -330,6 +330,27 @@ class Data(commands.Cog):
             embed.add_field(name="User role set", value="Setup complete!", inline=False)
 
             embed.add_field(name="WARNING", value="User checks are `enabled` by default. Type `tao score -disable` to disable it.", inline=False)
+
+            await waiting_msg.delete()
+            await ctx.send(embed=embed)
+        elif not role_set and user_id != 0 and args == "-reset":
+            # create role
+            await self.create_role(ctx, "tao-approval", "role_approve", color_warn, embed)
+
+            # create channels
+            await self.create_channel(
+                ctx, "tao-notifications", "chnl_notify", "text", embed
+            )
+            await self.create_channel(
+                ctx, "tao-approve_manual", "chnl_approve", "text", embed
+            )
+            await self.create_channel(
+                ctx, "tao-approve_voice", "chnl_approve_voice", "voice", embed
+            )
+
+            await self.update_perms(ctx, guild, embed)
+
+            embed.add_field(name="Reset", value="Reset complete!", inline=False)
 
             await waiting_msg.delete()
             await ctx.send(embed=embed)
