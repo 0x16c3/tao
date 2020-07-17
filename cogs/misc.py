@@ -140,10 +140,22 @@ class Misc(commands.Cog):
             elif args_first == "-3":  # valid
                 await Score.flag_member(Score, -1, 1.0, channel, target)
         elif command == "-get_score":
-            score_val = await Score.get_score(Score, target)
+            scr_val = await Score.get_score(Score, target)
+            acc_val = await Score.get_age_account(Score, target)
+            gld_val = await Score.get_age_guild(Score, target)
+            avt_val = await Score.get_avatar(Score, target)
             embed_info = discord.Embed(title="Info", description="", color=color_done)
             embed_info.add_field(
-                name="User score:", value=str(score_val), inline=False,
+                name="User score:", value=str(scr_val), inline=False,
+            )
+            embed_info.add_field(
+                name="Account age:", value=str(scr_val), inline=False,
+            )
+            embed_info.add_field(
+                name="Join age:", value=str(scr_val), inline=False,
+            )
+            embed_info.add_field(
+                name="Custom avatar:", value=str(scr_val), inline=False,
             )
             await ctx.send(embed=embed_info)
 
