@@ -29,31 +29,28 @@ class Misc(commands.Cog):
         # avatar thumbnail
         embed.set_thumbnail(url=target.avatar_url)
 
-        # basic info
+        ##########################################
+
+        # ID
+        embed.add_field(name="ID", value=target.id, inline=False)
+
+        # username
         embed.add_field(name="username", value=target, inline=True)
-        embed.add_field(name="ID", value=target.id, inline=True)
-
-        embed.add_field(name="—", value="—", inline=False)
-
-        embed.add_field(name="status", value=target.status, inline=True)
-        embed.add_field(name="top role", value=target.top_role, inline=True)
-
-        embed.add_field(name="—", value="—", inline=False)
 
         # age
         current_date = datetime.now()
 
         user_created = target.created_at
-        user_created_str = user_created.strftime("%B %d, %Y %I:%M %p")
+        user_created_str = user_created.strftime("%y/%m/%d")
         embed.add_field(
             name="created", value="{}".format(user_created_str), inline=True
         )
 
         user_join = target.joined_at
-        user_join_str = user_join.strftime("%B %d, %Y %I:%M %p")
+        user_join_str = user_join.strftime("%y/%m/%d")
         embed.add_field(name="joined", value="{}".format(user_join_str), inline=True)
 
-        embed.add_field(name="—", value="—", inline=False)
+        embed.add_field(name="top role", value=target.top_role, inline=True)
 
         # account age
         embed.add_field(
@@ -68,6 +65,8 @@ class Misc(commands.Cog):
             value="{}".format(await Score.get_age_guild(ctx, target)),
             inline=True,
         )
+
+        ##########################################
 
         # footer
         embed.set_footer(text="requested by {}".format(ctx.author))
@@ -213,7 +212,9 @@ class Misc(commands.Cog):
                 mbl_val = await Score.get_is_on_mobide(Score, target)
                 # hsq_val = await Score.get_hypesquad(Score, target)
                 ntr_val = await Score.get_premium(Score, target)
-                embed_info = discord.Embed(title="Info", description="", color=color_done)
+                embed_info = discord.Embed(
+                    title="Info", description="", color=color_done
+                )
                 embed_info.add_field(
                     name="User score:", value=str(scr_val), inline=True,
                 )
@@ -247,7 +248,9 @@ class Misc(commands.Cog):
                 else:
                     mbl = 0
                 embed_info.add_field(
-                    name="On mobile:", value=str(mbl_val) + " : +" + str(mbl), inline=True,
+                    name="On mobile:",
+                    value=str(mbl_val) + " : +" + str(mbl),
+                    inline=True,
                 )
                 ntr = 0
                 if ntr_val:
