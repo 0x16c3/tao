@@ -19,6 +19,7 @@ class Data(commands.Cog):
             # if the guild is not saved create guild object
             guilds[id] = {}
             guilds[id]["scre_enable"] = True
+            guilds[id]["verboxe_enable"] = False
             guilds[id]["chnl_notify"] = 0
             guilds[id]["chnl_approve"] = 0
             guilds[id]["chnl_approve_voice"] = 0
@@ -377,93 +378,6 @@ class Data(commands.Cog):
 
             await waiting_msg.delete()
             await ctx.send(embed=embed)
-
-    @commands.command(pass_context=True)
-    @commands.has_permissions(administrator=True)
-    async def score(self, ctx, args: str = ""):
-        guild = ctx.guild
-
-        if args == "":
-            embed_errr = discord.Embed(title="Error", description="", color=color_errr)
-            embed_errr.add_field(
-                name="Invalid argument",
-                value="Available arguments: `-enable`, `-disable`",
-                inline=False,
-            )
-            await ctx.send(embed=embed_errr)
-
-        # update file
-        with open(data_file, "r") as f:
-            guilds = json.load(f)
-
-        await self.update_data(guilds, guild)
-        state = guilds[str(guild.id)]["scre_enable"]
-
-        with open(data_file, "w") as f:
-            json.dump(guilds, f)
-
-        if args == "-enable":
-            if state == True:
-                embed_warn = discord.Embed(
-                    title="Info", description="", color=color_done
-                )
-                embed_warn.add_field(
-                    name="Already enabled",
-                    value="This function has already been enabled",
-                    inline=False,
-                )
-                await ctx.send(embed=embed_warn)
-            elif state == False:
-                # update file
-                with open(data_file, "r") as f:
-                    guilds = json.load(f)
-
-                await self.update_data(guilds, guild)
-                await self.update_state_score(guilds, guild, True)
-
-                with open(data_file, "w") as f:
-                    json.dump(guilds, f)
-
-                embed_done = discord.Embed(
-                    title="Done!", description="", color=color_done
-                )
-                embed_done.add_field(
-                    name="Enabled function",
-                    value="Successfully enabled the function",
-                    inline=False,
-                )
-                await ctx.send(embed=embed_done)
-        elif args == "-disable":
-            if state == False:
-                embed_warn = discord.Embed(
-                    title="Info", description="", color=color_done
-                )
-                embed_warn.add_field(
-                    name="Already disabled",
-                    value="This function has already been disabled",
-                    inline=False,
-                )
-                await ctx.send(embed=embed_warn)
-            elif state == True:
-                # update file
-                with open(data_file, "r") as f:
-                    guilds = json.load(f)
-
-                await self.update_data(guilds, guild)
-                await self.update_state_score(guilds, guild, False)
-
-                with open(data_file, "w") as f:
-                    json.dump(guilds, f)
-
-                embed_done = discord.Embed(
-                    title="Done!", description="", color=color_done
-                )
-                embed_done.add_field(
-                    name="Disabled function",
-                    value="Successfully disabled the function",
-                    inline=False,
-                )
-                await ctx.send(embed=embed_done)
 
 
 def setup(client):
