@@ -45,31 +45,107 @@ class Score(commands.Cog):
         else:
             return True
 
+    async def get_is_on_mobide(self, target: discord.Member = None):
+        return target.is_on_mobile()
+
+    async def get_premium(self, target: discord.Member = None):
+        # bot accounts cannot use the profile function
+        # so look for popular discriminators and animated avatars
+        discriminator = target.discriminator
+        animated = target.is_avatar_animated()
+
+        discrim_list = [
+            "0001",
+            "0002",
+            "0003",
+            "0004",
+            "0005",
+            "0006",
+            "0007",
+            "0008",
+            "0009",
+            "1337",
+            "1234",
+            "4321",
+            "0666",
+            "6660",
+            "1000",
+            "2000",
+            "3000",
+            "4000",
+            "5000",
+            "6000",
+            "7000",
+        ]
+
+        if any(discriminator in s for s in discrim_list):
+            return True
+        if animated:
+            return True
+        else:
+            return False
+
+    """
+    async def get_hypesquad(self, target: discord.Member = None):
+        flags = target.public_flags.all()
+        bravery = flags.hypesquad_bravery
+        brilliance = flags.hypesquad_brilliance
+        balance = flags.hypesquad_balance
+
+        if bravery or brilliance or balance:
+            return True
+        else: return False
+    """
+
     async def get_score(self, target: discord.Member = None):
         score = 0
 
-        #  1:
+        # 1:
         # if the user has an avatar
         avatar = await self.get_avatar(self, target)
         if avatar:
-            score += 0.5
+            score += 0.250
         else:
-            score += 0.0
+            score += 0.000
 
         # 2:
         # account created - server joined
         diff = await self.get_date_diff(self, target)
-        diff_clamped = max(min(diff, 125), 0)
+        diff_clamped = max(min(diff, 100), 0)
         score += diff_clamped / 100
 
         # 3:
         # account age
         age = await self.get_age_account(self, target)
-        age_clamped = max(min(age, 125), 0)
+        age_clamped = max(min(age, 100), 0)
         score += age_clamped / 100
 
+        # 4:
+        # is the user on mobile
+        mobile = await self.get_is_on_mobide(self, target)
+        if mobile:
+            score += 0.250
+        else:
+            score += 0.000
+
+        # 5:
+        # does the user have nitro
+        premium = await self.get_premium(self, target)
+        if premium:
+            score += 1.0
+        else:
+            score += 0.0
+
+        # 6:
+        # is the user member of hypesquad
+        # hypesquad = await self.get_hypesquad(self, target)
+        # if hypesquad:
+        #    score += 0.5
+        # else:
+        #    score += 0.0
+
         # normalize total score
-        score = max(min(score / 3, 1), 0)
+        score = max(min(score / 3.5, 1), 0)
 
         # don't flag bots
         if target.bot:
@@ -166,7 +242,6 @@ class Score(commands.Cog):
             embed.add_field(name="User score", value=str(score_val), inline=False)
             await channel.send(embed=embed)
 
-
     async def sort_user_auto(
         self, channel: discord.channel.TextChannel, target: discord.Member = None
     ):
@@ -184,7 +259,6 @@ class Score(commands.Cog):
         elif score_val < 0.1 and score_val >= 0.0:
             # ban user
             await self.flag_member(self, 2, score_val, channel, target)
-
 
 
 def setup(client):
