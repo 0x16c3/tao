@@ -45,7 +45,7 @@ class Score(commands.Cog):
         else:
             return True
 
-    async def get_is_on_mobide(self, target: discord.Member = None):
+    async def get_is_on_mobile(self, target: discord.Member = None):
         return target.is_on_mobile()
 
     async def get_premium(self, target: discord.Member = None):
@@ -122,7 +122,7 @@ class Score(commands.Cog):
 
         # 4:
         # is the user on mobile
-        mobile = await self.get_is_on_mobide(self, target)
+        mobile = await self.get_is_on_mobile(self, target)
         if mobile:
             score += 0.250
         else:
@@ -268,7 +268,7 @@ class Score(commands.Cog):
         acc_val = await self.get_age_account(self, target)
         gld_val = await self.get_age_guild(self, target)
         avt_val = await self.get_avatar(self, target)
-        mbl_val = await self.get_is_on_mobide(self, target)
+        mbl_val = await self.get_is_on_mobile(self, target)
         # hsq_val = await self.get_hypesquad(self, target)
         ntr_val = await self.get_premium(self, target)
         embed_info = discord.Embed(
