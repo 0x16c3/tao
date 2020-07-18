@@ -149,21 +149,21 @@ class Misc(commands.Cog):
             ntr_val = await Score.get_premium(Score, target)
             embed_info = discord.Embed(title="Info", description="", color=color_done)
             embed_info.add_field(
-                name="User score:", value=str(scr_val), inline=False,
+                name="User score:", value=str(scr_val), inline=True,
             )
             age = await Score.get_age_account(Score, target)
             age_clamped = max(min(age, 100), 0)
             embed_info.add_field(
                 name="Account age:",
                 value=str(acc_val) + " : +" + str(age_clamped / 100),
-                inline=False,
+                inline=True,
             )
             diff = await Score.get_date_diff(Score, target)
             diff_clamped = max(min(diff, 100), 0)
             embed_info.add_field(
                 name="Join age:",
                 value=str(gld_val) + " : +" + str(diff_clamped / 100),
-                inline=False,
+                inline=True,
             )
             avt = 0
             if avt_val:
@@ -173,7 +173,7 @@ class Misc(commands.Cog):
             embed_info.add_field(
                 name="Custom avatar:",
                 value=str(avt_val) + " : +" + str(avt),
-                inline=False,
+                inline=True,
             )
             mbl = 0
             if mbl_val:
@@ -181,7 +181,7 @@ class Misc(commands.Cog):
             else:
                 mbl = 0
             embed_info.add_field(
-                name="On mobile:", value=str(mbl_val) + " : +" + str(mbl), inline=False,
+                name="On mobile:", value=str(mbl_val) + " : +" + str(mbl), inline=True,
             )
             ntr = 0
             if ntr_val:
@@ -189,7 +189,7 @@ class Misc(commands.Cog):
             else:
                 ntr = 0
             embed_info.add_field(
-                name="Nitro:", value=str(ntr_val) + " : +" + str(ntr), inline=False,
+                name="Nitro:", value=str(ntr_val) + " : +" + str(ntr), inline=True,
             )
             await ctx.send(embed=embed_info)
         elif command == "-sort":
@@ -215,21 +215,21 @@ class Misc(commands.Cog):
                 ntr_val = await Score.get_premium(Score, target)
                 embed_info = discord.Embed(title="Info", description="", color=color_done)
                 embed_info.add_field(
-                    name="User score:", value=str(scr_val), inline=False,
+                    name="User score:", value=str(scr_val), inline=True,
                 )
                 age = await Score.get_age_account(Score, target)
                 age_clamped = max(min(age, 100), 0)
                 embed_info.add_field(
                     name="Account age:",
                     value=str(acc_val) + " : +" + str(age_clamped / 100),
-                    inline=False,
+                    inline=True,
                 )
                 diff = await Score.get_date_diff(Score, target)
                 diff_clamped = max(min(diff, 100), 0)
                 embed_info.add_field(
                     name="Join age:",
                     value=str(gld_val) + " : +" + str(diff_clamped / 100),
-                    inline=False,
+                    inline=True,
                 )
                 avt = 0
                 if avt_val:
@@ -239,7 +239,7 @@ class Misc(commands.Cog):
                 embed_info.add_field(
                     name="Custom avatar:",
                     value=str(avt_val) + " : +" + str(avt),
-                    inline=False,
+                    inline=True,
                 )
                 mbl = 0
                 if mbl_val:
@@ -247,7 +247,7 @@ class Misc(commands.Cog):
                 else:
                     mbl = 0
                 embed_info.add_field(
-                    name="On mobile:", value=str(mbl_val) + " : +" + str(mbl), inline=False,
+                    name="On mobile:", value=str(mbl_val) + " : +" + str(mbl), inline=True,
                 )
                 ntr = 0
                 if ntr_val:
@@ -255,7 +255,10 @@ class Misc(commands.Cog):
                 else:
                     ntr = 0
                 embed_info.add_field(
-                    name="Nitro:", value=str(ntr_val) + " : +" + str(ntr), inline=False,
+                    name="Nitro:", value=str(ntr_val) + " : +" + str(ntr), inline=True,
+                )
+                embed_info.add_field(
+                    name="Manual sorting", value="User manually sorted", inline=True,
                 )
                 await ctx.send(embed=embed_info)
 
