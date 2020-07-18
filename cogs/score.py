@@ -185,7 +185,7 @@ class Score(commands.Cog):
             if member_role is not everyone_role:
                 await target.add_roles(member_role)
         if flag_type == 0:
-            string = "Suspicious user"
+            string = "Potential suspicious user"
             color = color_done
         elif flag_type == 1:
             string = "Sent to manual approval"
