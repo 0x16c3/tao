@@ -16,20 +16,21 @@
 ```
 
 # helper functions:
-    tao                                 : meta information
-    tao info <user>                     : user information
+    tao                                   : meta information
+    tao info <user>                       : user information
 
-# initialize bot:
-    tao init [-reset]                   : set role and channel configuration [or reset]
-    tao score <-enable/-disable>        : enable or disable the scoring system
+# initialize and config:
+    tao init [-reset]                     : set role and channel configuration [or reset]
+    tao config -score <-enable/-disable>  : enable or disable the scoring system
+    tao config -verbose <-enable/-disable>: enable or disable verbose notifications
 
 # bot commands:
-    tao run -sort <user>                : manually sort user
-    tao run -get_score <user>           : get user score
-    tao run -set_flag <flag>            : set user flag
-                                          -0 = send notification
-                                          -1 = send to manual approval
-                                          -2 = ban
-                                          -3 = valid account (no action)
+    tao run -sort <user>                  : manually sort user
+    tao run -get_score <user>             : get user score
+    tao run -set_flag <flag>              : set user flag
+                                            -0 = send notification
+                                            -1 = send to manual approval
+                                            -2 = ban
+                                            -3 = valid account (no action)
 
 ```
