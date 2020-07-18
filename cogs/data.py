@@ -19,7 +19,7 @@ class Data(commands.Cog):
             # if the guild is not saved create guild object
             guilds[id] = {}
             guilds[id]["scre_enable"] = True
-            guilds[id]["verboxe_enable"] = False
+            guilds[id]["verbose_enable"] = False
             guilds[id]["chnl_notify"] = 0
             guilds[id]["chnl_approve"] = 0
             guilds[id]["chnl_approve_voice"] = 0
@@ -42,6 +42,11 @@ class Data(commands.Cog):
         id = str(guild.id)
 
         guilds[id]["scre_enable"] = state
+
+    async def update_state_verbose(self, guilds, guild, state: bool):
+        id = str(guild.id)
+
+        guilds[id]["verbose_enable"] = state
 
     @commands.command(pass_context=True)
     @commands.has_permissions(administrator=True)
@@ -70,6 +75,7 @@ class Data(commands.Cog):
                     value="`" + name + "`",
                     inline=False,
                 )
+            return
         else:
             # create channel
             if type == "text":
@@ -95,6 +101,7 @@ class Data(commands.Cog):
                 embed.add_field(
                     name="Created channel", value="`" + name + "`", inline=False
                 )
+            return
 
     @commands.command(pass_context=True)
     @commands.has_permissions(administrator=True)
@@ -121,6 +128,7 @@ class Data(commands.Cog):
                     value=role_existing.mention,
                     inline=False,
                 )
+            return
         else:
             # create role
             await guild.create_role(name=name, color=color)
@@ -139,6 +147,7 @@ class Data(commands.Cog):
 
             if embed is not None:
                 embed.add_field(name="Created role", value=role.mention, inline=False)
+            return
 
     @commands.command(pass_context=True)
     @commands.has_permissions(administrator=True)
@@ -221,6 +230,7 @@ class Data(commands.Cog):
                 value="Set permissions for manual approval channels",
                 inline=False,
             )
+        return
 
     @commands.command(pass_context=True)
     @commands.has_permissions(administrator=True)
@@ -355,6 +365,7 @@ class Data(commands.Cog):
 
             await waiting_msg.delete()
             await ctx.send(embed=embed)
+            return
         elif not role_set and user_id != 0 and args == "-reset":
             # create role
             await self.create_role(
@@ -378,6 +389,87 @@ class Data(commands.Cog):
 
             await waiting_msg.delete()
             await ctx.send(embed=embed)
+            return
+
+    async def set_config(self, ctx, cfg: str = "", args: str = "", cfg_state: bool = False):
+        guild = ctx.guild
+
+        if args == "":
+            embed_errr = discord.Embed(title="Error", description="", color=color_errr)
+            embed_errr.add_field(
+                name="Invalid argument",
+                value="Available arguments: `-enable`, `-disable`",
+                inline=False,
+            )
+            await ctx.send(embed=embed_errr)
+        if args == "-enable":
+            if cfg_state == True:
+                embed_warn = discord.Embed(
+                    title="Info", description="", color=color_done
+                )
+                embed_warn.add_field(
+                    name="Already enabled",
+                    value="This function has already been enabled",
+                    inline=False,
+                )
+                await ctx.send(embed=embed_warn)
+            elif cfg_state == False:
+                # update file
+                with open(data_file, "r") as f:
+                    guilds = json.load(f)
+
+                await self.update_data(self, guilds, guild)
+                if cfg == "-score":
+                    await self.update_state_score(self, guilds, guild, True)
+                elif cfg == "-verbose":
+                    await self.update_state_verbose(self, guilds, guild, True)
+
+                with open(data_file, "w") as f:
+                    json.dump(guilds, f)
+
+                embed_done = discord.Embed(
+                    title="Done!", description="", color=color_done
+                )
+                embed_done.add_field(
+                    name="Enabled function",
+                    value="Successfully enabled the function",
+                    inline=False,
+                )
+                await ctx.send(embed=embed_done)
+        elif args == "-disable":
+            if cfg_state == False:
+                embed_warn = discord.Embed(
+                    title="Info", description="", color=color_done
+                )
+                embed_warn.add_field(
+                    name="Already disabled",
+                    value="This function has already been disabled",
+                    inline=False,
+                )
+                await ctx.send(embed=embed_warn)
+            elif cfg_state == True:
+                # update file
+                with open(data_file, "r") as f:
+                    guilds = json.load(f)
+
+                await self.update_data(self, guilds, guild)
+                if cfg == "-score":
+                    await self.update_state_score(self, guilds, guild, False)
+                elif cfg == "-verbose":
+                    await self.update_state_verbose(self, guilds, guild, False)
+
+                with open(data_file, "w") as f:
+                    json.dump(guilds, f)
+
+                embed_done = discord.Embed(
+                    title="Done!", description="", color=color_done
+                )
+                embed_done.add_field(
+                    name="Disabled function",
+                    value="Successfully disabled the function",
+                    inline=False,
+                )
+                await ctx.send(embed=embed_done)
 
 
 def setup(client):

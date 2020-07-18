@@ -168,6 +168,7 @@ class Score(commands.Cog):
 
         approve_id = guilds[str(guild.id)]["role_approve"]
         member_id = guilds[str(guild.id)]["role_member"]
+        verbose = guilds[str(guild.id)]["verbose_enable"]
 
         with open(data_file, "w") as f:
             json.dump(guilds, f)
@@ -241,6 +242,8 @@ class Score(commands.Cog):
             )
             embed.add_field(name="User score", value=str(score_val), inline=False)
             await channel.send(embed=embed)
+            if verbose:
+                await self.send_score_info(self, channel, target)
 
     async def sort_user_auto(
         self, channel: discord.channel.TextChannel, target: discord.Member = None
@@ -259,6 +262,66 @@ class Score(commands.Cog):
         elif score_val < 0.1 and score_val >= 0.0:
             # ban user
             await self.flag_member(self, 2, score_val, channel, target)
+
+    async def send_score_info(self, channel: discord.TextChannel, target, manual=False):
+        scr_val = await self.get_score(self, target)
+        acc_val = await self.get_age_account(self, target)
+        gld_val = await self.get_age_guild(self, target)
+        avt_val = await self.get_avatar(self, target)
+        mbl_val = await self.get_is_on_mobide(self, target)
+        # hsq_val = await self.get_hypesquad(self, target)
+        ntr_val = await self.get_premium(self, target)
+        embed_info = discord.Embed(
+            title="Info | " + target.name + "#" + target.discriminator,
+            description="",
+            color=color_done,
+        )
+        embed_info.add_field(
+            name="User score:", value=str(scr_val), inline=True,
+        )
+        age = await self.get_age_account(self, target)
+        age_clamped = max(min(age, 100), 0)
+        embed_info.add_field(
+            name="Account age:",
+            value=str(acc_val) + " : +" + str(age_clamped / 100),
+            inline=True,
+        )
+        diff = await self.get_date_diff(self, target)
+        diff_clamped = max(min(diff, 100), 0)
+        embed_info.add_field(
+            name="Join age:",
+            value=str(gld_val) + " : +" + str(diff_clamped / 100),
+            inline=True,
+        )
+        avt = 0
+        if avt_val:
+            avt = 0.250
+        else:
+            avt = 0
+        embed_info.add_field(
+            name="Custom avatar:", value=str(avt_val) + " : +" + str(avt), inline=True,
+        )
+        mbl = 0
+        if mbl_val:
+            mbl = 0.250
+        else:
+            mbl = 0
+        embed_info.add_field(
+            name="On mobile:", value=str(mbl_val) + " : +" + str(mbl), inline=True,
+        )
+        ntr = 0
+        if ntr_val:
+            ntr = 0.5
+        else:
+            ntr = 0
+        embed_info.add_field(
+            name="Nitro:", value=str(ntr_val) + " : +" + str(ntr), inline=True,
+        )
+        if manual:
+            embed_info.add_field(
+                name="Manual sorting", value="User manually sorted", inline=True,
+            )
+        await channel.send(embed=embed_info)
 
 
 def setup(client):

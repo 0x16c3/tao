@@ -3,6 +3,7 @@ import json
 from discord.ext import commands
 from datetime import datetime, timedelta
 
+from .data import Data
 from .score import Score
 from .utils import *
 
@@ -139,58 +140,7 @@ class Misc(commands.Cog):
             elif args_first == "-3":  # valid
                 await Score.flag_member(Score, -1, 1.0, channel, target)
         elif command == "-get_score":
-            scr_val = await Score.get_score(Score, target)
-            acc_val = await Score.get_age_account(Score, target)
-            gld_val = await Score.get_age_guild(Score, target)
-            avt_val = await Score.get_avatar(Score, target)
-            mbl_val = await Score.get_is_on_mobide(Score, target)
-            # hsq_val = await Score.get_hypesquad(Score, target)
-            ntr_val = await Score.get_premium(Score, target)
-            embed_info = discord.Embed(title="Info", description="", color=color_done)
-            embed_info.add_field(
-                name="User score:", value=str(scr_val), inline=True,
-            )
-            age = await Score.get_age_account(Score, target)
-            age_clamped = max(min(age, 100), 0)
-            embed_info.add_field(
-                name="Account age:",
-                value=str(acc_val) + " : +" + str(age_clamped / 100),
-                inline=True,
-            )
-            diff = await Score.get_date_diff(Score, target)
-            diff_clamped = max(min(diff, 100), 0)
-            embed_info.add_field(
-                name="Join age:",
-                value=str(gld_val) + " : +" + str(diff_clamped / 100),
-                inline=True,
-            )
-            avt = 0
-            if avt_val:
-                avt = 0.250
-            else:
-                avt = 0
-            embed_info.add_field(
-                name="Custom avatar:",
-                value=str(avt_val) + " : +" + str(avt),
-                inline=True,
-            )
-            mbl = 0
-            if mbl_val:
-                mbl = 0.250
-            else:
-                mbl = 0
-            embed_info.add_field(
-                name="On mobile:", value=str(mbl_val) + " : +" + str(mbl), inline=True,
-            )
-            ntr = 0
-            if ntr_val:
-                ntr = 0.5
-            else:
-                ntr = 0
-            embed_info.add_field(
-                name="Nitro:", value=str(ntr_val) + " : +" + str(ntr), inline=True,
-            )
-            await ctx.send(embed=embed_info)
+            await Score.send_score_info(Score, ctx, target)
         elif command == "-sort":
             if target is None:
                 embed_errr = discord.Embed(
@@ -205,65 +155,38 @@ class Misc(commands.Cog):
                 return 1
             else:
                 await Score.sort_user_auto(Score, channel, target)
-                scr_val = await Score.get_score(Score, target)
-                acc_val = await Score.get_age_account(Score, target)
-                gld_val = await Score.get_age_guild(Score, target)
-                avt_val = await Score.get_avatar(Score, target)
-                mbl_val = await Score.get_is_on_mobide(Score, target)
-                # hsq_val = await Score.get_hypesquad(Score, target)
-                ntr_val = await Score.get_premium(Score, target)
-                embed_info = discord.Embed(
-                    title="Info", description="", color=color_done
-                )
-                embed_info.add_field(
-                    name="User score:", value=str(scr_val), inline=True,
-                )
-                age = await Score.get_age_account(Score, target)
-                age_clamped = max(min(age, 100), 0)
-                embed_info.add_field(
-                    name="Account age:",
-                    value=str(acc_val) + " : +" + str(age_clamped / 100),
-                    inline=True,
-                )
-                diff = await Score.get_date_diff(Score, target)
-                diff_clamped = max(min(diff, 100), 0)
-                embed_info.add_field(
-                    name="Join age:",
-                    value=str(gld_val) + " : +" + str(diff_clamped / 100),
-                    inline=True,
-                )
-                avt = 0
-                if avt_val:
-                    avt = 0.250
-                else:
-                    avt = 0
-                embed_info.add_field(
-                    name="Custom avatar:",
-                    value=str(avt_val) + " : +" + str(avt),
-                    inline=True,
-                )
-                mbl = 0
-                if mbl_val:
-                    mbl = 0.250
-                else:
-                    mbl = 0
-                embed_info.add_field(
-                    name="On mobile:",
-                    value=str(mbl_val) + " : +" + str(mbl),
-                    inline=True,
-                )
-                ntr = 0
-                if ntr_val:
-                    ntr = 0.5
-                else:
-                    ntr = 0
-                embed_info.add_field(
-                    name="Nitro:", value=str(ntr_val) + " : +" + str(ntr), inline=True,
-                )
-                embed_info.add_field(
-                    name="Manual sorting", value="User manually sorted", inline=True,
-                )
-                await ctx.send(embed=embed_info)
+                await Score.send_score_info(Score, ctx, target, True)
+
+    @commands.command(pass_context=True)
+    @commands.has_permissions(administrator=True)
+    async def config(self, ctx, cfg: str = "", args: str = ""):
+        guild = ctx.guild
+
+        if cfg == "":
+            embed_errr = discord.Embed(title="Error", description="", color=color_errr)
+            embed_errr.add_field(
+                name="Invalid argument",
+                value="Available arguments: `-score`, `-verbose`",
+                inline=False,
+            )
+            await ctx.send(embed=embed_errr)
+            return
+
+        # update file
+        with open(data_file, "r") as f:
+            guilds = json.load(f)
+
+        await Data.update_data(Data, guilds, guild)
+        state_scre = guilds[str(guild.id)]["scre_enable"]
+        state_vrbs = guilds[str(guild.id)]["verbose_enable"]
+
+        with open(data_file, "w") as f:
+            json.dump(guilds, f)
+
+        if cfg == "-score":
+            await Data.set_config(Data, ctx, cfg, args, state_scre)
+        if cfg == "-verbose":
+            await Data.set_config(Data, ctx, cfg, args, state_vrbs)
 
 
 def setup(client):
