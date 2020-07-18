@@ -59,7 +59,7 @@ async def on_message(message):
     # embed meta
     embed = discord.Embed(color=0xF5F5F5)
 
-    source = "https://github.com/iinfin/tao"
+    source = "https://github.com/artren2009/tao"
     avatar = client.user.avatar_url
 
     if message.content == "tao":
