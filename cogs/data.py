@@ -20,6 +20,7 @@ class Data(commands.Cog):
             guilds[id] = {}
             guilds[id]["scre_enable"] = True
             guilds[id]["verbose_enable"] = False
+            guilds[id]["late_enable"] = False
             guilds[id]["chnl_notify"] = 0
             guilds[id]["chnl_approve"] = 0
             guilds[id]["chnl_approve_voice"] = 0
@@ -31,22 +32,39 @@ class Data(commands.Cog):
     ):
         id = str(guild.id)
 
-        guilds[id][type] = channel.id
+        if id in guilds:
+            guilds[id][type] = channel.id
 
     async def update_id_role(self, guilds, guild, role: discord.Role, type: str):
         id = str(guild.id)
 
-        guilds[id][type] = role.id
+        if id in guilds:
+            guilds[id][type] = role.id
 
-    async def update_state_score(self, guilds, guild, state: bool):
+    async def update_state_config(self, guilds, guild, cfg: str, state: bool):
         id = str(guild.id)
 
-        guilds[id]["scre_enable"] = state
+        if id in guilds:
+            guilds[id][cfg] = state
 
-    async def update_state_verbose(self, guilds, guild, state: bool):
+    async def get_state_config(self, guilds, guild, cfg: str):
         id = str(guild.id)
 
-        guilds[id]["verbose_enable"] = state
+        if id in guilds:
+            return guilds[id][cfg]
+
+    async def update_data_user(self, members, member: discord.Member):
+        id = str(member.id)
+
+        if not id in members:
+            # if the guild is not saved create guild object
+            members[id] = {}
+            members[id]["checked"] = False
+
+    async def update_state_user(self, members, member, state: bool):
+        id = str(member.id)
+
+        members[id]["checked"] = state
 
     @commands.command(pass_context=True)
     @commands.has_permissions(administrator=True)
@@ -420,9 +438,11 @@ class Data(commands.Cog):
 
                 await self.update_data(self, guilds, guild)
                 if cfg == "-score":
-                    await self.update_state_score(self, guilds, guild, True)
+                    await self.update_state_config(self, guilds, guild, "scre_enable", True)
                 elif cfg == "-verbose":
-                    await self.update_state_verbose(self, guilds, guild, True)
+                    await self.update_state_config(self, guilds, guild, "verbose_enable", True)
+                elif cfg == "-late":
+                    await self.update_state_config(self, guilds, guild, "late_enable", True)
 
                 with open(data_file, "w") as f:
                     json.dump(guilds, f)
@@ -454,9 +474,11 @@ class Data(commands.Cog):
 
                 await self.update_data(self, guilds, guild)
                 if cfg == "-score":
-                    await self.update_state_score(self, guilds, guild, False)
+                    await self.update_state_config(self, guilds, guild, "scre_enable", False)
                 elif cfg == "-verbose":
-                    await self.update_state_verbose(self, guilds, guild, False)
+                    await self.update_state_config(self, guilds, guild, "verbose_enable", False)
+                elif cfg == "-late":
+                    await self.update_state_config(self, guilds, guild, "late_enable", False)
 
                 with open(data_file, "w") as f:
                     json.dump(guilds, f)

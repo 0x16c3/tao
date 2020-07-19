@@ -91,6 +91,7 @@ class Misc(commands.Cog):
 
         data_guild = guilds[str(guild.id)]
         data_ch = data_guild["chnl_notify"]
+        data_late = data_guild["late_enable"]
 
         with open("cogs/_guild.json", "w") as f:
             json.dump(guilds, f)
@@ -140,7 +141,7 @@ class Misc(commands.Cog):
             elif args_first == "-3":  # valid
                 await Score.flag_member(Score, -1, 1.0, channel, target)
         elif command == "-get_score":
-            await Score.send_score_info(Score, ctx, target)
+            await Score.send_score_info(Score, ctx.channel, target, data_late)
         elif command == "-sort":
             if target is None:
                 embed_errr = discord.Embed(
@@ -155,7 +156,7 @@ class Misc(commands.Cog):
                 return 1
             else:
                 await Score.sort_user_auto(Score, channel, target)
-                await Score.send_score_info(Score, ctx, target, True)
+                await Score.send_score_info(Score, ctx.channel, target, True)
 
     @commands.command(pass_context=True)
     @commands.has_permissions(administrator=True)
@@ -166,7 +167,7 @@ class Misc(commands.Cog):
             embed_errr = discord.Embed(title="Error", description="", color=color_errr)
             embed_errr.add_field(
                 name="Invalid argument",
-                value="Available arguments: `-score`, `-verbose`",
+                value="Available arguments: `-score`, `-verbose`, `-late`",
                 inline=False,
             )
             await ctx.send(embed=embed_errr)
@@ -179,6 +180,7 @@ class Misc(commands.Cog):
         await Data.update_data(Data, guilds, guild)
         state_scre = guilds[str(guild.id)]["scre_enable"]
         state_vrbs = guilds[str(guild.id)]["verbose_enable"]
+        state_late = guilds[str(guild.id)]["late_enable"]
 
         with open(data_file, "w") as f:
             json.dump(guilds, f)
@@ -187,6 +189,8 @@ class Misc(commands.Cog):
             await Data.set_config(Data, ctx, cfg, args, state_scre)
         if cfg == "-verbose":
             await Data.set_config(Data, ctx, cfg, args, state_vrbs)
+        if cfg == "-late":
+            await Data.set_config(Data, ctx, cfg, args, state_late)
 
 
 def setup(client):

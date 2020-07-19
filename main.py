@@ -33,7 +33,22 @@ async def on_ready():
         f = open("cogs/_guild.json", "w")
         f.write("{" + "}")
         f.close()
+    if not path.exists("cogs/_user.json"):
+        f = open("cogs/_user.json", "w")
+        f.write("{" + "}")
+        f.close()
 
+
+@client.event
+async def on_guild_join(guild):
+    # update file
+    with open("cogs/_guild.json", "r") as f:
+        guilds = json.load(f)
+
+    await Data.update_data(Data, guild, guild)
+
+    with open("cogs/_guild.json", "w") as f:
+        json.dump(guilds, f)
 
 @client.event
 async def on_member_join(member):
@@ -44,6 +59,7 @@ async def on_member_join(member):
     data_guild = guilds[str(member.guild.id)]
     data_ch = data_guild["chnl_notify"]
     data_state = data_guild["scre_enable"]
+    data_state_late = data_guild["late_enable"]
 
     with open("cogs/_guild.json", "w") as f:
         json.dump(guilds, f)
@@ -51,7 +67,7 @@ async def on_member_join(member):
     channel = client.get_channel(data_ch)
 
     if data_state == True:
-        await Score.sort_user_auto(Score, channel, member)
+        await Score.sort_user_auto(Score, channel, member, data_state_late)
 
 
 @client.event
@@ -70,6 +86,49 @@ async def on_message(message):
         embed.set_footer(text="道")
 
         await message.channel.send(embed=embed)
+    else:
+        if not message.author.bot:
+            # update file
+            with open("cogs/_user.json", "r") as f:
+                members = json.load(f)
+
+            await Data.update_data_user(Data, members, message.author)
+            checked = members[str(message.author.id)]["checked"]
+
+            with open("cogs/_user.json", "w") as f:
+                json.dump(members, f)
+
+            # update file
+            with open("cogs/_guild.json", "r") as f:
+                guilds = json.load(f)
+
+            late = await Data.get_state_config(Data, guilds, message.guild, "late_enable")
+            channel = guilds[str(message.guild.id)]["chnl_notify"]
+            verbose = guilds[str(message.guild.id)]["verbose_enable"]
+
+            # get existing channel
+            channel_notify = discord.utils.get(
+                client.get_all_channels(), guild__name=message.guild.name, id=channel,
+            )
+
+            with open("cogs/_guild.json", "w") as f:
+                json.dump(guilds, f)
+
+            if late and not checked:
+
+                await Score.sort_user_auto(Score, channel_notify, message.author, True)
+                if verbose:
+                    await Score.send_score_info(Score, message.channel, message.author, True, True)
+
+                # update file
+                with open("cogs/_user.json", "r") as f:
+                    members = json.load(f)
+
+                await Data.update_data_user(Data, members, message.author)
+                await Data.update_state_user(Data, members, message.author, True)
+
+                with open("cogs/_user.json", "w") as f:
+                    json.dump(members, f)
 
     await client.process_commands(message)
 

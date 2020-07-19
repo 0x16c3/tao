@@ -97,7 +97,7 @@ class Score(commands.Cog):
         else: return False
     """
 
-    async def get_score(self, target: discord.Member = None):
+    async def get_score(self, target: discord.Member = None, late: bool = False):
         score = 0
 
         # 1:
@@ -110,15 +110,16 @@ class Score(commands.Cog):
 
         # 2:
         # account created - server joined
-        diff = await self.get_date_diff(self, target)
-        diff_clamped = max(min(diff, 100), 0)
-        score += diff_clamped / 100
+        if late:
+            diff = await self.get_date_diff(self, target)
+            diff_clamped = max(min(diff, 100), 0)
+            score += diff_clamped / 100
 
         # 3:
         # account age
         age = await self.get_age_account(self, target)
-        age_clamped = max(min(age, 100), 0)
-        score += age_clamped / 100
+        age_clamped = max(min(age, 150), 0)
+        score += age_clamped / 150
 
         # 4:
         # is the user on mobile
@@ -145,7 +146,10 @@ class Score(commands.Cog):
         #    score += 0.0
 
         # normalize total score
-        score = max(min(score / 3.5, 1), 0)
+        if late:
+            score = max(min(score / 4.0, 1), 0)
+        else:
+            score = max(min(score / 3.0, 1), 0)
 
         # don't flag bots
         if target.bot:
@@ -169,6 +173,7 @@ class Score(commands.Cog):
         approve_id = guilds[str(guild.id)]["role_approve"]
         member_id = guilds[str(guild.id)]["role_member"]
         verbose = guilds[str(guild.id)]["verbose_enable"]
+        late = guilds[str(guild.id)]["late_enable"]
 
         with open(data_file, "w") as f:
             json.dump(guilds, f)
@@ -243,12 +248,12 @@ class Score(commands.Cog):
             embed.add_field(name="User score", value=str(score_val), inline=False)
             await channel.send(embed=embed)
             if verbose:
-                await self.send_score_info(self, channel, target)
+                await self.send_score_info(self, channel, target, late)
 
     async def sort_user_auto(
-        self, channel: discord.channel.TextChannel, target: discord.Member = None
+        self, channel: discord.channel.TextChannel, target: discord.Member = None, late = False
     ):
-        score_val = await self.get_score(self, target)
+        score_val = await self.get_score(self, target, late)
 
         if score_val >= 0.5:
             # flag user
@@ -263,8 +268,8 @@ class Score(commands.Cog):
             # ban user
             await self.flag_member(self, 2, score_val, channel, target)
 
-    async def send_score_info(self, channel: discord.TextChannel, target, manual=False):
-        scr_val = await self.get_score(self, target)
+    async def send_score_info(self, channel: discord.TextChannel, target, manual=False, late=False):
+        scr_val = await self.get_score(self, target, late)
         acc_val = await self.get_age_account(self, target)
         gld_val = await self.get_age_guild(self, target)
         avt_val = await self.get_avatar(self, target)
@@ -286,13 +291,14 @@ class Score(commands.Cog):
             value=str(acc_val) + " : +" + str(age_clamped / 100),
             inline=True,
         )
-        diff = await self.get_date_diff(self, target)
-        diff_clamped = max(min(diff, 100), 0)
-        embed_info.add_field(
-            name="Join age:",
-            value=str(gld_val) + " : +" + str(diff_clamped / 100),
-            inline=True,
-        )
+        if late:
+            diff = await self.get_date_diff(self, target)
+            diff_clamped = max(min(diff, 100), 0)
+            embed_info.add_field(
+                name="Join age:",
+                value=str(gld_val) + " : +" + str(diff_clamped / 100),
+                inline=True,
+            )
         avt = 0
         if avt_val:
             avt = 0.250
