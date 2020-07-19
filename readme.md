@@ -23,6 +23,7 @@
     tao init [-reset]                     : set role and channel configuration [or reset]
     tao config -score <-enable/-disable>  : enable or disable the scoring system
     tao config -verbose <-enable/-disable>: enable or disable verbose notifications
+    tao config -late <-enable/-disable>   : enable or disable late scoring system
 
 # bot commands:
     tao run -sort <user>                  : manually sort user
