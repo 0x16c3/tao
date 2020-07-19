@@ -163,6 +163,7 @@ class Score(commands.Cog):
         score_val: int,
         channel: discord.channel.TextChannel,
         target: discord.Member = None,
+        manual: bool = False
     ):
         guild = channel.guild
 
@@ -248,25 +249,25 @@ class Score(commands.Cog):
             embed.add_field(name="User score", value=str(score_val), inline=False)
             await channel.send(embed=embed)
             if verbose and not late:
-                await self.send_score_info(self, channel, target)
+                await self.send_score_info(self, channel, target, manual)
 
     async def sort_user_auto(
-        self, channel: discord.channel.TextChannel, target: discord.Member = None, late = False
+        self, channel: discord.channel.TextChannel, target: discord.Member = None, late = False, manual: bool = False
     ):
         score_val = await self.get_score(self, target, late)
 
         if score_val >= 0.5:
             # flag user
-            await self.flag_member(self, -1, score_val, channel, target)
+            await self.flag_member(self, -1, score_val, channel, target, manual)
         elif score_val < 0.5 and score_val >= 0.3:
             # flag user
-            await self.flag_member(self, 0, score_val, channel, target)
+            await self.flag_member(self, 0, score_val, channel, target, manual)
         elif score_val < 0.3 and score_val >= 0.1:
             # add to the manual check queue
-            await self.flag_member(self, 1, score_val, channel, target)
+            await self.flag_member(self, 1, score_val, channel, target, manual)
         elif score_val < 0.1 and score_val >= 0.0:
             # ban user
-            await self.flag_member(self, 2, score_val, channel, target)
+            await self.flag_member(self, 2, score_val, channel, target, manual)
 
     async def send_score_info(self, channel: discord.TextChannel, target, manual=False, late=False):
         scr_val = await self.get_score(self, target, late)

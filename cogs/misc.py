@@ -155,7 +155,7 @@ class Misc(commands.Cog):
                 await ctx.send(embed=embed_errr)
                 return 1
             else:
-                await Score.sort_user_auto(Score, channel, target)
+                await Score.sort_user_auto(Score, channel, target, False, True)
                 await Score.send_score_info(Score, ctx.channel, target, True)
 
     @commands.command(pass_context=True)
