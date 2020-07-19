@@ -157,7 +157,18 @@ class Misc(commands.Cog):
             else:
                 await Score.sort_user_auto(Score, channel, target, False, True)
                 await Score.send_score_info(Score, ctx.channel, target, True)
-
+        elif command == "-leave":
+            embed_errr = discord.Embed(
+                    title="Bye!", description="", color=color_errr
+                )
+            embed_errr.add_field(
+                name="Leave",
+                value="Make sure to write your issues on the github repository.",
+                inline=False,
+            )
+            embed_errr.add_field(name="GitHub", value = "https://github.com/0x16c3/tao", inline=False)
+            await ctx.send(embed=embed_errr)
+            await client.leave_server(guild)
     @commands.command(pass_context=True)
     @commands.has_permissions(administrator=True)
     async def config(self, ctx, cfg: str = "", args: str = ""):
