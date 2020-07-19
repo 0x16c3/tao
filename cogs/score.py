@@ -328,6 +328,10 @@ class Score(commands.Cog):
                 embed_info.add_field(
                     name="Manual sorting", value="User manually sorted", inline=True,
                 )
+            else:
+                embed_info.add_field(
+                    name="Auto sorting", value="User automatically sorted", inline=True,
+                )
             await channel.send(embed=embed_info)
 
 
