@@ -168,7 +168,7 @@ class Misc(commands.Cog):
             )
             embed_errr.add_field(name="GitHub", value = "https://github.com/0x16c3/tao", inline=False)
             await ctx.send(embed=embed_errr)
-            await client.leave_server(guild)
+            await guild.leave()
     @commands.command(pass_context=True)
     @commands.has_permissions(administrator=True)
     async def config(self, ctx, cfg: str = "", args: str = ""):
