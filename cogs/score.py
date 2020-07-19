@@ -118,8 +118,8 @@ class Score(commands.Cog):
         # 3:
         # account age
         age = await self.get_age_account(self, target)
-        age_clamped = max(min(age, 150), 0)
-        score += age_clamped / 150
+        age_clamped = max(min(age, 100), 0)
+        score += age_clamped / 100
 
         # 4:
         # is the user on mobile
@@ -147,9 +147,9 @@ class Score(commands.Cog):
 
         # normalize total score
         if late:
-            score = max(min(score / 4.0, 1), 0)
+            score = max(min(score / 3.5, 1), 0)
         else:
-            score = max(min(score / 3.0, 1), 0)
+            score = max(min(score / 2.5, 1), 0)
 
         # don't flag bots
         if target.bot:
