@@ -45,7 +45,7 @@ async def on_guild_join(guild):
     with open("cogs/_guild.json", "r") as f:
         guilds = json.load(f)
 
-    await Data.update_data(Data, guild, guild)
+    await Data.update_data(Data, guilds, guild)
 
     with open("cogs/_guild.json", "w") as f:
         json.dump(guilds, f)
