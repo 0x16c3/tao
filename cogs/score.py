@@ -247,8 +247,8 @@ class Score(commands.Cog):
             )
             embed.add_field(name="User score", value=str(score_val), inline=False)
             await channel.send(embed=embed)
-            if verbose:
-                await self.send_score_info(self, channel, target, late)
+            if verbose and not late:
+                await self.send_score_info(self, channel, target)
 
     async def sort_user_auto(
         self, channel: discord.channel.TextChannel, target: discord.Member = None, late = False
