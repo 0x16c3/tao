@@ -222,20 +222,18 @@ class Data(commands.Cog):
             if ch_v.overwrites_for(member_role).view_channel != False:
                 await ch_v.set_permissions(member_role, view_channel=True, speak=True)
 
-        if approve_channel.overwrites_for(approve_role).view_channel == False:
-            await approve_channel.set_permissions(
-                approve_role, view_channel=True, read_message_history=True
-            )
+        await approve_channel.set_permissions(
+            approve_role, view_channel=True, read_message_history=True
+        )
         time.sleep(1)
         if approve_channel.overwrites_for(member_role).view_channel != False:
             await approve_channel.set_permissions(
                 member_role, view_channel=False, read_message_history=False
             )
 
-        if approve_voice_channel.overwrites_for(approve_role).view_channel == False:
-            await approve_voice_channel.set_permissions(
-                approve_role, view_channel=True, speak=True
-            )
+        await approve_voice_channel.set_permissions(
+            approve_role, view_channel=True, speak=True, stream=True
+        )
         time.sleep(1)
         if approve_voice_channel.overwrites_for(member_role).view_channel != False:
             await approve_voice_channel.set_permissions(

@@ -3,3 +3,4 @@ __pycache__
 tmp
 cogs/_guild.json
 cogs/_user.json
+cogs/topgg.py

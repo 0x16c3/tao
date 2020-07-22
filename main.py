@@ -139,6 +139,10 @@ if __name__ == "__main__":
             client.load_extension(extension)
         except Exception as error:
             print(f"{extension} could not be activated. [{error}]")
+    try:
+        client.load_extension("cogs.topgg")
+    except:
+        pass
 
 
 client.run(TOKEN)
