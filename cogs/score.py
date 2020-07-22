@@ -147,9 +147,9 @@ class Score(commands.Cog):
 
         # normalize total score
         if late:
-            score = max(min(score / 3.5, 1), 0)
-        else:
             score = max(min(score / 2.5, 1), 0)
+        else:
+            score = max(min(score / 1.5, 1), 0)
 
         # don't flag bots
         if target.bot:
