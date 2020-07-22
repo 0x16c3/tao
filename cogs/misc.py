@@ -141,7 +141,7 @@ class Misc(commands.Cog):
             elif args_first == "-3":  # valid
                 await Score.flag_member(Score, -1, 1.0, channel, target)
         elif command == "-get_score":
-            await Score.send_score_info(Score, ctx.channel, target, data_late)
+            await Score.send_score_info(Score, ctx.channel, target, True, False, True)
         elif command == "-sort":
             if target is None:
                 embed_errr = discord.Embed(

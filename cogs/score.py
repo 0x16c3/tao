@@ -269,7 +269,7 @@ class Score(commands.Cog):
             # ban user
             await self.flag_member(self, 2, score_val, channel, target, manual)
 
-    async def send_score_info(self, channel: discord.TextChannel, target, manual=False, late=False):
+    async def send_score_info(self, channel: discord.TextChannel, target, manual=False, late=False, run=False):
         scr_val = await self.get_score(self, target, late)
         acc_val = await self.get_age_account(self, target)
         gld_val = await self.get_age_guild(self, target)
@@ -277,7 +277,7 @@ class Score(commands.Cog):
         mbl_val = await self.get_is_on_mobile(self, target)
         # hsq_val = await self.get_hypesquad(self, target)
         ntr_val = await self.get_premium(self, target)
-        if scr_val < 0.5:
+        if scr_val < 0.5 or run:
             embed_info = discord.Embed(
                 title="Info | " + target.name + "#" + target.discriminator,
                 description="",
