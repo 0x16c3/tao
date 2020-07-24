@@ -527,11 +527,12 @@ class Data(commands.Cog):
 
         await self.update_data(self, guilds, guild)
         dont_send = guilds[str(guild.id)]["notified"]
+        setup_complete = guilds[str(guild.id)]["setup_complete"]
 
         with open("cogs/_guild.json", "w") as f:
             json.dump(guilds, f)
 
-        if not dont_send:
+        if not dont_send and not setup_complete:
             embed_errr = discord.Embed(title="WARNING!", description="", color=color_errr)
             embed_errr.add_field(
                 name="Tao has not been set up yet!",
@@ -540,6 +541,16 @@ class Data(commands.Cog):
             )
             await channel.send(embed=embed_errr)
 
+            # update file
+            with open("cogs/_guild.json", "r") as f:
+                guilds = json.load(f)
+
+            await self.update_data(self, guilds, guild)
+            await self.update_state_config(self, guilds, guild, "notified", True)
+
+            with open("cogs/_guild.json", "w") as f:
+                json.dump(guilds, f)
+        elif setup_complete:
             # update file
             with open("cogs/_guild.json", "r") as f:
                 guilds = json.load(f)
