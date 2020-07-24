@@ -26,8 +26,8 @@
     tao config -late <-enable/-disable>   : enable or disable late scoring system
 
 # bot commands:
-    tao run -sort <user>                  : manually sort user
-    tao run -get_score <user>             : get user score
+    tao run -sort_user <user>             : manually sort user
+    tao run -send_score_info <user>       : get user score
     tao run -set_flag <flag>              : set user flag
                                             -0 = send notification
                                             -1 = send to manual approval

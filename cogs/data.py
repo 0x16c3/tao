@@ -18,6 +18,8 @@ class Data(commands.Cog):
         if not id in guilds:
             # if the guild is not saved create guild object
             guilds[id] = {}
+            guilds[id]["setup_complete"] = False
+            guilds[id]["notified"] = False
             guilds[id]["scre_enable"] = True
             guilds[id]["verbose_enable"] = False
             guilds[id]["late_enable"] = False
@@ -380,6 +382,17 @@ class Data(commands.Cog):
             )
 
             await waiting_msg.delete()
+
+            # update file
+            with open(data_file, "r") as f:
+                guilds = json.load(f)
+
+            await self.update_data(guilds, guild)
+            await self.update_state_config(guilds, guild, "setup_complete", True)
+
+            with open(data_file, "w") as f:
+                json.dump(guilds, f)
+
             await ctx.send(embed=embed)
             return
         elif not role_set and user_id != 0 and args == "-reset":
@@ -417,6 +430,18 @@ class Data(commands.Cog):
                 value="Available arguments: `-enable`, `-disable`",
                 inline=False,
             )
+            if cfg_state:
+                embed_errr.add_field(
+                    name="Current value",
+                    value="`enabled`",
+                    inline=False,
+                )
+            else:
+                embed_errr.add_field(
+                    name="Current value",
+                    value="`disabled`",
+                    inline=False,
+                )
             await ctx.send(embed=embed_errr)
         if args == "-enable":
             if cfg_state == True:
@@ -490,6 +515,42 @@ class Data(commands.Cog):
                     inline=False,
                 )
                 await ctx.send(embed=embed_done)
+
+
+    @commands.command(pass_context=True)
+    async def setup_notify(self, channel: discord.TextChannel):
+        guild = channel.guild
+
+        # update file
+        with open("cogs/_guild.json", "r") as f:
+            guilds = json.load(f)
+
+        await self.update_data(self, guilds, guild)
+        dont_send = guilds[str(guild.id)]["notified"]
+
+        with open("cogs/_guild.json", "w") as f:
+            json.dump(guilds, f)
+
+        if not dont_send:
+            embed_errr = discord.Embed(title="WARNING!", description="", color=color_errr)
+            embed_errr.add_field(
+                name="Tao has not been set up yet!",
+                value="Set Tao up using the command: `tao init`",
+                inline=False,
+            )
+            await channel.send(embed=embed_errr)
+
+            # update file
+            with open("cogs/_guild.json", "r") as f:
+                guilds = json.load(f)
+
+            await self.update_data(self, guilds, guild)
+            await self.update_state_config(self, guilds, guild, "notified", True)
+
+            with open("cogs/_guild.json", "w") as f:
+                json.dump(guilds, f)
+
+
 
 
 def setup(client):

@@ -277,7 +277,64 @@ class Score(commands.Cog):
         mbl_val = await self.get_is_on_mobile(self, target)
         # hsq_val = await self.get_hypesquad(self, target)
         ntr_val = await self.get_premium(self, target)
-        if scr_val < 0.5 or run:
+        if scr_val < 0.5 and not run:
+            embed_info = discord.Embed(
+                title="Info | " + target.name + "#" + target.discriminator,
+                description="",
+                color=color_done,
+            )
+            embed_info.add_field(
+                name="User score:", value=str(scr_val), inline=True,
+            )
+            age = await self.get_age_account(self, target)
+            age_clamped = max(min(age, 100), 0)
+            embed_info.add_field(
+                name="Account age:",
+                value=str(acc_val) + " : +" + str(age_clamped / 100),
+                inline=True,
+            )
+            if late:
+                diff = await self.get_date_diff(self, target)
+                diff_clamped = max(min(diff, 100), 0)
+                embed_info.add_field(
+                    name="Join age:",
+                    value=str(gld_val) + " : +" + str(diff_clamped / 100),
+                    inline=True,
+                )
+            avt = 0
+            if avt_val:
+                avt = 0.250
+            else:
+                avt = 0
+            embed_info.add_field(
+                name="Custom avatar:", value=str(avt_val) + " : +" + str(avt), inline=True,
+            )
+            mbl = 0
+            if mbl_val:
+                mbl = 0.250
+            else:
+                mbl = 0
+            embed_info.add_field(
+                name="On mobile:", value=str(mbl_val) + " : +" + str(mbl), inline=True,
+            )
+            ntr = 0
+            if ntr_val:
+                ntr = 0.5
+            else:
+                ntr = 0
+            embed_info.add_field(
+                name="Nitro:", value=str(ntr_val) + " : +" + str(ntr), inline=True,
+            )
+            if manual:
+                embed_info.add_field(
+                    name="Manual sorting", value="User manually sorted", inline=True,
+                )
+            else:
+                embed_info.add_field(
+                    name="Auto sorting", value="User automatically sorted", inline=True,
+                )
+            await channel.send(embed=embed_info)
+        elif run:
             embed_info = discord.Embed(
                 title="Info | " + target.name + "#" + target.discriminator,
                 description="",

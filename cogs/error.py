@@ -4,6 +4,7 @@ import math
 from discord.ext import commands
 from datetime import datetime, timedelta
 
+from .data import Data
 
 class Error(commands.Cog):
     def __init__(self, client):
@@ -17,6 +18,22 @@ class Error(commands.Cog):
 
         # get the original exception
         error = getattr(error, "original", error)
+
+        if isinstance(error, KeyError):
+            # update file
+            with open(data_file, "r") as f:
+                guilds = json.load(f)
+
+            await Data.update_data(Data, guilds, guild)
+            await Data.update_state_config(Data, guilds, guild, "setup_complete", False)
+
+            with open(data_file, "w") as f:
+                json.dump(guilds, f)
+
+            await Data.setup_notify(Data, ctx.channel)
+            return
+
+
 
         if isinstance(error, commands.CommandNotFound):
             embed = discord.Embed(

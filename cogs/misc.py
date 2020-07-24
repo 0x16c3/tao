@@ -82,6 +82,7 @@ class Misc(commands.Cog):
         command: str = "",
         target: discord.Member = None,
         args_first: str = "",
+        args_second: str = ""
     ):
         guild = ctx.guild
 
@@ -92,9 +93,14 @@ class Misc(commands.Cog):
         data_guild = guilds[str(guild.id)]
         data_ch = data_guild["chnl_notify"]
         data_late = data_guild["late_enable"]
+        setup_complete = data_guild["setup_complete"]
 
         with open("cogs/_guild.json", "w") as f:
             json.dump(guilds, f)
+
+        if not setup_complete:
+            await Data.setup_notify(Data, message.channel)
+            return
 
         channel = discord.utils.get(
             self.client.get_all_channels(), guild__name=guild.name, id=data_ch,
@@ -104,7 +110,7 @@ class Misc(commands.Cog):
             embed_errr = discord.Embed(title="Error", description="", color=color_errr)
             embed_errr.add_field(
                 name="Invalid argument",
-                value="Available arguments: `-set_flag`, `-get_score`, `-sort`",
+                value="Available arguments: `-set_flag`, `-send_score_info`, `-sort_user`",
                 inline=False,
             )
             await ctx.send(embed=embed_errr)
@@ -140,9 +146,9 @@ class Misc(commands.Cog):
                 await Score.flag_member(Score, 2, 0.05, channel, target)
             elif args_first == "-3":  # valid
                 await Score.flag_member(Score, -1, 1.0, channel, target)
-        elif command == "-get_score":
+        elif command == "-send_score_info":
             await Score.send_score_info(Score, ctx.channel, target, True, False, True)
-        elif command == "-sort":
+        elif command == "-sort_user":
             if target is None:
                 embed_errr = discord.Embed(
                     title="Error", description="", color=color_errr
@@ -169,6 +175,17 @@ class Misc(commands.Cog):
             embed_errr.add_field(name="GitHub", value = "https://github.com/0x16c3/tao", inline=False)
             await ctx.send(embed=embed_errr)
             await guild.leave()
+        else:
+            embed_errr = discord.Embed(title="Error", description="", color=color_errr)
+            embed_errr.add_field(
+                name="Invalid argument",
+                value="Available arguments: `-set_flag`, `-send_score_info`, `-sort_user`",
+                inline=False,
+            )
+            await ctx.send(embed=embed_errr)
+            return 0
+
+
     @commands.command(pass_context=True)
     @commands.has_permissions(administrator=True)
     async def config(self, ctx, cfg: str = "", args: str = ""):

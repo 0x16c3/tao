@@ -102,9 +102,11 @@ async def on_message(message):
             with open("cogs/_guild.json", "r") as f:
                 guilds = json.load(f)
 
+            await Data.update_data(Data, guilds, message.guild)
             late = await Data.get_state_config(Data, guilds, message.guild, "late_enable")
             channel = guilds[str(message.guild.id)]["chnl_notify"]
             verbose = guilds[str(message.guild.id)]["verbose_enable"]
+            setup_complete = guilds[str(message.guild.id)]["setup_complete"]
 
             # get existing channel
             channel_notify = discord.utils.get(
@@ -113,6 +115,9 @@ async def on_message(message):
 
             with open("cogs/_guild.json", "w") as f:
                 json.dump(guilds, f)
+
+            if not setup_complete:
+                await Data.setup_notify(Data, message.channel)
 
             if late and not checked:
 
