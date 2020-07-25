@@ -29,6 +29,30 @@ class Data(commands.Cog):
             guilds[id]["role_approve"] = 0
             guilds[id]["role_member"] = 0
             guilds[id]["banned_members"] = {}
+            return
+
+        if not "setup_complete" in guilds[id]:
+            guilds[id]["setup_complete"] = False
+        if not "notified" in guilds[id]:
+            guilds[id]["notified"] = False
+        if not "scre_enable" in guilds[id]:
+            guilds[id]["scre_enable"] = False
+        if not "verbose_enable" in guilds[id]:
+            guilds[id]["verbose_enable"] = False
+        if not "late_enable" in guilds[id]:
+            guilds[id]["late_enable"] = False
+        if not "chnl_notify" in guilds[id]:
+            guilds[id]["chnl_notify"] = 0
+        if not "chnl_approve" in guilds[id]:
+            guilds[id]["chnl_approve"] = 0
+        if not "chnl_approve_voice" in guilds[id]:
+            guilds[id]["chnl_approve_voice"] = 0
+        if not "role_approve" in guilds[id]:
+            guilds[id]["role_approve"] = 0
+        if not "role_member" in guilds[id]:
+            guilds[id]["role_member"] = 0
+        if not "banned_members" in guilds[id]:
+            guilds[id]["banned_members"] = {}
 
     async def update_banned_member(self, guilds, guild, member: discord.User, time: int = 0):
         id = str(guild.id)
