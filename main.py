@@ -123,7 +123,7 @@ async def on_message(message):
 
                 await Score.sort_user_auto(Score, channel_notify, message.author, True)
                 if verbose:
-                    await Score.send_score_info(Score, channel_notify, message.author, True, True)
+                    await Score.send_score_info(Score, channel_notify, message.author, False, True)
 
                 # update file
                 with open("cogs/_user.json", "r") as f:

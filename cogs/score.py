@@ -329,6 +329,10 @@ class Score(commands.Cog):
                 embed_info.add_field(
                     name="Manual sorting", value="User manually sorted", inline=True,
                 )
+            elif late:
+                embed_info.add_field(
+                    name="Late sorting", value="User manually sorted", inline=True,
+                )
             else:
                 embed_info.add_field(
                     name="Auto sorting", value="User automatically sorted", inline=True,
@@ -385,6 +389,10 @@ class Score(commands.Cog):
             if manual:
                 embed_info.add_field(
                     name="Manual sorting", value="User manually sorted", inline=True,
+                )
+            elif late:
+                embed_info.add_field(
+                    name="Late sorting", value="User manually sorted", inline=True,
                 )
             else:
                 embed_info.add_field(
