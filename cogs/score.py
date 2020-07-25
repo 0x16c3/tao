@@ -256,6 +256,15 @@ class Score(commands.Cog):
     ):
         score_val = await self.get_score(self, target, late)
 
+        # update file
+        with open("cogs/_user.json", "r") as f:
+            users = json.load(f)
+
+        await Data.update_state_user(Data, users, target, True)
+
+        with open("cogs/_user.json", "w") as f:
+            json.dump(users, f)
+
         if score_val >= 0.5:
             # flag user
             await self.flag_member(self, -1, score_val, channel, target, manual)

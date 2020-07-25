@@ -117,12 +117,6 @@ class Data(commands.Cog):
 
         members[id]["checked"] = state
 
-    async def update_state_user_guild(self, members, member, guild, cfg, state):
-        id = str(member.id)
-        guild_id = str(guild.id)
-
-        members[id][guild_id][cfg] = state
-
     @commands.command(pass_context=True)
     @commands.has_permissions(administrator=True)
     async def create_channel(self, ctx, name: str, cfg: str, type: str, embed):
