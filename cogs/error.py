@@ -154,7 +154,7 @@ class Error(commands.Cog):
                 color=0xF5F5F5,
             )
 
-            embed.add_field(name="Error", value="Invalid input", inline=True)
+            embed.add_field(name="Error", value="Invalid input or argument", inline=True)
 
             await ctx.send(embed=embed)
             return

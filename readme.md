@@ -34,4 +34,7 @@
                                             -2 = ban
                                             -3 = valid account (no action)
 
+# moderation commands:
+    tao ban <user> [reason] [-amount]
+
 ```

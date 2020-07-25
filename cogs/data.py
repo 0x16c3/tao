@@ -28,6 +28,31 @@ class Data(commands.Cog):
             guilds[id]["chnl_approve_voice"] = 0
             guilds[id]["role_approve"] = 0
             guilds[id]["role_member"] = 0
+            guilds[id]["banned_members"] = {}
+
+    async def update_banned_member(self, guilds, guild, member: discord.User, time: int = 0):
+        id = str(guild.id)
+
+        if not str(member.id) in guilds[id]["banned_members"]:
+            guilds[id]["banned_members"][str(member.id)] = {}
+
+        guilds[id]["banned_members"][str(member.id)]["time"] = time
+
+    async def update_ban_timer(self, guilds, guild, member: discord.User):
+        id = str(guild.id)
+
+        guilds[id]["banned_members"][str(member.id)]["time"] -= 1
+
+    async def get_ban_timer(self, guilds, guild, member: discord.User):
+        id = str(guild.id)
+
+        return guilds[id]["banned_members"][str(member.id)]["time"]
+
+
+    async def delete_banned_member(self, guilds, guild, member: discord.User):
+        id = str(guild.id)
+
+        del guilds[id]["banned_members"][str(member.id)]
 
     async def update_id_channel(
         self, guilds, guild, channel: discord.channel.TextChannel, type: str
@@ -67,6 +92,12 @@ class Data(commands.Cog):
         id = str(member.id)
 
         members[id]["checked"] = state
+
+    async def update_state_user_guild(self, members, member, guild, cfg, state):
+        id = str(member.id)
+        guild_id = str(guild.id)
+
+        members[id][guild_id][cfg] = state
 
     @commands.command(pass_context=True)
     @commands.has_permissions(administrator=True)

@@ -3,17 +3,19 @@ import discord
 import json
 from discord.ext import commands
 from datetime import datetime, timedelta
+import asyncio
 
 import os.path
 from os import path
 
+from cogs.moderation import Moderation
 from cogs.score import Score
 from cogs.data import Data
 
 # initialize
 TOKEN = open("tmp/token.txt", "r").read()
 
-cogs = ["cogs.score", "cogs.data", "cogs.misc", "cogs.error"]  #
+cogs = ["cogs.score", "cogs.data", "cogs.misc", "cogs.moderation", "cogs.error"]  #
 
 client = commands.Bot(
     command_prefix="tao ",
@@ -116,7 +118,7 @@ async def on_message(message):
             with open("cogs/_guild.json", "w") as f:
                 json.dump(guilds, f)
 
-            if not setup_complete:
+            if not setup_complete and message.content != "tao init":
                 await Data.setup_notify(Data, message.channel)
 
             if late and not checked:
@@ -149,5 +151,56 @@ if __name__ == "__main__":
     except:
         pass
 
+async def timer():
 
+    await client.wait_until_ready()
+
+    while client.is_ready():
+        await asyncio.sleep(1)
+
+        with open("cogs/_guild.json", "r") as f:
+            guilds = json.load(f)
+
+        for guild_i in guilds:
+
+            member_list = guilds[guild_i]["banned_members"]
+            guild = client.get_guild(int(guild_i))
+
+            for member_i in member_list:
+                member = await client.fetch_user(int(member_i))
+
+                await Data.update_ban_timer(Data, guilds, guild, member)
+                curtime = await Data.get_ban_timer(Data, guilds, guild, member)
+
+                with open("cogs/_guild.json", "w") as f:
+                    json.dump(guilds, f)
+
+                if curtime <= 0:
+                    with open("cogs/_guild.json", "r") as f:
+                        guilds = json.load(f)
+
+                    try:
+                        await guild.unban(member)
+
+                        embed = discord.Embed(
+                            title="Info", description="", color=color_errr
+                        )
+                        embed.add_field(
+                            name="You have been unbanned!",
+                            value="Your ban from `" + ctx.guild.name + "` has expired!",
+                            inline=False,
+                        )
+                        try:
+                            await member.send(embed=embed)
+                        except:
+                            pass
+                    except:
+                        pass
+                    await Data.delete_banned_member(Data, guilds, guild, member)
+
+                    with open("cogs/_guild.json", "w") as f:
+                        json.dump(guilds, f)
+
+
+client.loop.create_task(timer())
 client.run(TOKEN)
