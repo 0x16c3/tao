@@ -11,16 +11,6 @@ class Moderation(commands.Cog):
     def __init__(self, client):
         self.client = client
 
-    @commands.command(pass_context=True)
-    async def test(self, ctx, member: discord.User):
-        with open("cogs/_guild.json", "r") as f:
-            guilds = json.load(f)
-
-        await Data.update_banned_member(Data, guilds, ctx.guild, member, 50)
-
-        with open("cogs/_guild.json", "w") as f:
-            json.dump(guilds, f)
-
 
     @commands.command(pass_context=True)
     @commands.has_permissions(ban_members=True)
