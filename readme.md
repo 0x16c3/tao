@@ -18,6 +18,7 @@
 # helper functions:
     tao                                   : meta information
     tao info <user>                       : user information
+    tao help                              : command information
 
 # initialize and config:
     tao init [-reset]                     : set role and channel configuration [or reset]
@@ -35,6 +36,10 @@
                                             -3 = valid account (no action)
 
 # moderation commands:
-    tao ban <user> [reason] [-amount]
+    tao ban <user> [reason] [-amount]     : ban user
+                                            -m / minute = time in minutes
+                                            -h / hour   = time in hours
+                                            -d / day    = time in days
+                                            -w / week   = time in weeks
 
 ```

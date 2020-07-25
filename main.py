@@ -22,7 +22,7 @@ client = commands.Bot(
     status=discord.Status.idle,
     activity=discord.Game(name="initializing"),
 )
-
+client.remove_command('help')
 
 @client.event
 async def on_ready():

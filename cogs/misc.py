@@ -220,6 +220,323 @@ class Misc(commands.Cog):
         if cfg == "-late":
             await Data.set_config(Data, ctx, cfg, args, state_late)
 
+    @commands.command(pass_context=True)
+    async def help(self, ctx, args_first: str = "", args_second: str = ""):
+        if args_first == "" and args_second == "":
+            embed_info = discord.Embed(
+                title="Info", description="", color=color_done
+            )
+            embed_info.add_field(
+                name="Available commands",
+                value="Available arguments: `info`, `init`, `config`, `run`, `ban`",
+                inline=False,
+            )
+            embed_info.add_field(
+                name="To learn more about a command",
+                value="Type in: `tao help -[command]`",
+                inline=False,
+            )
+            await ctx.send(embed=embed_info)
+        if args_first == "-info":
+            embed_info = discord.Embed(
+                title="tao info `<user>`", description="", color=color_done
+            )
+            embed_info.add_field(
+                name="Description",
+                value="Returns info about a specific user",
+                inline=False,
+            )
+            embed_info.add_field(
+                name="Arguments",
+                value="<user>:`User`",
+                inline=False,
+            )
+            await ctx.send(embed=embed_info)
+        if args_first == "-init":
+            if args_second == "":
+                embed_info = discord.Embed(
+                    title="tao init `[-reset]`", description="", color=color_done
+                )
+                embed_info.add_field(
+                    name="Description",
+                    value="Initializes permissions, roles and the database for the guild",
+                    inline=False,
+                )
+                embed_info.add_field(
+                    name="Arguments",
+                    value="[-reset]",
+                    inline=False,
+                )
+                embed_info.add_field(
+                    name="To learn more about an argument",
+                    value="Type in: `tao help -[command] -[argument]`",
+                    inline=False,
+                )
+                await ctx.send(embed=embed_info)
+            elif args_second == "-reset":
+                embed_info = discord.Embed(
+                    title="tao init -reset", description="", color=color_done
+                )
+                embed_info.add_field(
+                    name="Description",
+                    value="Resets current configuration and re-initializes Tao.",
+                    inline=False,
+                )
+                await ctx.send(embed=embed_info)
+            else:
+                embed_errr = discord.Embed(
+                    title="Error", description="", color=color_errr
+                )
+                embed_errr.add_field(
+                    name="Invalid argument",
+                    value="Available arguments: `reset`",
+                    inline=False,
+                )
+                await ctx.send(embed=embed_errr)
+        if args_first == "-config":
+            if args_second == "":
+                embed_info = discord.Embed(
+                    title="tao config `<-config>` `<-enable/-disable>`", description="", color=color_done
+                )
+                embed_info.add_field(
+                    name="Description",
+                    value="Allows to edit Tao configuration",
+                    inline=False,
+                )
+                embed_info.add_field(
+                    name="Arguments",
+                    value="`<-score> | <-verbose> | <-late>`, `<-enable> | <-disable>`",
+                    inline=False,
+                )
+                embed_info.add_field(
+                    name="To learn more about an argument",
+                    value="Type in: `tao help -[command] -[argument]`",
+                    inline=False,
+                )
+                await ctx.send(embed=embed_info)
+            elif args_second == "-score":
+                embed_info = discord.Embed(
+                    title="tao init -score `<-enable/-disable>`", description="", color=color_done
+                )
+                embed_info.add_field(
+                    name="Description",
+                    value="Allows to enable or disable the score system",
+                    inline=False,
+                )
+                embed_info.add_field(
+                    name="Arguments",
+                    value="`<-enable> | <-disable>`",
+                    inline=False,
+                )
+                await ctx.send(embed=embed_info)
+            elif args_second == "-verbose":
+                embed_info = discord.Embed(
+                    title="tao init -verbose `<-enable/-disable>`", description="", color=color_done
+                )
+                embed_info.add_field(
+                    name="Description",
+                    value="Sends debug or detailed information in notifications",
+                    inline=False,
+                )
+                embed_info.add_field(
+                    name="Arguments",
+                    value="`<-enable> | <-disable>`",
+                    inline=False,
+                )
+                await ctx.send(embed=embed_info)
+            elif args_second == "-late":
+                embed_info = discord.Embed(
+                    title="tao init -late `<-enable/-disable>`", description="", color=color_done
+                )
+                embed_info.add_field(
+                    name="Description",
+                    value="Allows to enable or disable whether the users will get sorted after they've joined the server",
+                    inline=False,
+                )
+                embed_info.add_field(
+                    name="Arguments",
+                    value="`<-enable> | <-disable>`",
+                    inline=False,
+                )
+                await ctx.send(embed=embed_info)
+            else:
+                embed_errr = discord.Embed(
+                    title="Error", description="", color=color_errr
+                )
+                embed_errr.add_field(
+                    name="Invalid argument",
+                    value="Available arguments: `score`, `verbose`, `late`",
+                    inline=False,
+                )
+                await ctx.send(embed=embed_errr)
+        if args_first == "-run":
+            if args_second == "":
+                embed_info = discord.Embed(
+                    title="tao run `<-action>` `<argument>`", description="", color=color_done
+                )
+                embed_info.add_field(
+                    name="Description",
+                    value="Runs an internal function",
+                    inline=False,
+                )
+                embed_info.add_field(
+                    name="Arguments",
+                    value="`<-sort_user> | <-send_score_info> | <-set_flag>`, `<custom>`",
+                    inline=False,
+                )
+                embed_info.add_field(
+                    name="To learn more about an argument",
+                    value="Type in: `tao help -[command] -[argument]`",
+                    inline=False,
+                )
+                await ctx.send(embed=embed_info)
+            elif args_second == "-sort_user":
+                embed_info = discord.Embed(
+                    title="tao run -sort_user `<user>`", description="", color=color_done
+                )
+                embed_info.add_field(
+                    name="Description",
+                    value="Simulates the sorting function that runs when a user joins",
+                    inline=False,
+                )
+                embed_info.add_field(
+                    name="Arguments",
+                    value="<user>:`User`",
+                    inline=False,
+                )
+                await ctx.send(embed=embed_info)
+            elif args_second == "-send_score_info":
+                embed_info = discord.Embed(
+                    title="tao run -send_score_info `<user>`", description="", color=color_done
+                )
+                embed_info.add_field(
+                    name="Description",
+                    value="Sends score of a user",
+                    inline=False,
+                )
+                embed_info.add_field(
+                    name="Arguments",
+                    value="<user>:`User`",
+                    inline=False,
+                )
+                await ctx.send(embed=embed_info)
+            elif args_second == "-set_flag":
+                embed_info = discord.Embed(
+                    title="tao run -set_flag `<custom>`", description="", color=color_done
+                )
+                embed_info.add_field(
+                    name="Description",
+                    value="Simulates flagging action on a user",
+                    inline=False,
+                )
+                embed_info.add_field(
+                    name="Arguments",
+                    value="`<0> | <1> | <2> | <3>`",
+                    inline=False,
+                )
+                embed_info.add_field(
+                    name="Flag enum `0`",
+                    value="Send warning notification",
+                    inline=False,
+                )
+                embed_info.add_field(
+                    name="Flag enum `1`",
+                    value="Send user to manual approval",
+                    inline=True,
+                )
+                embed_info.add_field(
+                    name="Flag enum `2`",
+                    value="Ban user",
+                    inline=False,
+                )
+                embed_info.add_field(
+                    name="Flag enum `3`",
+                    value="Flag user as a valid account (clear other flags)",
+                    inline=True,
+                )
+                await ctx.send(embed=embed_info)
+            else:
+                embed_errr = discord.Embed(
+                    title="Error", description="", color=color_errr
+                )
+                embed_errr.add_field(
+                    name="Invalid argument",
+                    value="Available arguments: `sort_user`, `send_score_info`, `set_flag`",
+                    inline=False,
+                )
+                await ctx.send(embed=embed_errr)
+        if args_first == "-ban":
+            if args_second == "":
+                embed_info = discord.Embed(
+                    title="tao ban `<user>` `[duration]` `[reason]`", description="", color=color_done
+                )
+                embed_info.add_field(
+                    name="Description",
+                    value="Bans a user (permanently if no duration specified)",
+                    inline=False,
+                )
+                embed_info.add_field(
+                    name="Arguments",
+                    value="<user>:`User`, [duration]:`Time`, [reason]:`str`",
+                    inline=False,
+                )
+                embed_info.add_field(
+                    name="To learn more about an argument",
+                    value="Type in: `tao help -[command] -[argument]`",
+                    inline=False,
+                )
+                await ctx.send(embed=embed_info)
+            elif args_second == "-duration":
+                embed_info = discord.Embed(
+                    title="tao ban `<user>` -duration", description="", color=color_done
+                )
+                embed_info.add_field(
+                    name="Description",
+                    value="Specifies ban duration",
+                    inline=False,
+                )
+                embed_info.add_field(
+                    name="Ban time `m / minute` | -Xm / -Xminute",
+                    value="Time in minutes",
+                    inline=False,
+                )
+                embed_info.add_field(
+                    name="Ban time `h / hour` | -Xh / -Xhour",
+                    value="Time in hours",
+                    inline=False,
+                )
+                embed_info.add_field(
+                    name="Ban time `d / day` | -Xd / -Xday",
+                    value="Time in days",
+                    inline=False,
+                )
+                embed_info.add_field(
+                    name="Ban time `w / week` | -Xw / -Xweek",
+                    value="Time in weeks",
+                    inline=False,
+                )
+                await ctx.send(embed=embed_info)
+            elif args_second == "-reason":
+                embed_info = discord.Embed(
+                    title="tao ban `<user>` `[duration]` 'reason'", description="", color=color_done
+                )
+                embed_info.add_field(
+                    name="Description",
+                    value="Ban reason (takes place of duration if duration is not specified)",
+                    inline=False,
+                )
+                await ctx.send(embed=embed_info)
+            else:
+                embed_errr = discord.Embed(
+                    title="Error", description="", color=color_errr
+                )
+                embed_errr.add_field(
+                    name="Invalid argument",
+                    value="Available arguments: `reset`",
+                    inline=False,
+                )
+                await ctx.send(embed=embed_errr)
+
 
 def setup(client):
     client.add_cog(Misc(client))
