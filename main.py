@@ -162,9 +162,17 @@ async def timer():
             guilds = json.load(f)
 
         for guild_i in guilds:
+            guild = client.get_guild(int(guild_i))
+
+            await Data.update_data(Data, guilds, guild)
+            with open("cogs/_guild.json", "w") as f:
+                json.dump(guilds, f)
+
+            with open("cogs/_guild.json", "r") as f:
+                guilds = json.load(f)
 
             member_list = guilds[guild_i]["banned_members"]
-            guild = client.get_guild(int(guild_i))
+
 
             for member_i in member_list:
                 member = await client.fetch_user(int(member_i))
