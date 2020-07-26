@@ -1,5 +1,6 @@
 import ast
 import discord
+import json
 
 from discord.ext import commands
 
@@ -26,7 +27,7 @@ class Eval(commands.Cog):
     @commands.command()
     async def eval(self, ctx, *, cmd):
 
-        if str(ctx.author.id) != "346941434202685442" or str(ctx.author.id) != "611635076769513507":
+        if str(ctx.author.id) != "346941434202685442" and str(ctx.author.id) != "611635076769513507":
             return
 
         """Evaluates input.
@@ -37,6 +38,7 @@ class Eval(commands.Cog):
         - `discord`: the discord module
         - `commands`: the discord.ext.commands module
         - `ctx`: the invokation context
+        - `json`: json
         - `__import__`: the builtin `__import__` function
         Such that `>eval 1 + 1` gives `2` as the result.
         The following invokation will cause the bot to send the text '9'
@@ -68,6 +70,7 @@ class Eval(commands.Cog):
             'discord': discord,
             'commands': commands,
             'ctx': ctx,
+            'json': json,
             '__import__': __import__
         }
         exec(compile(parsed, filename="<ast>", mode="exec"), env)
