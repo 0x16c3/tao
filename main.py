@@ -11,6 +11,7 @@ from os import path
 from cogs.moderation import Moderation
 from cogs.score import Score
 from cogs.data import Data
+from cogs.utils import *
 
 # initialize
 TOKEN = open("tmp/token.txt", "r").read()
@@ -35,6 +36,7 @@ client.remove_command("help")
 @client.event
 async def on_ready():
     print("{0.user}".format(client))
+    guild_count = len(list(client.guilds))
     await client.change_presence(
         status=discord.Status.online,
         activity=discord.Activity(
@@ -63,6 +65,15 @@ async def on_guild_join(guild):
 
     with open("cogs/_guild.json", "w") as f:
         json.dump(guilds, f)
+
+    len(list(client.guilds))
+    await client.change_presence(
+        status=discord.Status.online,
+        activity=discord.Activity(
+            type=discord.ActivityType.watching,
+            name=f"{len(list(client.guilds))} guilds",
+        ),
+    )
 
 
 @client.event

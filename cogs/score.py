@@ -260,6 +260,7 @@ class Score(commands.Cog):
         with open("cogs/_user.json", "r") as f:
             users = json.load(f)
 
+        await Data.update_data_user(Data, users, target)
         await Data.update_state_user(Data, users, target, True)
 
         with open("cogs/_user.json", "w") as f:
