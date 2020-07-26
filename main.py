@@ -15,20 +15,32 @@ from cogs.data import Data
 # initialize
 TOKEN = open("tmp/token.txt", "r").read()
 
-cogs = ["cogs.score", "cogs.data", "cogs.misc", "cogs.moderation", "cogs.eval", "cogs.error"]  #
+cogs = [
+    "cogs.score",
+    "cogs.data",
+    "cogs.misc",
+    "cogs.moderation",
+    "cogs.eval",
+    "cogs.error",
+]  #
 
 client = commands.Bot(
     command_prefix="tao ",
     status=discord.Status.idle,
     activity=discord.Game(name="initializing"),
 )
-client.remove_command('help')
+client.remove_command("help")
+
 
 @client.event
 async def on_ready():
     print("{0.user}".format(client))
     await client.change_presence(
-        status=discord.Status.online, activity=discord.Activity(type=discord.ActivityType.watching, name=f"{len(list(client.guilds))} guilds")
+        status=discord.Status.online,
+        activity=discord.Activity(
+            type=discord.ActivityType.watching,
+            name=f"{len(list(client.guilds))} guilds",
+        ),
     )
 
     if not path.exists("cogs/_guild.json"):
@@ -51,6 +63,7 @@ async def on_guild_join(guild):
 
     with open("cogs/_guild.json", "w") as f:
         json.dump(guilds, f)
+
 
 @client.event
 async def on_member_join(member):
@@ -105,7 +118,9 @@ async def on_message(message):
                 guilds = json.load(f)
 
             await Data.update_data(Data, guilds, message.guild)
-            late = await Data.get_state_config(Data, guilds, message.guild, "late_enable")
+            late = await Data.get_state_config(
+                Data, guilds, message.guild, "late_enable"
+            )
             channel = guilds[str(message.guild.id)]["chnl_notify"]
             verbose = guilds[str(message.guild.id)]["verbose_enable"]
             setup_complete = guilds[str(message.guild.id)]["setup_complete"]
@@ -125,7 +140,9 @@ async def on_message(message):
 
                 await Score.sort_user_auto(Score, channel_notify, message.author, True)
                 if verbose:
-                    await Score.send_score_info(Score, channel_notify, message.author, False, True)
+                    await Score.send_score_info(
+                        Score, channel_notify, message.author, False, True
+                    )
 
                 # update file
                 with open("cogs/_user.json", "r") as f:
@@ -151,6 +168,7 @@ if __name__ == "__main__":
     except:
         pass
 
+
 async def timer():
 
     await client.wait_until_ready()
@@ -172,7 +190,6 @@ async def timer():
                 guilds = json.load(f)
 
             member_list = guilds[guild_i]["banned_members"]
-
 
             for member_i in member_list:
                 member = await client.fetch_user(int(member_i))
