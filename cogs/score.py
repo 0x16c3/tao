@@ -104,7 +104,7 @@ class Score(commands.Cog):
         # if the user has an avatar
         avatar = await self.get_avatar(self, target)
         if avatar:
-            score += 0.250
+            score += 0.100
         else:
             score += 0.000
 
@@ -125,7 +125,7 @@ class Score(commands.Cog):
         # is the user on mobile
         mobile = await self.get_is_on_mobile(self, target)
         if mobile:
-            score += 0.250
+            score += 0.100
         else:
             score += 0.000
 
@@ -147,9 +147,9 @@ class Score(commands.Cog):
 
         # normalize total score
         if late:
-            score = max(min(score / 2.5, 1), 0)
+            score = max(min(score / 2.2, 1), 0)
         else:
-            score = max(min(score / 1.5, 1), 0)
+            score = max(min(score / 1.2, 1), 0)
 
         # don't flag bots
         if target.bot:

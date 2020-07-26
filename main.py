@@ -15,7 +15,7 @@ from cogs.data import Data
 # initialize
 TOKEN = open("tmp/token.txt", "r").read()
 
-cogs = ["cogs.score", "cogs.data", "cogs.misc", "cogs.moderation", "cogs.error"]  #
+cogs = ["cogs.score", "cogs.data", "cogs.misc", "cogs.moderation", "cogs.eval", "cogs.error"]  #
 
 client = commands.Bot(
     command_prefix="tao ",
@@ -28,7 +28,7 @@ client.remove_command('help')
 async def on_ready():
     print("{0.user}".format(client))
     await client.change_presence(
-        status=discord.Status.online, activity=discord.Game(name=f"tao")
+        status=discord.Status.online, activity=discord.Activity(type=discord.ActivityType.watching, name=f"{len(list(client.guilds))} guilds")
     )
 
     if not path.exists("cogs/_guild.json"):
@@ -69,7 +69,7 @@ async def on_member_join(member):
     channel = client.get_channel(data_ch)
 
     if data_state == True:
-        await Score.sort_user_auto(Score, channel, member, data_state_late)
+        await Score.sort_user_auto(Score, channel, member, False, False)
 
 
 @client.event
