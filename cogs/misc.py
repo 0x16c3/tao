@@ -162,7 +162,7 @@ class Misc(commands.Cog):
                 return 1
             else:
                 await Score.sort_user_auto(Score, channel, target, False, True)
-                await Score.send_score_info(Score, ctx.channel, target, False, False, True)
+                await Score.send_score_info(Score, ctx.channel, target, False, False, False)
         elif command == "-leave":
             embed_errr = discord.Embed(
                     title="Bye!", description="", color=color_errr

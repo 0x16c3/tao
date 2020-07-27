@@ -163,7 +163,8 @@ class Score(commands.Cog):
         score_val: int,
         channel: discord.channel.TextChannel,
         target: discord.Member = None,
-        manual: bool = False
+        manual: bool = False,
+        late: bool = False
     ):
         guild = channel.guild
 
@@ -174,7 +175,6 @@ class Score(commands.Cog):
         approve_id = guilds[str(guild.id)]["role_approve"]
         member_id = guilds[str(guild.id)]["role_member"]
         verbose = guilds[str(guild.id)]["verbose_enable"]
-        late = guilds[str(guild.id)]["late_enable"]
 
         with open(data_file, "w") as f:
             json.dump(guilds, f)
@@ -250,6 +250,8 @@ class Score(commands.Cog):
             await channel.send(embed=embed)
             if verbose and not late:
                 await self.send_score_info(self, channel, target, manual)
+            elif verbose and late:
+                await self.send_score_info(self, channel, target, manual, True)
 
     async def sort_user_auto(
         self, channel: discord.channel.TextChannel, target: discord.Member = None, late = False, manual: bool = False
@@ -268,16 +270,16 @@ class Score(commands.Cog):
 
         if score_val >= 0.5:
             # flag user
-            await self.flag_member(self, -1, score_val, channel, target, manual)
+            await self.flag_member(self, -1, score_val, channel, target, manual, late)
         elif score_val < 0.5 and score_val >= 0.3:
             # flag user
-            await self.flag_member(self, 0, score_val, channel, target, manual)
+            await self.flag_member(self, 0, score_val, channel, target, manual, late)
         elif score_val < 0.3 and score_val >= 0.1:
             # add to the manual check queue
-            await self.flag_member(self, 1, score_val, channel, target, manual)
+            await self.flag_member(self, 1, score_val, channel, target, manual, late)
         elif score_val < 0.1 and score_val >= 0.0:
             # ban user
-            await self.flag_member(self, 2, score_val, channel, target, manual)
+            await self.flag_member(self, 2, score_val, channel, target, manual, late)
 
     async def send_score_info(self, channel: discord.TextChannel, target, manual=False, late=False, run=False):
         scr_val = await self.get_score(self, target, late)
