@@ -113,7 +113,7 @@ async def on_message(message):
 
         await message.channel.send(embed=embed)
     else:
-        if not message.author.bot:
+        if not message.author.bot and isinstance(message.channel, discord.channel.TextChannel):
             # update file
             with open("cogs/_user.json", "r") as f:
                 members = json.load(f)
