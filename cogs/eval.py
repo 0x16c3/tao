@@ -4,6 +4,11 @@ import json
 
 from discord.ext import commands
 
+from cogs.moderation import Moderation
+from cogs.score import Score
+from cogs.data import Data
+from cogs.utils import *
+
 class Eval(commands.Cog):
     def __init__(self, client):
         self.client = client
@@ -71,6 +76,14 @@ class Eval(commands.Cog):
             'commands': commands,
             'ctx': ctx,
             'json': json,
+            'Moderation': Moderation,
+            'Data': Data,
+            'Score': Score,
+            'guild_count': guild_count,
+            'color_main': color_main,
+            'color_done': color_done,
+            'color_warn': color_warn,
+            'color_errr': color_errr,
             '__import__': __import__
         }
         exec(compile(parsed, filename="<ast>", mode="exec"), env)
