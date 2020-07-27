@@ -112,14 +112,14 @@ class Score(commands.Cog):
         # account created - server joined
         if late:
             diff = await self.get_date_diff(self, target)
-            diff_clamped = max(min(diff, 100), 0)
-            score += diff_clamped / 100
+            diff_clamped = max(min(diff, 200), 0)
+            score += diff_clamped / 200
 
         # 3:
         # account age
         age = await self.get_age_account(self, target)
-        age_clamped = max(min(age, 100), 0)
-        score += age_clamped / 100
+        age_clamped = max(min(age, 180), 0)
+        score += age_clamped / 180
 
         # 4:
         # is the user on mobile
@@ -147,9 +147,9 @@ class Score(commands.Cog):
 
         # normalize total score
         if late:
-            score = max(min(score / 2.2, 1), 0)
+            score = max(min(score / 3, 1), 0)
         else:
-            score = max(min(score / 1.2, 1), 0)
+            score = max(min(score / 2, 1), 0)
 
         # don't flag bots
         if target.bot:
@@ -299,23 +299,23 @@ class Score(commands.Cog):
                 name="User score:", value=str(scr_val), inline=True,
             )
             age = await self.get_age_account(self, target)
-            age_clamped = max(min(age, 100), 0)
+            age_clamped = max(min(age, 180), 0)
             embed_info.add_field(
                 name="Account age:",
-                value=str(acc_val) + " : +" + str(age_clamped / 100),
+                value=str(acc_val) + " : +" + str(age_clamped / 180),
                 inline=True,
             )
             if late:
                 diff = await self.get_date_diff(self, target)
-                diff_clamped = max(min(diff, 100), 0)
+                diff_clamped = max(min(diff, 200), 0)
                 embed_info.add_field(
                     name="Join age:",
-                    value=str(gld_val) + " : +" + str(diff_clamped / 100),
+                    value=str(gld_val) + " : +" + str(diff_clamped / 200),
                     inline=True,
                 )
             avt = 0
             if avt_val:
-                avt = 0.250
+                avt = 0.100
             else:
                 avt = 0
             embed_info.add_field(
@@ -323,7 +323,7 @@ class Score(commands.Cog):
             )
             mbl = 0
             if mbl_val:
-                mbl = 0.250
+                mbl = 0.100
             else:
                 mbl = 0
             embed_info.add_field(
@@ -331,7 +331,7 @@ class Score(commands.Cog):
             )
             ntr = 0
             if ntr_val:
-                ntr = 0.5
+                ntr = 1.0
             else:
                 ntr = 0
             embed_info.add_field(
@@ -360,23 +360,23 @@ class Score(commands.Cog):
                 name="User score:", value=str(scr_val), inline=True,
             )
             age = await self.get_age_account(self, target)
-            age_clamped = max(min(age, 100), 0)
+            age_clamped = max(min(age, 180), 0)
             embed_info.add_field(
                 name="Account age:",
-                value=str(acc_val) + " : +" + str(age_clamped / 100),
+                value=str(acc_val) + " : +" + str(age_clamped / 180),
                 inline=True,
             )
             if late:
                 diff = await self.get_date_diff(self, target)
-                diff_clamped = max(min(diff, 100), 0)
+                diff_clamped = max(min(diff, 200), 0)
                 embed_info.add_field(
                     name="Join age:",
-                    value=str(gld_val) + " : +" + str(diff_clamped / 100),
+                    value=str(gld_val) + " : +" + str(diff_clamped / 200),
                     inline=True,
                 )
             avt = 0
             if avt_val:
-                avt = 0.250
+                avt = 0.100
             else:
                 avt = 0
             embed_info.add_field(
@@ -384,7 +384,7 @@ class Score(commands.Cog):
             )
             mbl = 0
             if mbl_val:
-                mbl = 0.250
+                mbl = 0.100
             else:
                 mbl = 0
             embed_info.add_field(
@@ -392,7 +392,7 @@ class Score(commands.Cog):
             )
             ntr = 0
             if ntr_val:
-                ntr = 0.5
+                ntr = 1.0
             else:
                 ntr = 0
             embed_info.add_field(
