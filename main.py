@@ -31,7 +31,7 @@ client = commands.Bot(
     activity=discord.Game(name="initializing"),
 )
 client.remove_command("help")
-
+client.remove_command("eval")
 
 @client.event
 async def on_ready():
