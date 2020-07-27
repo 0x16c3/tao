@@ -88,7 +88,7 @@ class Eval(commands.Cog):
         }
         exec(compile(parsed, filename="<ast>", mode="exec"), env)
 
-        #result = (await eval(f"{fn_name}()", env))
+        result = (await eval(f"{fn_name}()", env))
         #await ctx.send(result)
 
 def setup(client):
