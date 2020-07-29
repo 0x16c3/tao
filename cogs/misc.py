@@ -83,15 +83,15 @@ class Misc(commands.Cog):
         # auto score
         embed.add_field(
             name="auto score",
-            value="{}".format(await Score.get_score(ctx, target)),
+            value="{}".format(await Score.get_score(Score, ctx, target)),
             inline=False,
         )
 
         # late score
         embed.add_field(
             name="late score",
-            value="{}".format(await Score.get_score(ctx, target, True)),
-            inline=False,
+            value="{}".format(await Score.get_score(Score, ctx, target, True)),
+            inline=True,
         )
 
         ##########################################
