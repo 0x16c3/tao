@@ -15,12 +15,12 @@ class Misc(commands.Cog):
 
     @commands.command(pass_context=True)
     @commands.has_permissions(administrator=True)
-    async def load_error(self):
+    async def load_error(self, ctx):
         self.client.load_extension("cogs.error")
 
     @commands.command(pass_context=True)
     @commands.has_permissions(administrator=True)
-    async def unload_error(self):
+    async def unload_error(self, ctx):
         self.client.unload_extension("cogs.error")
 
     @commands.command(pass_context=True)
