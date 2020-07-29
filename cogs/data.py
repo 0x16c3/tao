@@ -274,7 +274,7 @@ class Data(commands.Cog):
                 await ch_v.set_permissions(member_role, view_channel=True, speak=True)
 
         await approve_channel.set_permissions(
-            approve_role, view_channel=True, read_message_history=True
+            approve_role, view_channel=True, read_message_history=False
         )
         time.sleep(1)
         if approve_channel.overwrites_for(member_role).view_channel != False:
