@@ -12,6 +12,17 @@ class Misc(commands.Cog):
     def __init__(self, client):
         self.client = client
 
+
+    @commands.command(pass_context=True)
+    @commands.has_permissions(administrator=True)
+    async def load_error(self):
+        self.client.load_extension("cogs.error")
+
+    @commands.command(pass_context=True)
+    @commands.has_permissions(administrator=True)
+    async def unload_error(self):
+        self.client.unload_extension("cogs.error")
+
     @commands.command(pass_context=True)
     @commands.has_permissions(ban_members=True)
     async def info(self, ctx, target: discord.Member = None):

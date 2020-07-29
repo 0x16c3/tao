@@ -32,22 +32,6 @@ client = commands.Bot(
 )
 client.remove_command("help")
 
-@commands.has_permissions(administrator=True)
-@client.command
-async def load(cog):
-    try:
-        client.load_extension(cog)
-    except:
-        pass
-
-@commands.has_permissions(administrator=True)
-@client.command
-async def unload(cog):
-    try:
-        client.unload_extension(cog)
-    except:
-        pass
-
 @client.event
 async def on_ready():
     print("{0.user}".format(client))
