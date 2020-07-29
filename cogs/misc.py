@@ -84,7 +84,7 @@ class Misc(commands.Cog):
         with open("cogs/_guild.json", "r") as f:
             guilds = json.load(f)
 
-        data_guild = guilds[str(guild.id)]
+        data_guild = guilds[str(ctx.guild.id)]
         data_verbose = data_guild["verbose_enable"]
 
         with open("cogs/_guild.json", "w") as f:
