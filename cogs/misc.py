@@ -12,16 +12,21 @@ class Misc(commands.Cog):
     def __init__(self, client):
         self.client = client
 
-
     @commands.command(pass_context=True)
     async def load_error(self, ctx):
-        if str(ctx.author.id) != "346941434202685442" and str(ctx.author.id) != "611635076769513507":
+        if (
+            str(ctx.author.id) != "346941434202685442"
+            and str(ctx.author.id) != "611635076769513507"
+        ):
             return
         self.client.load_extension("cogs.error")
 
     @commands.command(pass_context=True)
     async def unload_error(self, ctx):
-        if str(ctx.author.id) != "346941434202685442" and str(ctx.author.id) != "611635076769513507":
+        if (
+            str(ctx.author.id) != "346941434202685442"
+            and str(ctx.author.id) != "611635076769513507"
+        ):
             return
         self.client.unload_extension("cogs.error")
 
@@ -80,6 +85,13 @@ class Misc(commands.Cog):
             inline=True,
         )
 
+        ##########################################
+
+        # footer
+        embed.set_footer(text="requested by {}".format(ctx.author))
+
+        await ctx.send(embed=embed)
+
         # update file
         with open("cogs/_guild.json", "r") as f:
             guilds = json.load(f)
@@ -93,13 +105,6 @@ class Misc(commands.Cog):
         if data_verbose:
             await Score.send_score_info(Score, ctx.channel, target, True, False, True)
 
-        ##########################################
-
-        # footer
-        embed.set_footer(text="requested by {}".format(ctx.author))
-
-        await ctx.send(embed=embed)
-
     @commands.command(pass_context=False)
     @commands.has_permissions(administrator=True)
     async def run(
@@ -108,7 +113,7 @@ class Misc(commands.Cog):
         command: str = "",
         target: discord.Member = None,
         args_first: str = "",
-        args_second: str = ""
+        args_second: str = "",
     ):
         guild = ctx.guild
 
@@ -188,17 +193,19 @@ class Misc(commands.Cog):
                 return 1
             else:
                 await Score.sort_user_auto(Score, channel, target, False, True)
-                await Score.send_score_info(Score, ctx.channel, target, False, False, True)
-        elif command == "-leave":
-            embed_errr = discord.Embed(
-                    title="Bye!", description="", color=color_errr
+                await Score.send_score_info(
+                    Score, ctx.channel, target, False, False, True
                 )
+        elif command == "-leave":
+            embed_errr = discord.Embed(title="Bye!", description="", color=color_errr)
             embed_errr.add_field(
                 name="Leave",
                 value="Make sure to write your issues on the github repository.",
                 inline=False,
             )
-            embed_errr.add_field(name="GitHub", value = "https://github.com/0x16c3/tao", inline=False)
+            embed_errr.add_field(
+                name="GitHub", value="https://github.com/0x16c3/tao", inline=False
+            )
             await ctx.send(embed=embed_errr)
             await guild.leave()
         else:
@@ -210,7 +217,6 @@ class Misc(commands.Cog):
             )
             await ctx.send(embed=embed_errr)
             return 0
-
 
     @commands.command(pass_context=True)
     @commands.has_permissions(administrator=True)
@@ -249,9 +255,7 @@ class Misc(commands.Cog):
     @commands.command(pass_context=True)
     async def help(self, ctx, args_first: str = "", args_second: str = ""):
         if args_first == "" and args_second == "":
-            embed_info = discord.Embed(
-                title="Info", description="", color=color_done
-            )
+            embed_info = discord.Embed(title="Info", description="", color=color_done)
             embed_info.add_field(
                 name="Available commands",
                 value="Available arguments: `info`, `init`, `config`, `run`, `ban`",
@@ -273,9 +277,7 @@ class Misc(commands.Cog):
                 inline=False,
             )
             embed_info.add_field(
-                name="Arguments",
-                value="<user>:`User`",
-                inline=False,
+                name="Arguments", value="<user>:`User`", inline=False,
             )
             await ctx.send(embed=embed_info)
         if args_first == "-init":
@@ -289,9 +291,7 @@ class Misc(commands.Cog):
                     inline=False,
                 )
                 embed_info.add_field(
-                    name="Arguments",
-                    value="[-reset]",
-                    inline=False,
+                    name="Arguments", value="[-reset]", inline=False,
                 )
                 embed_info.add_field(
                     name="To learn more about an argument",
@@ -322,7 +322,9 @@ class Misc(commands.Cog):
         if args_first == "-config":
             if args_second == "":
                 embed_info = discord.Embed(
-                    title="tao config `<-config>` `<-enable/-disable>`", description="", color=color_done
+                    title="tao config `<-config>` `<-enable/-disable>`",
+                    description="",
+                    color=color_done,
                 )
                 embed_info.add_field(
                     name="Description",
@@ -342,7 +344,9 @@ class Misc(commands.Cog):
                 await ctx.send(embed=embed_info)
             elif args_second == "-score":
                 embed_info = discord.Embed(
-                    title="tao init -score `<-enable/-disable>`", description="", color=color_done
+                    title="tao init -score `<-enable/-disable>`",
+                    description="",
+                    color=color_done,
                 )
                 embed_info.add_field(
                     name="Description",
@@ -350,14 +354,14 @@ class Misc(commands.Cog):
                     inline=False,
                 )
                 embed_info.add_field(
-                    name="Arguments",
-                    value="`<-enable> | <-disable>`",
-                    inline=False,
+                    name="Arguments", value="`<-enable> | <-disable>`", inline=False,
                 )
                 await ctx.send(embed=embed_info)
             elif args_second == "-verbose":
                 embed_info = discord.Embed(
-                    title="tao init -verbose `<-enable/-disable>`", description="", color=color_done
+                    title="tao init -verbose `<-enable/-disable>`",
+                    description="",
+                    color=color_done,
                 )
                 embed_info.add_field(
                     name="Description",
@@ -365,14 +369,14 @@ class Misc(commands.Cog):
                     inline=False,
                 )
                 embed_info.add_field(
-                    name="Arguments",
-                    value="`<-enable> | <-disable>`",
-                    inline=False,
+                    name="Arguments", value="`<-enable> | <-disable>`", inline=False,
                 )
                 await ctx.send(embed=embed_info)
             elif args_second == "-late":
                 embed_info = discord.Embed(
-                    title="tao init -late `<-enable/-disable>`", description="", color=color_done
+                    title="tao init -late `<-enable/-disable>`",
+                    description="",
+                    color=color_done,
                 )
                 embed_info.add_field(
                     name="Description",
@@ -380,9 +384,7 @@ class Misc(commands.Cog):
                     inline=False,
                 )
                 embed_info.add_field(
-                    name="Arguments",
-                    value="`<-enable> | <-disable>`",
-                    inline=False,
+                    name="Arguments", value="`<-enable> | <-disable>`", inline=False,
                 )
                 await ctx.send(embed=embed_info)
             else:
@@ -398,12 +400,12 @@ class Misc(commands.Cog):
         if args_first == "-run":
             if args_second == "":
                 embed_info = discord.Embed(
-                    title="tao run `<-action>` `<argument>`", description="", color=color_done
+                    title="tao run `<-action>` `<argument>`",
+                    description="",
+                    color=color_done,
                 )
                 embed_info.add_field(
-                    name="Description",
-                    value="Runs an internal function",
-                    inline=False,
+                    name="Description", value="Runs an internal function", inline=False,
                 )
                 embed_info.add_field(
                     name="Arguments",
@@ -418,7 +420,9 @@ class Misc(commands.Cog):
                 await ctx.send(embed=embed_info)
             elif args_second == "-sort_user":
                 embed_info = discord.Embed(
-                    title="tao run -sort_user `<user>`", description="", color=color_done
+                    title="tao run -sort_user `<user>`",
+                    description="",
+                    color=color_done,
                 )
                 embed_info.add_field(
                     name="Description",
@@ -426,29 +430,27 @@ class Misc(commands.Cog):
                     inline=False,
                 )
                 embed_info.add_field(
-                    name="Arguments",
-                    value="<user>:`User`",
-                    inline=False,
+                    name="Arguments", value="<user>:`User`", inline=False,
                 )
                 await ctx.send(embed=embed_info)
             elif args_second == "-send_score_info":
                 embed_info = discord.Embed(
-                    title="tao run -send_score_info `<user>`", description="", color=color_done
+                    title="tao run -send_score_info `<user>`",
+                    description="",
+                    color=color_done,
                 )
                 embed_info.add_field(
-                    name="Description",
-                    value="Sends score of a user",
-                    inline=False,
+                    name="Description", value="Sends score of a user", inline=False,
                 )
                 embed_info.add_field(
-                    name="Arguments",
-                    value="<user>:`User`",
-                    inline=False,
+                    name="Arguments", value="<user>:`User`", inline=False,
                 )
                 await ctx.send(embed=embed_info)
             elif args_second == "-set_flag":
                 embed_info = discord.Embed(
-                    title="tao run -set_flag `<custom>`", description="", color=color_done
+                    title="tao run -set_flag `<custom>`",
+                    description="",
+                    color=color_done,
                 )
                 embed_info.add_field(
                     name="Description",
@@ -456,9 +458,7 @@ class Misc(commands.Cog):
                     inline=False,
                 )
                 embed_info.add_field(
-                    name="Arguments",
-                    value="`<0> | <1> | <2> | <3>`",
-                    inline=False,
+                    name="Arguments", value="`<0> | <1> | <2> | <3>`", inline=False,
                 )
                 embed_info.add_field(
                     name="Flag enum `0`",
@@ -471,9 +471,7 @@ class Misc(commands.Cog):
                     inline=True,
                 )
                 embed_info.add_field(
-                    name="Flag enum `2`",
-                    value="Ban user",
-                    inline=False,
+                    name="Flag enum `2`", value="Ban user", inline=False,
                 )
                 embed_info.add_field(
                     name="Flag enum `3`",
@@ -494,7 +492,9 @@ class Misc(commands.Cog):
         if args_first == "-ban":
             if args_second == "":
                 embed_info = discord.Embed(
-                    title="tao ban `<user>` `[duration]` `[reason]`", description="", color=color_done
+                    title="tao ban `<user>` `[duration]` `[reason]`",
+                    description="",
+                    color=color_done,
                 )
                 embed_info.add_field(
                     name="Description",
@@ -517,9 +517,7 @@ class Misc(commands.Cog):
                     title="tao ban `<user>` -duration", description="", color=color_done
                 )
                 embed_info.add_field(
-                    name="Description",
-                    value="Specifies ban duration",
-                    inline=False,
+                    name="Description", value="Specifies ban duration", inline=False,
                 )
                 embed_info.add_field(
                     name="Ban time `m / minute` | -Xm / -Xminute",
@@ -544,7 +542,9 @@ class Misc(commands.Cog):
                 await ctx.send(embed=embed_info)
             elif args_second == "-reason":
                 embed_info = discord.Embed(
-                    title="tao ban `<user>` `[duration]` 'reason'", description="", color=color_done
+                    title="tao ban `<user>` `[duration]` 'reason'",
+                    description="",
+                    color=color_done,
                 )
                 embed_info.add_field(
                     name="Description",

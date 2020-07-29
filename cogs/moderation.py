@@ -55,7 +55,7 @@ class Moderation(commands.Cog):
                     duration_str = "`a week`"
                 else:
                     duration_str = "`" + time_str[:-1] + " weeks`"
-            else:
+            elif not args_first[-1] == "w" or args_first[-1] == "week" and args_first[-1] == "d" or args_first[-1] == "day" and args_first[-1] == "h" or args_first[-1] == "hour" and args_first[-1] == "m" or args_first[-1] == "minute":
                 embed_errr = discord.Embed(title="Error", description="", color=color_errr)
                 embed_errr.add_field(
                     name="Invalid argument",
