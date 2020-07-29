@@ -22,8 +22,8 @@ cogs = [
     "cogs.misc",
     "cogs.moderation",
     "cogs.eval",
-    "cogs.error",
-]  #
+    "cogs.error"
+]
 
 client = commands.Bot(
     command_prefix="tao ",
@@ -31,6 +31,22 @@ client = commands.Bot(
     activity=discord.Game(name="initializing"),
 )
 client.remove_command("help")
+
+@commands.has_permissions(administrator=True)
+@client.command
+async def load(cog):
+    try:
+        client.load_extension(cog)
+    except:
+        pass
+
+@commands.has_permissions(administrator=True)
+@client.command
+async def unload(cog):
+    try:
+        client.unload_extension(cog)
+    except:
+        pass
 
 @client.event
 async def on_ready():
@@ -65,7 +81,7 @@ async def on_guild_join(guild):
     with open("cogs/_guild.json", "w") as f:
         json.dump(guilds, f)
 
-    len(list(client.guilds))
+    guild_count = len(list(client.guilds))
     await client.change_presence(
         status=discord.Status.online,
         activity=discord.Activity(
