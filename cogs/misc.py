@@ -80,6 +80,20 @@ class Misc(commands.Cog):
             inline=True,
         )
 
+        # auto score
+        embed.add_field(
+            name="auto score",
+            value="{}".format(await Score.get_score(ctx, target)),
+            inline=False,
+        )
+
+        # late score
+        embed.add_field(
+            name="late score",
+            value="{}".format(await Score.get_score(ctx, target, True)),
+            inline=False,
+        )
+
         ##########################################
 
         # footer
