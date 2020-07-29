@@ -80,19 +80,18 @@ class Misc(commands.Cog):
             inline=True,
         )
 
-        # auto score
-        embed.add_field(
-            name="auto score",
-            value="{}".format(await Score.get_score(Score, ctx, target)),
-            inline=False,
-        )
+        # update file
+        with open("cogs/_guild.json", "r") as f:
+            guilds = json.load(f)
 
-        # late score
-        embed.add_field(
-            name="late score",
-            value="{}".format(await Score.get_score(Score, ctx, target, True)),
-            inline=True,
-        )
+        data_guild = guilds[str(guild.id)]
+        data_verbose = data_guild["verbose_enable"]
+
+        with open("cogs/_guild.json", "w") as f:
+            json.dump(guilds, f)
+
+        if data_verbose:
+            await Score.send_score_info(Score, ctx.channel, target, True, False, True)
 
         ##########################################
 
