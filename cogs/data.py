@@ -117,6 +117,7 @@ class Data(commands.Cog):
             members[id]["flag_approve"] = False
             members[id]["score"] = 0.0
 
+            members[id]["approval"] = {}
             members[id]["approval"]["days"] = 0
             members[id]["approval"]["checks"] = 0
             members[id]["approval"]["score"] = 0
@@ -130,6 +131,8 @@ class Data(commands.Cog):
         if not "score" in members[id]:
             members[id]["score"] = 0.0
 
+        if not "approval" in members[id]:
+            members[id]["approval"] = {}
         if not "days" in members[id]["approval"]:
             members[id]["approval"]["days"] = 0
         if not "checks" in members[id]["approval"]:

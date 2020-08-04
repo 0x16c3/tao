@@ -253,7 +253,7 @@ class Misc(commands.Cog):
         if cfg == "-late":
             await Data.set_config(Data, ctx, cfg, args, state_late)
         if cfg == "-auto":
-            await Data.set_config(Data, ctx, cfg, args, state_autoe)
+            await Data.set_config(Data, ctx, cfg, args, state_auto)
 
     @commands.command(pass_context=True)
     async def help(self, ctx, args_first: str = "", args_second: str = ""):

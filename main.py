@@ -146,6 +146,16 @@ async def on_message(message):
             if not setup_complete and message.content != "tao init":
                 await Data.setup_notify(Data, message.channel)
 
+            if message.content == "tao init":
+                # update file
+                with open("cogs/_guild.json", "r") as f:
+                    guilds = json.load(f)
+
+                guilds[str(guild.id)]["notified"] = True
+
+                with open("cogs/_guild.json", "w") as f:
+                    json.dump(guilds, f)
+
             if late and not checked:
 
                 await Score.sort_user_auto(Score, channel_notify, message.author, True)
