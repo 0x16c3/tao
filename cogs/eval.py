@@ -2,6 +2,8 @@ import ast
 import discord
 import json
 
+import math
+
 from discord.ext import commands
 
 from cogs.moderation import Moderation
@@ -84,6 +86,7 @@ class Eval(commands.Cog):
             'color_done': color_done,
             'color_warn': color_warn,
             'color_errr': color_errr,
+            'math': math,
             '__import__': __import__
         }
         exec(compile(parsed, filename="<ast>", mode="exec"), env)

@@ -23,6 +23,7 @@ class Data(commands.Cog):
             guilds[id]["scre_enable"] = True
             guilds[id]["verbose_enable"] = False
             guilds[id]["late_enable"] = False
+            guilds[id]["auto_enable"] = False
             guilds[id]["chnl_notify"] = 0
             guilds[id]["chnl_approve"] = 0
             guilds[id]["chnl_approve_voice"] = 0
@@ -41,6 +42,8 @@ class Data(commands.Cog):
             guilds[id]["verbose_enable"] = False
         if not "late_enable" in guilds[id]:
             guilds[id]["late_enable"] = False
+        if not "auto_enable" in guilds[id]:
+            guilds[id]["auto_enable"] = False
         if not "chnl_notify" in guilds[id]:
             guilds[id]["chnl_notify"] = 0
         if not "chnl_approve" in guilds[id]:
@@ -108,14 +111,45 @@ class Data(commands.Cog):
         id = str(member.id)
 
         if not id in members:
-            # if the guild is not saved create guild object
+            # if the user is not saved create user object
             members[id] = {}
             members[id]["checked"] = False
+            members[id]["flag_approve"] = False
+            members[id]["score"] = 0.0
 
-    async def update_state_user(self, members, member, state: bool):
+            members[id]["approval"]["days"] = 0
+            members[id]["approval"]["checks"] = 0
+            members[id]["approval"]["score"] = 0
+            members[id]["approval"]["start_date"] = 0
+            members[id]["approval"]["static"] = 0
+
+        if not "checked" in members[id]:
+            members[id]["checked"] = False
+        if not "flag_approve" in members[id]:
+            members[id]["flag_approve"] = False
+        if not "score" in members[id]:
+            members[id]["score"] = 0.0
+
+        if not "days" in members[id]["approval"]:
+            members[id]["approval"]["days"] = 0
+        if not "checks" in members[id]["approval"]:
+            members[id]["approval"]["checks"] = 0
+        if not "score" in members[id]["approval"]:
+            members[id]["approval"]["score"] = 0
+        if not "start_date" in members[id]["approval"]:
+            members[id]["approval"]["start_date"] = 0
+        if not "static" in members[id]["approval"]:
+            members[id]["approval"]["static"] = 0
+
+    async def update_state_user(self, members, member, name: str, state):
         id = str(member.id)
 
-        members[id]["checked"] = state
+        members[id][name] = state
+
+    async def update_state_user_approval(self, members, member, name: str, state):
+        id = str(member.id)
+
+        members[id]["approval"][name] = state
 
     @commands.command(pass_context=True)
     @commands.has_permissions(administrator=True)
@@ -515,6 +549,8 @@ class Data(commands.Cog):
                     await self.update_state_config(self, guilds, guild, "verbose_enable", True)
                 elif cfg == "-late":
                     await self.update_state_config(self, guilds, guild, "late_enable", True)
+                elif cfg == "-auto":
+                    await self.update_state_config(self, guilds, guild, "auto_enable", True)
 
                 with open(data_file, "w") as f:
                     json.dump(guilds, f)
@@ -551,6 +587,8 @@ class Data(commands.Cog):
                     await self.update_state_config(self, guilds, guild, "verbose_enable", False)
                 elif cfg == "-late":
                     await self.update_state_config(self, guilds, guild, "late_enable", False)
+                elif cfg == "-auto":
+                    await self.update_state_config(self, guilds, guild, "auto_enable", False)
 
                 with open(data_file, "w") as f:
                     json.dump(guilds, f)

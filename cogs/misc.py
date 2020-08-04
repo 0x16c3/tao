@@ -227,7 +227,7 @@ class Misc(commands.Cog):
             embed_errr = discord.Embed(title="Error", description="", color=color_errr)
             embed_errr.add_field(
                 name="Invalid argument",
-                value="Available arguments: `-score`, `-verbose`, `-late`",
+                value="Available arguments: `-score`, `-verbose`, `-late`, `-auto`",
                 inline=False,
             )
             await ctx.send(embed=embed_errr)
@@ -241,6 +241,7 @@ class Misc(commands.Cog):
         state_scre = guilds[str(guild.id)]["scre_enable"]
         state_vrbs = guilds[str(guild.id)]["verbose_enable"]
         state_late = guilds[str(guild.id)]["late_enable"]
+        state_auto = guilds[str(guild.id)]["auto_enable"]
 
         with open(data_file, "w") as f:
             json.dump(guilds, f)
@@ -251,6 +252,8 @@ class Misc(commands.Cog):
             await Data.set_config(Data, ctx, cfg, args, state_vrbs)
         if cfg == "-late":
             await Data.set_config(Data, ctx, cfg, args, state_late)
+        if cfg == "-auto":
+            await Data.set_config(Data, ctx, cfg, args, state_autoe)
 
     @commands.command(pass_context=True)
     async def help(self, ctx, args_first: str = "", args_second: str = ""):

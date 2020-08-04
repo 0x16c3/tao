@@ -2,7 +2,7 @@ import os
 import discord
 import json
 from discord.ext import commands
-from datetime import datetime, timedelta
+from datetime import datetime, timedelta, date
 import asyncio
 
 import os.path
@@ -175,7 +175,7 @@ if __name__ == "__main__":
         pass
 
 
-async def timer():
+async def timer_secd():
 
     await client.wait_until_ready()
 
@@ -206,6 +206,7 @@ async def timer():
                 with open("cogs/_guild.json", "w") as f:
                     json.dump(guilds, f)
 
+
                 if curtime <= 0:
                     with open("cogs/_guild.json", "r") as f:
                         guilds = json.load(f)
@@ -233,5 +234,58 @@ async def timer():
                         json.dump(guilds, f)
 
 
-client.loop.create_task(timer())
+async def timer_hour(hours: int):
+
+    await client.wait_until_ready()
+
+    while client.is_ready():
+        await asyncio.sleep(3600 * hours)
+
+        with open("cogs/_user.json", "r") as f:
+            users = json.load(f)
+
+        for member_i in users:
+
+            member = await client.fetch_user(int(member_i))
+
+            # get current days
+            approve_days = users[member_i]["approve"]["days"]
+            approve_date = users[member_i]["approve"]["start_date"]
+
+
+            # check for users with approval days
+            if approve_days > 0:
+
+                status = member.status
+
+                # check if they are online
+                if status == discord.Status.online or status == discord.Status.dnd:
+                    # update the score
+                    await Data.update_state_user_approval(Data, users, member, "score", users[member_i]["approve"]["score"] + 1)
+                    await Data.update_state_user_approval(Data, users, member, "checks", users[member_i]["approve"]["checks"] - 1)
+
+                today = date.today()
+                # if its been a day since start_date
+                if (today - approve_date).days >= 1:
+                    # set date as today and subtract days
+                    await Data.update_state_user_approval(Data, users, member, "start_date", today)
+                    await Data.update_state_user_approval(Data, users, member, "days", users[member_i]["approve"]["days"] - 1)
+
+            elif approve_days == 0:
+
+                # magical score calculation
+                static = users[member_i]["approve"]["static"]
+                days   = static / 8
+
+                final_score = users[member_i]["approve"]["score"] / static
+
+                await Data.update_state_user_approval(Data, users, member, "score", final_score)
+
+            with open("cogs/_user.json", "w") as f:
+                json.dump(guilds, f)
+
+
+
+client.loop.create_task(timer_secd(   ))
+client.loop.create_task(timer_hour( 3 ))
 client.run(TOKEN)

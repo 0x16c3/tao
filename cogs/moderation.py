@@ -67,7 +67,7 @@ class Moderation(commands.Cog):
             with open("cogs/_guild.json", "r") as f:
                 guilds = json.load(f)
 
-            await Data.update_banned_member(Data, guilds, ctx.guild, member, 15)
+            await Data.update_banned_member(Data, guilds, ctx.guild, member, duration)
 
             with open("cogs/_guild.json", "w") as f:
                 json.dump(guilds, f)

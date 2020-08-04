@@ -2,7 +2,8 @@ import os
 import discord
 import json
 from discord.ext import commands
-from datetime import datetime, timedelta
+from datetime import datetime, timedelta, date
+import math
 
 from .data import Data
 from .utils import *
@@ -175,6 +176,7 @@ class Score(commands.Cog):
         approve_id = guilds[str(guild.id)]["role_approve"]
         member_id = guilds[str(guild.id)]["role_member"]
         verbose = guilds[str(guild.id)]["verbose_enable"]
+        auto = guilds[str(guild.id)]["auto_enable"]
 
         with open(data_file, "w") as f:
             json.dump(guilds, f)
@@ -195,6 +197,24 @@ class Score(commands.Cog):
             string = "Potential suspicious user"
             color = color_done
         elif flag_type == 1:
+
+            if auto:
+                # update file
+                with open("cogs/_user.json", "r") as f:
+                    users = json.load(f)
+
+                score = users[str(target.id)]["score"]
+                days = math.ceil(((0.2 - (score - 0.1)) / 0.2) * 5) + 1
+                # auto approval data
+                await Data.update_state_user(Data, users, target, "flag_approve", True)
+                await Data.update_state_user_approval(Data, users, target, "days", days) # worse score = more days (max 5) [+1]
+                await Data.update_state_user_approval(Data, users, target, "checks", 8 * days) # 8 checks per day
+                await Data.update_state_user_approval(Data, users, target, "static", 8 * days) # store check count for calculation
+                await Data.update_state_user_approval(Data, users, target, "start_date", date.today())
+
+                with open("cogs/_user.json", "w") as f:
+                    json.dump(users, f)
+
             string = "Sent to manual approval"
             color = color_warn
             await target.add_roles(approve_role)
@@ -263,7 +283,8 @@ class Score(commands.Cog):
             users = json.load(f)
 
         await Data.update_data_user(Data, users, target)
-        await Data.update_state_user(Data, users, target, True)
+        await Data.update_state_user(Data, users, target, "checked", True)
+        await Data.update_state_user(Data, users, target, "score", score_val)
 
         with open("cogs/_user.json", "w") as f:
             json.dump(users, f)
