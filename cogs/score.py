@@ -113,14 +113,14 @@ class Score(commands.Cog):
         # account created - server joined
         if late:
             diff = await self.get_date_diff(self, target)
-            diff_clamped = max(min(diff, 150), 0)
-            score += diff_clamped / 150
+            diff_clamped = max(min(diff, 100), 0)
+            score += diff_clamped / 100
 
         # 3:
         # account age
         age = await self.get_age_account(self, target)
-        age_clamped = max(min(age, 150), 0)
-        score += age_clamped / 150
+        age_clamped = max(min(age, 100), 0)
+        score += age_clamped / 100
 
         # 4:
         # is the user on mobile
