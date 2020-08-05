@@ -16,30 +16,29 @@
 ```
 
 # helper functions:
-    tao                                   : meta information
-    tao info <user>                       : user information
-    tao help                              : command information
+    tao                                           : meta information
+    tao info <user>                               : user information
+    tao help                                      : command information
 
 # initialize and config:
-    tao init [-reset]                     : set role and channel configuration [or reset]
-    tao config -score <-enable/-disable>  : enable or disable the scoring system
-    tao config -verbose <-enable/-disable>: enable or disable verbose notifications
-    tao config -late <-enable/-disable>   : enable or disable late scoring system
+    tao init [-reset]                             : set role and channel configuration [or reset]
+    tao config -score <-enable/-disable>          : enable or disable the scoring system
+    tao config -verbose <-enable/-disable>        : enable or disable verbose notifications
+    tao config -late <-enable/-disable>           : enable or disable late scoring system
 
 # bot commands:
-    tao run -sort_user <user>             : manually sort user
-    tao run -send_score_info <user>       : get user score
-    tao run -set_flag <flag>              : set user flag
-                                            -0 = send notification
-                                            -1 = send to manual approval
-                                            -2 = ban
-                                            -3 = valid account (no action)
+    tao run -sort_user <user>                     : manually sort user
+    tao run -send_score_info <user>               : get user score
+    tao run -set_flag <flag>                      : set user flag
+                                                    -0 = send notification
+                                                    -1 = send to manual approval
+                                                    -2 = ban
+                                                    -3 = valid account (no action)
 
 # moderation commands:
-    tao ban <user> [reason] [-amount]     : ban user
-                                            -m / minute = time in minutes
-                                            -h / hour   = time in hours
-                                            -d / day    = time in days
-                                            -w / week   = time in weeks
-
+    tao ban <user> [reason] [-time]               : ban user
+                                                    -m = minute
+                                                    -h = hour
+                                                    -d = day
+                                                    -w = week
 ```
