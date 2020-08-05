@@ -258,14 +258,17 @@ async def timer_hour(hours: int):
 
             member = await client.fetch_user(int(member_i))
 
-            await Data.update_data_user(users, member)
+            with open("cogs/_user.json", "r") as f:
+                users = json.load(f)
+
+            await Data.update_data_user(Data, users, member)
 
             with open("cogs/_user.json", "w") as f:
-                json.dump(guilds, f)
+                json.dump(users, f)
 
             # get current days
-            approve_days = users[member_i]["approve"]["days"]
-            approve_date = users[member_i]["approve"]["start_date"]
+            approve_days = users[member_i]["approval"]["days"]
+            approve_date = users[member_i]["approval"]["start_date"]
 
 
             # check for users with approval days
@@ -276,28 +279,28 @@ async def timer_hour(hours: int):
                 # check if they are online
                 if status == discord.Status.online or status == discord.Status.dnd:
                     # update the score
-                    await Data.update_state_user_approval(Data, users, member, "score", users[member_i]["approve"]["score"] + 1)
-                    await Data.update_state_user_approval(Data, users, member, "checks", users[member_i]["approve"]["checks"] - 1)
+                    await Data.update_state_user_approval(Data, users, member, "score", users[member_i]["approval"]["score"] + 1)
+                    await Data.update_state_user_approval(Data, users, member, "checks", users[member_i]["approval"]["checks"] - 1)
 
                 today = date.today()
                 # if its been a day since start_date
                 if (today - approve_date).days >= 1:
                     # set date as today and subtract days
                     await Data.update_state_user_approval(Data, users, member, "start_date", today)
-                    await Data.update_state_user_approval(Data, users, member, "days", users[member_i]["approve"]["days"] - 1)
+                    await Data.update_state_user_approval(Data, users, member, "days", users[member_i]["approval"]["days"] - 1)
 
-            elif approve_days == 0:
+            elif approve_days == 0 and users[member_i]["approval"]["static"] != 0:
 
                 # magical score calculation
-                static = users[member_i]["approve"]["static"]
+                static = users[member_i]["approval"]["static"]
                 days   = static / 8
 
-                final_score = users[member_i]["approve"]["score"] / static
+                final_score = users[member_i]["approval"]["score"] / static
 
                 await Data.update_state_user_approval(Data, users, member, "score", final_score)
 
             with open("cogs/_user.json", "w") as f:
-                json.dump(guilds, f)
+                json.dump(users, f)
 
             await asyncio.sleep(3600 * hours)
 
