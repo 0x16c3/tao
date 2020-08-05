@@ -259,6 +259,10 @@ async def timer_hour(hours: int):
 
             member = await client.fetch_user(int(member_i))
 
+            await Data.update_data_user(users, member)
+
+            with open("cogs/_user.json", "w") as f:
+                json.dump(guilds, f)
 
             # get current days
             approve_days = users[member_i]["approve"]["days"]
@@ -269,11 +273,6 @@ async def timer_hour(hours: int):
             if approve_days > 0:
 
                 status = member.status
-
-                await Data.update_data_user(users, member)
-
-                with open("cogs/_user.json", "w") as f:
-                    json.dump(guilds, f)
 
                 # check if they are online
                 if status == discord.Status.online or status == discord.Status.dnd:
