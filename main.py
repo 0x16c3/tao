@@ -152,7 +152,7 @@ async def on_message(message):
                 with open("cogs/_guild.json", "r") as f:
                     guilds = json.load(f)
 
-                guilds[str(guild.id)]["notified"] = True
+                guilds[str(message.guild.id)]["notified"] = True
 
                 with open("cogs/_guild.json", "w") as f:
                     json.dump(guilds, f)
@@ -250,7 +250,6 @@ async def timer_hour(hours: int):
     await client.wait_until_ready()
 
     while client.is_ready():
-        await asyncio.sleep(3600 * hours)
 
         with open("cogs/_user.json", "r") as f:
             users = json.load(f)
@@ -299,6 +298,8 @@ async def timer_hour(hours: int):
 
             with open("cogs/_user.json", "w") as f:
                 json.dump(guilds, f)
+
+            await asyncio.sleep(3600 * hours)
 
 
 
