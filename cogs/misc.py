@@ -32,8 +32,10 @@ class Misc(commands.Cog):
 
     @commands.command(pass_context=True)
     @commands.has_permissions(ban_members=True)
-    async def info(self, ctx, target: discord.Member = None):
+    async def info(self, ctx, user: str):
         # embed target information
+        target = await get_member(user, ctx.guild, ctx.channel)
+
         if not target:
             target = ctx.author
 
@@ -111,11 +113,16 @@ class Misc(commands.Cog):
         self,
         ctx,
         command: str = "",
-        target: discord.Member = None,
+        user: str = "",
         args_first: str = "",
         args_second: str = "",
     ):
         guild = ctx.guild
+
+        target = await get_member(user, ctx.guild, ctx.channel)
+
+        if not target:
+            return
 
         # update file
         with open(data_guild, "r") as f:

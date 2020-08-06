@@ -12,49 +12,19 @@ class Moderation(commands.Cog):
     def __init__(self, client):
         self.client = client
 
-    async def mention_to_id(self, mention: str):
-        result = mention.replace("<", "")
-        result = result.replace(">", "")
-        result = result.replace("@", "")
-        return result
-
     @commands.command(pass_context=True)
     @commands.has_permissions(ban_members=True)
-    async def ban(self, ctx, member: str, args_first: str = "", args_second: str = ""):
+    async def ban(self, ctx, member: str, args_first: str = "", *args_second):
 
         var_type = "None"
         member_array = member.split(";")
 
         for member_i in member_array:
 
-            member_obj = None
+            member_obj = await get_member(member_i, ctx.guild, ctx.channel)
 
-            if "<" in member_i and ">" in member_i and "@" in member_i:
-                var_type = "mention"
-                member_obj = await ctx.guild.fetch_member(
-                    int(self.mention_to_id(self, member_i))
-                )
-            elif member_i.isdecimal():
-                var_type = "id"
-                member_obj = await ctx.guild.fetch_member(int(member_i))
-            else:
-                var_type = "name"
-                member_obj = ctx.guild.get_member_named(member_i)
-
-            if not member:
-                embed_errr = discord.Embed(
-                    title="{}".format("Something went wrong"),
-                    description="",
-                    color=0xF5F5F5,
-                )
-
-                embed_errr.add_field(name="Error", value="Invalid type", inline=False)
-
-                embed_errr.add_field(
-                    name="Details", value=f"`Bad argument`", inline=False,
-                )
-
-                await ctx.send(embed=embed_errr)
+            if member_obj is None:
+                return
 
             if args_first == "" or not args_first.startswith("-"):  # permanent
 
@@ -141,9 +111,9 @@ class Moderation(commands.Cog):
                     value="You have been banned for " + duration_str,
                     inline=False,
                 )
-                if args_second != "":
+                if args_second != None:
                     embed.add_field(
-                        name="Reason", value="`" + args_second + "`", inline=False,
+                        name="Reason", value="`" + ' '.join(map(str, args_second)) + "`", inline=False,
                     )
                 try:
                     await member.send(embed=embed)
@@ -151,7 +121,7 @@ class Moderation(commands.Cog):
                     pass
 
                 member_obj = await ctx.guild.fetch_member(member.id)
-                await member_obj.ban(reason=args_second)
+                await member_obj.ban(reason=' '.join(map(str, args_second)))
                 # create embed
                 embed = discord.Embed(title="Info", description="", color=color_done)
                 embed.add_field(

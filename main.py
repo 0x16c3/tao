@@ -83,10 +83,10 @@ async def on_member_join(member):
     with open(data_guild, "r") as f:
         guilds = json.load(f)
 
-    data_guild = guilds[str(member.guild.id)]
-    data_ch = data_guild["chnl_notify"]
-    data_state = data_guild["scre_enable"]
-    data_state_late = data_guild["late_enable"]
+    alias = guilds[str(member.guild.id)]
+    data_ch = alias["chnl_notify"]
+    data_state = alias["scre_enable"]
+    data_state_late = alias["late_enable"]
 
     with open(data_guild, "w") as f:
         json.dump(guilds, f)
@@ -341,6 +341,10 @@ async def timer_hour(hours: int):
             await asyncio.sleep(3600 * hours)
 
 
-client.loop.create_task(timer_secd())
-client.loop.create_task(timer_hour(3))
-client.run(TOKEN)
+try:
+    client.loop.create_task(timer_secd())
+    client.loop.create_task(timer_hour(3))
+    client.run(TOKEN)
+except KeyboardInterrupt:
+    print("exit")
+
