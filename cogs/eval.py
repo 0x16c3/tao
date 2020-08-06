@@ -11,6 +11,7 @@ from cogs.score import Score
 from cogs.data import Data
 from cogs.utils import *
 
+
 class Eval(commands.Cog):
     def __init__(self, client):
         self.client = client
@@ -30,11 +31,13 @@ class Eval(commands.Cog):
         if isinstance(body[-1], ast.With):
             insert_returns(body[-1].body)
 
-
     @commands.command()
     async def eval(self, ctx, *, cmd):
 
-        if str(ctx.author.id) != "346941434202685442" and str(ctx.author.id) != "611635076769513507":
+        if (
+            str(ctx.author.id) != "346941434202685442"
+            and str(ctx.author.id) != "611635076769513507"
+        ):
             return
 
         """Evaluates input.
@@ -73,26 +76,29 @@ class Eval(commands.Cog):
         self.insert_returns(body)
 
         env = {
-            'client': self.client,
-            'discord': discord,
-            'commands': commands,
-            'ctx': ctx,
-            'json': json,
-            'Moderation': Moderation,
-            'Data': Data,
-            'Score': Score,
-            'guild_count': guild_count,
-            'color_main': color_main,
-            'color_done': color_done,
-            'color_warn': color_warn,
-            'color_errr': color_errr,
-            'math': math,
-            '__import__': __import__
+            "client": self.client,
+            "discord": discord,
+            "commands": commands,
+            "ctx": ctx,
+            "json": json,
+            "Moderation": Moderation,
+            "Data": Data,
+            "Score": Score,
+            "guild_count": guild_count,
+            "color_main": color_main,
+            "color_done": color_done,
+            "color_warn": color_warn,
+            "color_errr": color_errr,
+            "data_guild": data_guild,
+            "data_users": data_users,
+            "math": math,
+            "__import__": __import__,
         }
         exec(compile(parsed, filename="<ast>", mode="exec"), env)
 
-        result = (await eval(f"{fn_name}()", env))
-        #await ctx.send(result)
+        result = await eval(f"{fn_name}()", env)
+        # await ctx.send(result)
+
 
 def setup(client):
     client.add_cog(Eval(client))

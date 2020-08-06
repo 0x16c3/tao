@@ -22,7 +22,7 @@ cogs = [
     "cogs.misc",
     "cogs.moderation",
     "cogs.eval",
-    "cogs.error"
+    "cogs.error",
 ]
 
 client = commands.Bot(
@@ -31,6 +31,7 @@ client = commands.Bot(
     activity=discord.Game(name="initializing"),
 )
 client.remove_command("help")
+
 
 @client.event
 async def on_ready():
@@ -44,12 +45,12 @@ async def on_ready():
         ),
     )
 
-    if not path.exists("cogs/_guild.json"):
-        f = open("cogs/_guild.json", "w")
+    if not path.exists(data_guild):
+        f = open(data_guild, "w")
         f.write("{" + "}")
         f.close()
-    if not path.exists("cogs/_user.json"):
-        f = open("cogs/_user.json", "w")
+    if not path.exists(data_users):
+        f = open(data_users, "w")
         f.write("{" + "}")
         f.close()
 
@@ -57,12 +58,12 @@ async def on_ready():
 @client.event
 async def on_guild_join(guild):
     # update file
-    with open("cogs/_guild.json", "r") as f:
+    with open(data_guild, "r") as f:
         guilds = json.load(f)
 
     await Data.update_data(Data, guilds, guild)
 
-    with open("cogs/_guild.json", "w") as f:
+    with open(data_guild, "w") as f:
         json.dump(guilds, f)
 
     guild_count = len(list(client.guilds))
@@ -72,14 +73,14 @@ async def on_guild_join(guild):
             type=discord.ActivityType.watching,
             name=f"{len(list(client.guilds))} guilds",
         ),
-        fetch_offline_members=True
+        fetch_offline_members=True,
     )
 
 
 @client.event
 async def on_member_join(member):
     # update file
-    with open("cogs/_guild.json", "r") as f:
+    with open(data_guild, "r") as f:
         guilds = json.load(f)
 
     data_guild = guilds[str(member.guild.id)]
@@ -87,7 +88,7 @@ async def on_member_join(member):
     data_state = data_guild["scre_enable"]
     data_state_late = data_guild["late_enable"]
 
-    with open("cogs/_guild.json", "w") as f:
+    with open(data_guild, "w") as f:
         json.dump(guilds, f)
 
     channel = client.get_channel(data_ch)
@@ -113,19 +114,21 @@ async def on_message(message):
 
         await message.channel.send(embed=embed)
     else:
-        if not message.author.bot and isinstance(message.channel, discord.channel.TextChannel):
+        if not message.author.bot and isinstance(
+            message.channel, discord.channel.TextChannel
+        ):
             # update file
-            with open("cogs/_user.json", "r") as f:
+            with open(data_users, "r") as f:
                 members = json.load(f)
 
             await Data.update_data_user(Data, members, message.author)
             checked = members[str(message.author.id)]["checked"]
 
-            with open("cogs/_user.json", "w") as f:
+            with open(data_users, "w") as f:
                 json.dump(members, f)
 
             # update file
-            with open("cogs/_guild.json", "r") as f:
+            with open(data_guild, "r") as f:
                 guilds = json.load(f)
 
             await Data.update_data(Data, guilds, message.guild)
@@ -141,7 +144,7 @@ async def on_message(message):
                 client.get_all_channels(), guild__name=message.guild.name, id=channel,
             )
 
-            with open("cogs/_guild.json", "w") as f:
+            with open(data_guild, "w") as f:
                 json.dump(guilds, f)
 
             if not setup_complete and message.content != "tao init":
@@ -149,12 +152,12 @@ async def on_message(message):
 
             if message.content == "tao init":
                 # update file
-                with open("cogs/_guild.json", "r") as f:
+                with open(data_guild, "r") as f:
                     guilds = json.load(f)
 
                 guilds[str(message.guild.id)]["notified"] = True
 
-                with open("cogs/_guild.json", "w") as f:
+                with open(data_guild, "w") as f:
                     json.dump(guilds, f)
 
             if late and not checked:
@@ -162,13 +165,15 @@ async def on_message(message):
                 await Score.sort_user_auto(Score, channel_notify, message.author, True)
 
                 # update file
-                with open("cogs/_user.json", "r") as f:
+                with open(data_users, "r") as f:
                     members = json.load(f)
 
                 await Data.update_data_user(Data, members, message.author)
-                await Data.update_state_user(Data, members, message.author, "checked", True)
+                await Data.update_state_user(
+                    Data, members, message.author, "checked", True
+                )
 
-                with open("cogs/_user.json", "w") as f:
+                with open(data_users, "w") as f:
                     json.dump(members, f)
 
     await client.process_commands(message)
@@ -193,17 +198,17 @@ async def timer_secd():
     while client.is_ready():
         await asyncio.sleep(1)
 
-        with open("cogs/_guild.json", "r") as f:
+        with open(data_guild, "r") as f:
             guilds = json.load(f)
 
         for guild_i in guilds:
             guild = client.get_guild(int(guild_i))
 
             await Data.update_data(Data, guilds, guild)
-            with open("cogs/_guild.json", "w") as f:
+            with open(data_guild, "w") as f:
                 json.dump(guilds, f)
 
-            with open("cogs/_guild.json", "r") as f:
+            with open(data_guild, "r") as f:
                 guilds = json.load(f)
 
             member_list = guilds[guild_i]["banned_members"]
@@ -214,12 +219,11 @@ async def timer_secd():
                 await Data.update_ban_timer(Data, guilds, guild, member)
                 curtime = await Data.get_ban_timer(Data, guilds, guild, member)
 
-                with open("cogs/_guild.json", "w") as f:
+                with open(data_guild, "w") as f:
                     json.dump(guilds, f)
 
-
                 if curtime <= 0:
-                    with open("cogs/_guild.json", "r") as f:
+                    with open(data_guild, "r") as f:
                         guilds = json.load(f)
 
                     try:
@@ -241,7 +245,7 @@ async def timer_secd():
                         pass
                     await Data.delete_banned_member(Data, guilds, guild, member)
 
-                    with open("cogs/_guild.json", "w") as f:
+                    with open(data_guild, "w") as f:
                         json.dump(guilds, f)
 
 
@@ -251,25 +255,24 @@ async def timer_hour(hours: int):
 
     while client.is_ready():
 
-        with open("cogs/_user.json", "r") as f:
+        with open(data_users, "r") as f:
             users = json.load(f)
 
         for member_i in users:
 
             member = await client.fetch_user(int(member_i))
 
-            with open("cogs/_user.json", "r") as f:
+            with open(data_users, "r") as f:
                 users = json.load(f)
 
             await Data.update_data_user(Data, users, member)
 
-            with open("cogs/_user.json", "w") as f:
+            with open(data_users, "w") as f:
                 json.dump(users, f)
 
             # get current days
             approve_days = users[member_i]["approval"]["days"]
             approve_date = users[member_i]["approval"]["start_date"]
-
 
             # check for users with approval days
             if approve_days > 0:
@@ -279,33 +282,65 @@ async def timer_hour(hours: int):
                 # check if they are online
                 if status == discord.Status.online or status == discord.Status.dnd:
                     # update the score
-                    await Data.update_state_user_approval(Data, users, member, "score", users[member_i]["approval"]["score"] + 1)
-                    await Data.update_state_user_approval(Data, users, member, "checks", users[member_i]["approval"]["checks"] - 1)
+                    await Data.update_state_user_approval(
+                        Data,
+                        users,
+                        member,
+                        "score",
+                        users[member_i]["approval"]["score"] + 1,
+                    )
+                    await Data.update_state_user_approval(
+                        Data,
+                        users,
+                        member,
+                        "checks",
+                        users[member_i]["approval"]["checks"] - 1,
+                    )
 
                 today = date.today()
                 # if its been a day since start_date
                 if (today - approve_date).days >= 1:
                     # set date as today and subtract days
-                    await Data.update_state_user_approval(Data, users, member, "start_date", today)
-                    await Data.update_state_user_approval(Data, users, member, "days", users[member_i]["approval"]["days"] - 1)
+                    await Data.update_state_user_approval(
+                        Data, users, member, "start_date", today
+                    )
+                    await Data.update_state_user_approval(
+                        Data,
+                        users,
+                        member,
+                        "days",
+                        users[member_i]["approval"]["days"] - 1,
+                    )
 
             elif approve_days == 0 and users[member_i]["approval"]["static"] != 0:
 
                 # magical score calculation
                 static = users[member_i]["approval"]["static"]
-                days   = static / 8
+                days = static / 8
 
                 final_score = users[member_i]["approval"]["score"] / static
 
-                await Data.update_state_user_approval(Data, users, member, "score", final_score)
+                await Data.update_state_user_approval(
+                    Data, users, member, "score", final_score
+                )
 
-            with open("cogs/_user.json", "w") as f:
+                await Data.update_state_user(Data, users, target, "flag_approve", False)
+                await Data.update_state_user_approval(
+                    Data, users, target, "checks", 0
+                )  # 8 checks per day
+                await Data.update_state_user_approval(
+                    Data, users, target, "static", 0
+                )  # store check count for calculation
+                await Data.update_state_user_approval(
+                    Data, users, target, "start_date", 0
+                )
+
+            with open(data_users, "w") as f:
                 json.dump(users, f)
 
             await asyncio.sleep(3600 * hours)
 
 
-
-client.loop.create_task(timer_secd(   ))
-client.loop.create_task(timer_hour( 3 ))
+client.loop.create_task(timer_secd())
+client.loop.create_task(timer_hour(3))
 client.run(TOKEN)

@@ -1,7 +1,9 @@
 import discord
 
 # guild data json
-data_file = "cogs/_guild.json"
+data_guild = "cogs/_guild.json"
+# user data json
+data_users = "cogs/_user.json"
 
 # variables
 guild_count = 0

@@ -165,7 +165,7 @@ class Score(commands.Cog):
         channel: discord.channel.TextChannel,
         target: discord.Member = None,
         manual: bool = False,
-        late: bool = False
+        late: bool = False,
     ):
         guild = channel.guild
 
@@ -200,19 +200,27 @@ class Score(commands.Cog):
 
             if auto:
                 # update file
-                with open("cogs/_user.json", "r") as f:
+                with open(data_users, "r") as f:
                     users = json.load(f)
 
                 score = users[str(target.id)]["score"]
                 days = math.ceil(((0.2 - (score - 0.1)) / 0.2) * 5) + 1
                 # auto approval data
                 await Data.update_state_user(Data, users, target, "flag_approve", True)
-                await Data.update_state_user_approval(Data, users, target, "days", days) # worse score = more days (max 5) [+1]
-                await Data.update_state_user_approval(Data, users, target, "checks", 8 * days) # 8 checks per day
-                await Data.update_state_user_approval(Data, users, target, "static", 8 * days) # store check count for calculation
-                await Data.update_state_user_approval(Data, users, target, "start_date", date.today())
+                await Data.update_state_user_approval(
+                    Data, users, target, "days", days
+                )  # worse score = more days (max 5) [+1]
+                await Data.update_state_user_approval(
+                    Data, users, target, "checks", 8 * days
+                )  # 8 checks per day
+                await Data.update_state_user_approval(
+                    Data, users, target, "static", 8 * days
+                )  # store check count for calculation
+                await Data.update_state_user_approval(
+                    Data, users, target, "start_date", date.today()
+                )
 
-                with open("cogs/_user.json", "w") as f:
+                with open(data_users, "w") as f:
                     json.dump(users, f)
 
             string = "Sent to manual approval"
@@ -274,19 +282,23 @@ class Score(commands.Cog):
                 await self.send_score_info(self, channel, target, manual, True)
 
     async def sort_user_auto(
-        self, channel: discord.channel.TextChannel, target: discord.Member = None, late = False, manual: bool = False
+        self,
+        channel: discord.channel.TextChannel,
+        target: discord.Member = None,
+        late=False,
+        manual: bool = False,
     ):
         score_val = await self.get_score(self, target, late)
 
         # update file
-        with open("cogs/_user.json", "r") as f:
+        with open(data_users, "r") as f:
             users = json.load(f)
 
         await Data.update_data_user(Data, users, target)
         await Data.update_state_user(Data, users, target, "checked", True)
         await Data.update_state_user(Data, users, target, "score", score_val)
 
-        with open("cogs/_user.json", "w") as f:
+        with open(data_users, "w") as f:
             json.dump(users, f)
 
         if score_val >= 0.5:
@@ -302,7 +314,9 @@ class Score(commands.Cog):
             # ban user
             await self.flag_member(self, 2, score_val, channel, target, manual, late)
 
-    async def send_score_info(self, channel: discord.TextChannel, target, manual=False, late=False, run=False):
+    async def send_score_info(
+        self, channel: discord.TextChannel, target, manual=False, late=False, run=False
+    ):
         scr_val = await self.get_score(self, target, late)
         acc_val = await self.get_age_account(self, target)
         gld_val = await self.get_age_guild(self, target)
@@ -340,7 +354,9 @@ class Score(commands.Cog):
             else:
                 avt = 0
             embed_info.add_field(
-                name="Custom avatar:", value=str(avt_val) + " : +" + str(avt), inline=True,
+                name="Custom avatar:",
+                value=str(avt_val) + " : +" + str(avt),
+                inline=True,
             )
             mbl = 0
             if mbl_val:
@@ -401,7 +417,9 @@ class Score(commands.Cog):
             else:
                 avt = 0
             embed_info.add_field(
-                name="Custom avatar:", value=str(avt_val) + " : +" + str(avt), inline=True,
+                name="Custom avatar:",
+                value=str(avt_val) + " : +" + str(avt),
+                inline=True,
             )
             mbl = 0
             if mbl_val:

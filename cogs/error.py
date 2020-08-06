@@ -5,6 +5,8 @@ from discord.ext import commands
 from datetime import datetime, timedelta
 
 from .data import Data
+from .utils import *
+
 
 class Error(commands.Cog):
     def __init__(self, client):
@@ -32,8 +34,6 @@ class Error(commands.Cog):
 
             await Data.setup_notify(Data, ctx.channel)
             return
-
-
 
         if isinstance(error, commands.CommandNotFound):
             embed = discord.Embed(
@@ -154,7 +154,9 @@ class Error(commands.Cog):
                 color=0xF5F5F5,
             )
 
-            embed.add_field(name="Error", value="Invalid input or argument", inline=True)
+            embed.add_field(
+                name="Error", value="Invalid input or argument", inline=True
+            )
 
             await ctx.send(embed=embed)
             return

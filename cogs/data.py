@@ -57,7 +57,9 @@ class Data(commands.Cog):
         if not "banned_members" in guilds[id]:
             guilds[id]["banned_members"] = {}
 
-    async def update_banned_member(self, guilds, guild, member: discord.User, time: int = 0):
+    async def update_banned_member(
+        self, guilds, guild, member: discord.User, time: int = 0
+    ):
         id = str(guild.id)
 
         if not str(member.id) in guilds[id]["banned_members"]:
@@ -74,7 +76,6 @@ class Data(commands.Cog):
         id = str(guild.id)
 
         return guilds[id]["banned_members"][str(member.id)]["time"]
-
 
     async def delete_banned_member(self, guilds, guild, member: discord.User):
         id = str(guild.id)
@@ -506,7 +507,9 @@ class Data(commands.Cog):
             await ctx.send(embed=embed)
             return
 
-    async def set_config(self, ctx, cfg: str = "", args: str = "", cfg_state: bool = False):
+    async def set_config(
+        self, ctx, cfg: str = "", args: str = "", cfg_state: bool = False
+    ):
         guild = ctx.guild
 
         if args == "":
@@ -518,15 +521,11 @@ class Data(commands.Cog):
             )
             if cfg_state:
                 embed_errr.add_field(
-                    name="Current value",
-                    value="`enabled`",
-                    inline=False,
+                    name="Current value", value="`enabled`", inline=False,
                 )
             else:
                 embed_errr.add_field(
-                    name="Current value",
-                    value="`disabled`",
-                    inline=False,
+                    name="Current value", value="`disabled`", inline=False,
                 )
             await ctx.send(embed=embed_errr)
         if args == "-enable":
@@ -547,13 +546,21 @@ class Data(commands.Cog):
 
                 await self.update_data(self, guilds, guild)
                 if cfg == "-score":
-                    await self.update_state_config(self, guilds, guild, "scre_enable", True)
+                    await self.update_state_config(
+                        self, guilds, guild, "scre_enable", True
+                    )
                 elif cfg == "-verbose":
-                    await self.update_state_config(self, guilds, guild, "verbose_enable", True)
+                    await self.update_state_config(
+                        self, guilds, guild, "verbose_enable", True
+                    )
                 elif cfg == "-late":
-                    await self.update_state_config(self, guilds, guild, "late_enable", True)
+                    await self.update_state_config(
+                        self, guilds, guild, "late_enable", True
+                    )
                 elif cfg == "-auto":
-                    await self.update_state_config(self, guilds, guild, "auto_enable", True)
+                    await self.update_state_config(
+                        self, guilds, guild, "auto_enable", True
+                    )
 
                 with open(data_file, "w") as f:
                     json.dump(guilds, f)
@@ -585,13 +592,21 @@ class Data(commands.Cog):
 
                 await self.update_data(self, guilds, guild)
                 if cfg == "-score":
-                    await self.update_state_config(self, guilds, guild, "scre_enable", False)
+                    await self.update_state_config(
+                        self, guilds, guild, "scre_enable", False
+                    )
                 elif cfg == "-verbose":
-                    await self.update_state_config(self, guilds, guild, "verbose_enable", False)
+                    await self.update_state_config(
+                        self, guilds, guild, "verbose_enable", False
+                    )
                 elif cfg == "-late":
-                    await self.update_state_config(self, guilds, guild, "late_enable", False)
+                    await self.update_state_config(
+                        self, guilds, guild, "late_enable", False
+                    )
                 elif cfg == "-auto":
-                    await self.update_state_config(self, guilds, guild, "auto_enable", False)
+                    await self.update_state_config(
+                        self, guilds, guild, "auto_enable", False
+                    )
 
                 with open(data_file, "w") as f:
                     json.dump(guilds, f)
@@ -606,24 +621,25 @@ class Data(commands.Cog):
                 )
                 await ctx.send(embed=embed_done)
 
-
     @commands.command(pass_context=True)
     async def setup_notify(self, channel: discord.TextChannel):
         guild = channel.guild
 
         # update file
-        with open("cogs/_guild.json", "r") as f:
+        with open(data_guild, "r") as f:
             guilds = json.load(f)
 
         await self.update_data(self, guilds, guild)
         dont_send = guilds[str(guild.id)]["notified"]
         setup_complete = guilds[str(guild.id)]["setup_complete"]
 
-        with open("cogs/_guild.json", "w") as f:
+        with open(data_guild, "w") as f:
             json.dump(guilds, f)
 
         if not dont_send and not setup_complete:
-            embed_errr = discord.Embed(title="WARNING!", description="", color=color_errr)
+            embed_errr = discord.Embed(
+                title="WARNING!", description="", color=color_errr
+            )
             embed_errr.add_field(
                 name="Tao has not been set up yet!",
                 value="Set Tao up using the command: `tao init`",
@@ -632,26 +648,24 @@ class Data(commands.Cog):
             await channel.send(embed=embed_errr)
 
             # update file
-            with open("cogs/_guild.json", "r") as f:
+            with open(data_guild, "r") as f:
                 guilds = json.load(f)
 
             await self.update_data(self, guilds, guild)
             await self.update_state_config(self, guilds, guild, "notified", True)
 
-            with open("cogs/_guild.json", "w") as f:
+            with open(data_guild, "w") as f:
                 json.dump(guilds, f)
         elif setup_complete:
             # update file
-            with open("cogs/_guild.json", "r") as f:
+            with open(data_guild, "r") as f:
                 guilds = json.load(f)
 
             await self.update_data(self, guilds, guild)
             await self.update_state_config(self, guilds, guild, "notified", True)
 
-            with open("cogs/_guild.json", "w") as f:
+            with open(data_guild, "w") as f:
                 json.dump(guilds, f)
-
-
 
 
 def setup(client):

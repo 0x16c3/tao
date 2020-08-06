@@ -93,13 +93,13 @@ class Misc(commands.Cog):
         await ctx.send(embed=embed)
 
         # update file
-        with open("cogs/_guild.json", "r") as f:
+        with open(data_guild, "r") as f:
             guilds = json.load(f)
 
         data_guild = guilds[str(ctx.guild.id)]
         data_verbose = data_guild["verbose_enable"]
 
-        with open("cogs/_guild.json", "w") as f:
+        with open(data_guild, "w") as f:
             json.dump(guilds, f)
 
         if data_verbose:
@@ -118,7 +118,7 @@ class Misc(commands.Cog):
         guild = ctx.guild
 
         # update file
-        with open("cogs/_guild.json", "r") as f:
+        with open(data_guild, "r") as f:
             guilds = json.load(f)
 
         data_guild = guilds[str(guild.id)]
@@ -126,7 +126,7 @@ class Misc(commands.Cog):
         data_late = data_guild["late_enable"]
         setup_complete = data_guild["setup_complete"]
 
-        with open("cogs/_guild.json", "w") as f:
+        with open(data_guild, "w") as f:
             json.dump(guilds, f)
 
         if not setup_complete:
