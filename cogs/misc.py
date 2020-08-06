@@ -41,6 +41,13 @@ class Misc(commands.Cog):
             target = await get_member(user, ctx.guild, ctx.channel)
 
         if not target:
+            embed_errr = discord.Embed(title="Error", description="", color=color_errr)
+            embed_errr.add_field(
+                name="Invalid argument",
+                value="`target` cannot be `None`",
+                inline=False,
+            )
+            await ctx.send(embed=embed_errr)
             return
 
         # title
