@@ -34,10 +34,14 @@ class Misc(commands.Cog):
     @commands.has_permissions(ban_members=True)
     async def info(self, ctx, user: str):
         # embed target information
-        target = await get_member(user, ctx.guild, ctx.channel)
+
+        if not user:
+            target = ctx.author
+        else:
+            target = await get_member(user, ctx.guild, ctx.channel)
 
         if not target:
-            target = ctx.author
+            return
 
         # title
         embed = discord.Embed(
