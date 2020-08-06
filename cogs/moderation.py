@@ -113,7 +113,9 @@ class Moderation(commands.Cog):
                 )
                 if args_second != None:
                     embed.add_field(
-                        name="Reason", value="`" + ' '.join(map(str, args_second)) + "`", inline=False,
+                        name="Reason",
+                        value="`" + " ".join(map(str, args_second)) + "`",
+                        inline=False,
                     )
                 try:
                     await member.send(embed=embed)
@@ -121,7 +123,7 @@ class Moderation(commands.Cog):
                     pass
 
                 member_obj = await ctx.guild.fetch_member(member.id)
-                await member_obj.ban(reason=' '.join(map(str, args_second)))
+                await member_obj.ban(reason=" ".join(map(str, args_second)))
                 # create embed
                 embed = discord.Embed(title="Info", description="", color=color_done)
                 embed.add_field(

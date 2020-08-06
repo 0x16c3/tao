@@ -14,11 +14,13 @@ color_done = discord.Color(0x00FFFF)
 color_warn = discord.Color(0xFFFF00)
 color_errr = discord.Color(0xFF0000)
 
+
 async def mention_to_id(self, mention: str):
     result = mention.replace("<", "")
     result = result.replace(">", "")
     result = result.replace("@", "")
     return result
+
 
 async def get_member(string, guild, channel):
 
@@ -26,9 +28,7 @@ async def get_member(string, guild, channel):
 
     if "<" in string and ">" in string and "@" in string:
         var_type = "mention"
-        return await guild.fetch_member(
-            int(self.mention_to_id(self, string))
-        )
+        return await guild.fetch_member(int(mention_to_id(string)))
     elif string.isdecimal():
         var_type = "id"
         return await guild.fetch_member(int(string))
@@ -38,9 +38,7 @@ async def get_member(string, guild, channel):
 
     if channel != None and type(channel) is discord.TextChannel:
         embed_errr = discord.Embed(
-            title="{}".format("Something went wrong"),
-            description="",
-            color=0xF5F5F5,
+            title="{}".format("Something went wrong"), description="", color=0xF5F5F5,
         )
 
         embed_errr.add_field(name="Error", value="Invalid type", inline=False)
