@@ -15,10 +15,11 @@ color_warn = discord.Color(0xFFFF00)
 color_errr = discord.Color(0xFF0000)
 
 
-async def mention_to_id(self, mention: str):
+def mention_to_id(mention: str):
     result = mention.replace("<", "")
     result = result.replace(">", "")
     result = result.replace("@", "")
+    result = result.replace("!", "")
     return result
 
 
