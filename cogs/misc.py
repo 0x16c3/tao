@@ -3,9 +3,9 @@ import json
 from discord.ext import commands
 from datetime import datetime, timedelta
 
+from .utils import *
 from .data import Data
 from .score import Score
-from .utils import *
 
 
 class Misc(commands.Cog):
@@ -96,8 +96,8 @@ class Misc(commands.Cog):
         with open(data_guild, "r") as f:
             guilds = json.load(f)
 
-        data_guild = guilds[str(ctx.guild.id)]
-        data_verbose = data_guild["verbose_enable"]
+        alias = guilds[str(ctx.guild.id)]
+        data_verbose = alias["verbose_enable"]
 
         with open(data_guild, "w") as f:
             json.dump(guilds, f)
@@ -121,10 +121,10 @@ class Misc(commands.Cog):
         with open(data_guild, "r") as f:
             guilds = json.load(f)
 
-        data_guild = guilds[str(guild.id)]
-        data_ch = data_guild["chnl_notify"]
-        data_late = data_guild["late_enable"]
-        setup_complete = data_guild["setup_complete"]
+        alias = guilds[str(guild.id)]
+        data_ch = alias["chnl_notify"]
+        data_late = alias["late_enable"]
+        setup_complete = alias["setup_complete"]
 
         with open(data_guild, "w") as f:
             json.dump(guilds, f)
@@ -234,7 +234,7 @@ class Misc(commands.Cog):
             return
 
         # update file
-        with open(data_file, "r") as f:
+        with open(data_guild, "r") as f:
             guilds = json.load(f)
 
         await Data.update_data(Data, guilds, guild)
@@ -243,7 +243,7 @@ class Misc(commands.Cog):
         state_late = guilds[str(guild.id)]["late_enable"]
         state_auto = guilds[str(guild.id)]["auto_enable"]
 
-        with open(data_file, "w") as f:
+        with open(data_guild, "w") as f:
             json.dump(guilds, f)
 
         if cfg == "-score":

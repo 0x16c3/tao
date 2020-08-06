@@ -23,13 +23,13 @@ class Error(commands.Cog):
 
         if isinstance(error, KeyError):
             # update file
-            with open(data_file, "r") as f:
+            with open(data_guild, "r") as f:
                 guilds = json.load(f)
 
             await Data.update_data(Data, guilds, guild)
             await Data.update_state_config(Data, guilds, guild, "setup_complete", False)
 
-            with open(data_file, "w") as f:
+            with open(data_guild, "w") as f:
                 json.dump(guilds, f)
 
             await Data.setup_notify(Data, ctx.channel)

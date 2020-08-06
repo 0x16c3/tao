@@ -170,7 +170,7 @@ class Score(commands.Cog):
         guild = channel.guild
 
         # update file
-        with open(data_file, "r") as f:
+        with open(data_guild, "r") as f:
             guilds = json.load(f)
 
         approve_id = guilds[str(guild.id)]["role_approve"]
@@ -178,7 +178,7 @@ class Score(commands.Cog):
         verbose = guilds[str(guild.id)]["verbose_enable"]
         auto = guilds[str(guild.id)]["auto_enable"]
 
-        with open(data_file, "w") as f:
+        with open(data_guild, "w") as f:
             json.dump(guilds, f)
 
         everyone_role = guild.default_role
