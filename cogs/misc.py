@@ -32,7 +32,7 @@ class Misc(commands.Cog):
 
     @commands.command(pass_context=True)
     @commands.has_permissions(ban_members=True)
-    async def info(self, ctx, user: str):
+    async def info(self, ctx, *, user):
         # embed target information
 
         if not user:
