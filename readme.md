@@ -36,7 +36,7 @@
                                                     -3 = valid account (no action)
 
 # moderation commands:
-    tao ban <user> [-time] [reason]               : ban user
+    tao ban <user;user1;..> [-time] [reason]      : ban user
                                                     -m = minute
                                                     -h = hour
                                                     -d = day
