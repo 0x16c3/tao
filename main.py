@@ -254,6 +254,7 @@ async def timer_hour(hours: int):
     await client.wait_until_ready()
 
     while client.is_ready():
+        await asyncio.sleep(3600 * hours)
 
         with open(data_users, "r") as f:
             users = json.load(f)
@@ -262,13 +263,13 @@ async def timer_hour(hours: int):
 
             member = await client.fetch_user(int(member_i))
 
-            with open(data_users, "r") as f:
-                users = json.load(f)
-
             await Data.update_data_user(Data, users, member)
 
             with open(data_users, "w") as f:
                 json.dump(users, f)
+
+            with open(data_users, "r") as f:
+                users = json.load(f)
 
             # get current days
             approve_days = users[member_i]["approval"]["days"]
@@ -281,6 +282,9 @@ async def timer_hour(hours: int):
 
                 # check if they are online
                 if status == discord.Status.online or status == discord.Status.dnd:
+                    with open(data_users, "r") as f:
+                        users = json.load(f)
+
                     # update the score
                     await Data.update_state_user_approval(
                         Data,
@@ -297,9 +301,15 @@ async def timer_hour(hours: int):
                         users[member_i]["approval"]["checks"] - 1,
                     )
 
+                    with open(data_users, "w") as f:
+                        json.dump(users, f)
+
                 today = date.today()
                 # if its been a day since start_date
                 if (today - approve_date).days >= 1:
+                    with open(data_users, "r") as f:
+                        users = json.load(f)
+
                     # set date as today and subtract days
                     await Data.update_state_user_approval(
                         Data, users, member, "start_date", today
@@ -312,7 +322,12 @@ async def timer_hour(hours: int):
                         users[member_i]["approval"]["days"] - 1,
                     )
 
+                    with open(data_users, "w") as f:
+                        json.dump(users, f)
+
             elif approve_days == 0 and users[member_i]["approval"]["static"] != 0:
+                with open(data_users, "r") as f:
+                    users = json.load(f)
 
                 # magical score calculation
                 static = users[member_i]["approval"]["static"]
@@ -335,10 +350,8 @@ async def timer_hour(hours: int):
                     Data, users, target, "start_date", 0
                 )
 
-            with open(data_users, "w") as f:
-                json.dump(users, f)
-
-            await asyncio.sleep(3600 * hours)
+                with open(data_users, "w") as f:
+                    json.dump(users, f)
 
 
 try:
