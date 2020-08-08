@@ -69,11 +69,11 @@ class Moderation(commands.Cog):
                         duration_str = "`a week`"
                     else:
                         duration_str = "`" + time_str[:-1] + " weeks`"
-                elif (
-                    (not args_first[-1] == "w" or not args_first[-1] == "week")
-                    and (not args_first[-1] == "d" or not args_first[-1] == "day")
-                    and (not args_first[-1] == "h" or not args_first[-1] == "hour")
-                    and (not args_first[-1] == "m" or not args_first[-1] == "minute")
+                if (
+                    not (time_str[-1] == "w" or time_str[-1] == "week")
+                    and not (time_str[-1] == "d" or time_str[-1] == "day")
+                    and not (time_str[-1] == "h" or time_str[-1] == "hour")
+                    and not (time_str[-1] == "m" or time_str[-1] == "minute")
                 ):
                     embed_errr = discord.Embed(
                         title="Error", description="", color=color_errr
@@ -84,6 +84,7 @@ class Moderation(commands.Cog):
                         inline=False,
                     )
                     await ctx.send(embed=embed_errr)
+                    return
 
                 guilds = json_load(data_guild)
 
