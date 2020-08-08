@@ -198,7 +198,7 @@ class Score(commands.Cog):
 
             if auto:
                 # update file
-                users = son_load(data_users)
+                users = json_load(data_users)
 
                 score = users[str(target.id)]["score"]
                 days = math.ceil(((0.2 - (score - 0.1)) / 0.2) * 5) + 1
@@ -210,7 +210,7 @@ class Score(commands.Cog):
                 await asyncio.sleep(0.5)
 
                 # update file
-                users = son_load(data_users)
+                users = json_load(data_users)
 
                 await Data.update_state_user_approval(
                     Data, users, target, "days", days
