@@ -14,6 +14,20 @@ color_done = discord.Color(0x00FFFF)
 color_warn = discord.Color(0xFFFF00)
 color_errr = discord.Color(0xFF0000)
 
+def json_save(filename):
+    with open(filename, "r") as f:
+        return json.load(f)
+
+def json_load(data, filename):
+    try:
+        with open(filename, 'w') as outfile:
+            json.dump(data, outfile)
+    except:
+        try:
+            os.unlink(filename)
+        except FileNotFoundError:
+            pass
+
 
 def mention_to_id(mention: str):
     result = mention.replace("<", "")

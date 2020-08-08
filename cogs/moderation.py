@@ -89,19 +89,16 @@ class Moderation(commands.Cog):
                     )
                     await ctx.send(embed=embed_errr)
 
-                with open(data_guild, "r") as f:
-                    guilds = json.load(f)
+                guilds = json_load(data_guild)
 
                 await Data.update_banned_member(
                     Data, guilds, ctx.guild, member, duration
                 )
 
-                with open(data_guild, "w") as f:
-                    json.dump(guilds, f)
+                json_save(guilds, data_guild)
 
                 # update file
-                with open(data_users, "r") as f:
-                    members = json.load(f)
+                members = json_load(data_users)
 
                 embed = discord.Embed(
                     title="You have been banned!", description="", color=color_errr
@@ -137,8 +134,7 @@ class Moderation(commands.Cog):
                 )
                 await ctx.send(embed=embed)
 
-            with open(data_users, "w") as f:
-                json.dump(members, f)
+            json_save(members, data_users)
 
 
 def setup(client):

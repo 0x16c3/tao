@@ -170,16 +170,14 @@ class Score(commands.Cog):
         guild = channel.guild
 
         # update file
-        with open(data_guild, "r") as f:
-            guilds = json.load(f)
+        guilds = json_load(data_guild)
 
         approve_id = guilds[str(guild.id)]["role_approve"]
         member_id = guilds[str(guild.id)]["role_member"]
         verbose = guilds[str(guild.id)]["verbose_enable"]
         auto = guilds[str(guild.id)]["auto_enable"]
 
-        with open(data_guild, "w") as f:
-            json.dump(guilds, f)
+        json_save(guilds, data_guild)
 
         everyone_role = guild.default_role
         approve_role = discord.utils.get(guild.roles, id=approve_id)
@@ -220,8 +218,7 @@ class Score(commands.Cog):
                     Data, users, target, "start_date", date.today()
                 )
 
-                with open(data_users, "w") as f:
-                    json.dump(users, f)
+                json_save(users, data_users)
 
             string = "Sent to manual approval"
             color = color_warn
@@ -291,15 +288,13 @@ class Score(commands.Cog):
         score_val = await self.get_score(self, target, late)
 
         # update file
-        with open(data_users, "r") as f:
-            users = json.load(f)
+        users = json_load(data_users)
 
         await Data.update_data_user(Data, users, target)
         await Data.update_state_user(Data, users, target, "checked", True)
         await Data.update_state_user(Data, users, target, "score", score_val)
 
-        with open(data_users, "w") as f:
-            json.dump(users, f)
+        json_save(users, data_users)
 
         if score_val >= 0.5:
             # flag user

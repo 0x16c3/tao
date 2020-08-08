@@ -106,14 +106,12 @@ class Misc(commands.Cog):
         await ctx.send(embed=embed)
 
         # update file
-        with open(data_guild, "r") as f:
-            guilds = json.load(f)
+        guilds = json_load(data_guild)
 
         alias = guilds[str(ctx.guild.id)]
         data_verbose = alias["verbose_enable"]
 
-        with open(data_guild, "w") as f:
-            json.dump(guilds, f)
+        json_save(guilds, data_guild)
 
         if data_verbose:
             await Score.send_score_info(Score, ctx.channel, target, True, False, True)
@@ -136,16 +134,14 @@ class Misc(commands.Cog):
             return
 
         # update file
-        with open(data_guild, "r") as f:
-            guilds = json.load(f)
+        guilds = json_load(data_guild)
 
         alias = guilds[str(guild.id)]
         data_ch = alias["chnl_notify"]
         data_late = alias["late_enable"]
         setup_complete = alias["setup_complete"]
 
-        with open(data_guild, "w") as f:
-            json.dump(guilds, f)
+        json_save(guilds, data_guild)
 
         if not setup_complete:
             await Data.setup_notify(Data, message.channel)
@@ -252,8 +248,7 @@ class Misc(commands.Cog):
             return
 
         # update file
-        with open(data_guild, "r") as f:
-            guilds = json.load(f)
+        guilds = json_load(data_guild)
 
         await Data.update_data(Data, guilds, guild)
         state_scre = guilds[str(guild.id)]["scre_enable"]
@@ -261,8 +256,7 @@ class Misc(commands.Cog):
         state_late = guilds[str(guild.id)]["late_enable"]
         state_auto = guilds[str(guild.id)]["auto_enable"]
 
-        with open(data_guild, "w") as f:
-            json.dump(guilds, f)
+        json_save(guilds, data_guild)
 
         if cfg == "-score":
             await Data.set_config(Data, ctx, cfg, args, state_scre)

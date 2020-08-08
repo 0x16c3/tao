@@ -168,13 +168,11 @@ class Data(commands.Cog):
         # if there is an existing channel
         if channel_existing is not None:
             # update file
-            with open(data_guild, "r") as f:
-                guilds = json.load(f)
+            guilds = json_load(data_guild)
 
             await self.update_id_channel(guilds, guild, channel_existing, cfg)
 
-            with open(data_guild, "w") as f:
-                json.dump(guilds, f)
+            json_save(guilds, data_guild)
 
             if embed is not None:
                 embed.add_field(
@@ -196,13 +194,11 @@ class Data(commands.Cog):
             )
 
             # update file
-            with open(data_guild, "r") as f:
-                guilds = json.load(f)
+            guilds = json_load(data_guild)
 
             await self.update_id_channel(guilds, guild, channel, cfg)
 
-            with open(data_guild, "w") as f:
-                json.dump(guilds, f)
+            json_save(guilds, data_guild)
 
             if embed is not None:
                 embed.add_field(
@@ -221,13 +217,11 @@ class Data(commands.Cog):
         # if the role exists
         if role_existing is not None:
             # update file
-            with open(data_guild, "r") as f:
-                guilds = json.load(f)
+            guilds = json_load(data_guild)
 
             await self.update_id_role(guilds, guild, role_existing, cfg)
 
-            with open(data_guild, "w") as f:
-                json.dump(guilds, f)
+            json_save(guilds, data_guild)
 
             if embed is not None:
                 embed.add_field(
@@ -244,13 +238,11 @@ class Data(commands.Cog):
             role = discord.utils.get(guild.roles, name=name)
 
             # update file
-            with open(data_guild, "r") as f:
-                guilds = json.load(f)
+            guilds = json_load(data_guild)
 
             await self.update_id_role(guilds, guild, role, cfg)
 
-            with open(data_guild, "w") as f:
-                json.dump(guilds, f)
+            json_save(guilds, data_guild)
 
             if embed is not None:
                 embed.add_field(name="Created role", value=role.mention, inline=False)
@@ -260,16 +252,14 @@ class Data(commands.Cog):
     @commands.has_permissions(administrator=True)
     async def update_perms(self, ctx, guild: discord.Guild, embed: discord.Embed):
         # update file
-        with open(data_guild, "r") as f:
-            guilds = json.load(f)
+        guilds = json_load(data_guild)
 
         approve_id = guilds[str(guild.id)]["role_approve"]
         member_id = guilds[str(guild.id)]["role_member"]
         ch_approve_id = guilds[str(guild.id)]["chnl_approve"]
         ch_approve_voice_id = guilds[str(guild.id)]["chnl_approve_voice"]
 
-        with open(data_guild, "w") as f:
-            json.dump(guilds, f)
+        json_save(guilds, data_guild)
 
         approve_role = discord.utils.get(guild.roles, id=approve_id)
         member_role = discord.utils.get(guild.roles, id=member_id)
@@ -344,14 +334,12 @@ class Data(commands.Cog):
         role_set = False
 
         # update file
-        with open(data_guild, "r") as f:
-            guilds = json.load(f)
+        guilds = json_load(data_guild)
 
         await self.update_data(guilds, guild)
         user_id = guilds[str(guild.id)]["role_member"]
 
-        with open(data_guild, "w") as f:
-            json.dump(guilds, f)
+        json_save(guilds, data_guild)
 
         # create embed
         embed_waiting = discord.Embed(title="Setup", description="", color=color_main)
@@ -399,8 +387,7 @@ class Data(commands.Cog):
                     )
 
                     # update file
-                    with open(data_guild, "r") as f:
-                        guilds = json.load(f)
+                    guilds = json_load(data_guild)
 
                     if content != "everyone":
                         await self.update_id_role(
@@ -411,8 +398,7 @@ class Data(commands.Cog):
                             guilds, guild, role_everyone, "role_member"
                         )
 
-                    with open(data_guild, "w") as f:
-                        json.dump(guilds, f)
+                    json_save(guilds, data_guild)
 
                     if content != "everyone":
                         embed.add_field(
@@ -471,14 +457,12 @@ class Data(commands.Cog):
             await waiting_msg.delete()
 
             # update file
-            with open(data_guild, "r") as f:
-                guilds = json.load(f)
+            guilds = json_load(data_guild)
 
             await self.update_data(guilds, guild)
             await self.update_state_config(guilds, guild, "setup_complete", True)
 
-            with open(data_guild, "w") as f:
-                json.dump(guilds, f)
+            json_save(guilds, data_guild)
 
             await ctx.send(embed=embed)
             return
@@ -541,8 +525,7 @@ class Data(commands.Cog):
                 await ctx.send(embed=embed_warn)
             elif cfg_state == False:
                 # update file
-                with open(data_guild, "r") as f:
-                    guilds = json.load(f)
+                guilds = json_load(data_guild)
 
                 await self.update_data(self, guilds, guild)
                 if cfg == "-score":
@@ -562,8 +545,7 @@ class Data(commands.Cog):
                         self, guilds, guild, "auto_enable", True
                     )
 
-                with open(data_guild, "w") as f:
-                    json.dump(guilds, f)
+                json_save(guilds, data_guild)
 
                 embed_done = discord.Embed(
                     title="Done!", description="", color=color_done
@@ -587,8 +569,7 @@ class Data(commands.Cog):
                 await ctx.send(embed=embed_warn)
             elif cfg_state == True:
                 # update file
-                with open(data_guild, "r") as f:
-                    guilds = json.load(f)
+                guilds = json_load(data_guild)
 
                 await self.update_data(self, guilds, guild)
                 if cfg == "-score":
@@ -608,8 +589,7 @@ class Data(commands.Cog):
                         self, guilds, guild, "auto_enable", False
                     )
 
-                with open(data_guild, "w") as f:
-                    json.dump(guilds, f)
+                json_save(guilds, data_guild)
 
                 embed_done = discord.Embed(
                     title="Done!", description="", color=color_done
@@ -626,15 +606,13 @@ class Data(commands.Cog):
         guild = channel.guild
 
         # update file
-        with open(data_guild, "r") as f:
-            guilds = json.load(f)
+        guilds = json_load(data_guild)
 
         await self.update_data(self, guilds, guild)
         dont_send = guilds[str(guild.id)]["notified"]
         setup_complete = guilds[str(guild.id)]["setup_complete"]
 
-        with open(data_guild, "w") as f:
-            json.dump(guilds, f)
+        json_save(guilds, data_guild)
 
         if not dont_send and not setup_complete:
             embed_errr = discord.Embed(
@@ -648,24 +626,20 @@ class Data(commands.Cog):
             await channel.send(embed=embed_errr)
 
             # update file
-            with open(data_guild, "r") as f:
-                guilds = json.load(f)
+            guilds = json_load(data_guild)
 
             await self.update_data(self, guilds, guild)
             await self.update_state_config(self, guilds, guild, "notified", True)
 
-            with open(data_guild, "w") as f:
-                json.dump(guilds, f)
+            json_save(guilds, data_guild)
         elif setup_complete:
             # update file
-            with open(data_guild, "r") as f:
-                guilds = json.load(f)
+            guilds = json_load(data_guild)
 
             await self.update_data(self, guilds, guild)
             await self.update_state_config(self, guilds, guild, "notified", True)
 
-            with open(data_guild, "w") as f:
-                json.dump(guilds, f)
+            json_save(guilds, data_guild)
 
 
 def setup(client):
