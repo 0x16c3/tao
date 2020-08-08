@@ -198,13 +198,20 @@ class Score(commands.Cog):
 
             if auto:
                 # update file
-                with open(data_users, "r") as f:
-                    users = json.load(f)
+                users = son_load(data_users)
 
                 score = users[str(target.id)]["score"]
                 days = math.ceil(((0.2 - (score - 0.1)) / 0.2) * 5) + 1
                 # auto approval data
                 await Data.update_state_user(Data, users, target, "flag_approve", True)
+
+                await asyncio.sleep(0.5)
+                json_save(users, data_users)
+                await asyncio.sleep(0.5)
+
+                # update file
+                users = son_load(data_users)
+
                 await Data.update_state_user_approval(
                     Data, users, target, "days", days
                 )  # worse score = more days (max 5) [+1]
@@ -218,6 +225,7 @@ class Score(commands.Cog):
                     Data, users, target, "start_date", date.today()
                 )
 
+                await asyncio.sleep(0.5)
                 json_save(users, data_users)
 
             string = "Sent to manual approval"

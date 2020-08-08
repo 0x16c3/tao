@@ -24,10 +24,9 @@ def json_save(data, filename):
         with open(filename, 'w') as outfile:
             json.dump(data, outfile)
     except:
-        try:
+        if os.path.exists(filename):
             os.unlink(filename)
-        except FileNotFoundError:
-            pass
+        raise
 
 
 def mention_to_id(mention: str):
