@@ -1,4 +1,5 @@
 import discord
+import json
 
 # guild data json
 data_guild = "cogs/_guild.json"
