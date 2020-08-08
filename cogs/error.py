@@ -26,8 +26,8 @@ class Error(commands.Cog):
             with open(data_guild, "r") as f:
                 guilds = json.load(f)
 
-            await Data.update_data(Data, guilds, guild)
-            await Data.update_state_config(Data, guilds, guild, "setup_complete", False)
+            await Data.update_data(Data, guilds, ctx.guild)
+            await Data.update_state_config(Data, guilds, ctx.guild, "setup_complete", False)
 
             with open(data_guild, "w") as f:
                 json.dump(guilds, f)
