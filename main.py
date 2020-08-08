@@ -140,7 +140,10 @@ async def on_message(message):
             json_save(guilds, data_guild)
 
             if not setup_complete and message.content != "tao init":
-                await Data.setup_notify(Data, message.channel)
+                try:
+                    await Data.setup_notify(Data, message.channel)
+                except:
+                    pass
 
             if message.content == "tao init":
                 # update file
