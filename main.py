@@ -194,44 +194,46 @@ async def timer_secd():
         for guild_i in guilds:
             guild = client.get_guild(int(guild_i))
 
-            await Data.update_data(Data, guilds, guild)
-            json_save(guilds, data_guild)
+            if guild:
 
-            guilds = json_load(data_guild)
-
-            member_list = guilds[guild_i]["banned_members"]
-
-            for member_i in member_list:
-                member = await client.fetch_user(int(member_i))
-
-                await Data.update_ban_timer(Data, guilds, guild, member)
-                curtime = await Data.get_ban_timer(Data, guilds, guild, member)
-
+                await Data.update_data(Data, guilds, guild)
                 json_save(guilds, data_guild)
 
-                if curtime <= 0:
-                    guilds = json_load(data_guild)
+                guilds = json_load(data_guild)
 
-                    try:
-                        await guild.unban(member)
+                member_list = guilds[guild_i]["banned_members"]
 
-                        embed = discord.Embed(
-                            title="Info", description="", color=color_errr
-                        )
-                        embed.add_field(
-                            name="You have been unbanned!",
-                            value="Your ban from `" + ctx.guild.name + "` has expired!",
-                            inline=False,
-                        )
-                        try:
-                            await member.send(embed=embed)
-                        except:
-                            pass
-                    except:
-                        pass
-                    await Data.delete_banned_member(Data, guilds, guild, member)
+                for member_i in member_list:
+                    member = await client.fetch_user(int(member_i))
+
+                    await Data.update_ban_timer(Data, guilds, guild, member)
+                    curtime = await Data.get_ban_timer(Data, guilds, guild, member)
 
                     json_save(guilds, data_guild)
+
+                    if curtime <= 0:
+                        guilds = json_load(data_guild)
+
+                        try:
+                            await guild.unban(member)
+
+                            embed = discord.Embed(
+                                title="Info", description="", color=color_errr
+                            )
+                            embed.add_field(
+                                name="You have been unbanned!",
+                                value="Your ban from `" + ctx.guild.name + "` has expired!",
+                                inline=False,
+                            )
+                            try:
+                                await member.send(embed=embed)
+                            except:
+                                pass
+                        except:
+                            pass
+                        await Data.delete_banned_member(Data, guilds, guild, member)
+
+                        json_save(guilds, data_guild)
 
 
 async def timer_hour(hours: int):
