@@ -88,7 +88,7 @@ class Moderation(commands.Cog):
                 guilds = json_load(data_guild)
 
                 await Data.update_banned_member(
-                    Data, guilds, ctx.guild, member, duration
+                    Data, guilds, ctx.guild, member_obj, duration
                 )
 
                 json_save(guilds, data_guild)
@@ -111,19 +111,18 @@ class Moderation(commands.Cog):
                         inline=False,
                     )
                 try:
-                    await member.send(embed=embed)
+                    await member_obj.send(embed=embed)
                 except:
                     pass
 
-                member_obj = await ctx.guild.fetch_member(member.id)
                 await member_obj.ban(reason=" ".join(map(str, args_second)))
                 # create embed
                 embed = discord.Embed(title="Info", description="", color=color_done)
                 embed.add_field(
                     name="Member banned",
-                    value=member.name
+                    value=member_obj.name
                     + "#"
-                    + member.discriminator
+                    + member_obj.discriminator
                     + " has been banned for "
                     + duration_str,
                     inline=False,
