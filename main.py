@@ -222,7 +222,9 @@ async def timer_secd():
                             )
                             embed.add_field(
                                 name="You have been unbanned!",
-                                value="Your ban from `" + ctx.guild.name + "` has expired!",
+                                value="Your ban from `"
+                                + ctx.guild.name
+                                + "` has expired!",
                                 inline=False,
                             )
                             try:
@@ -258,7 +260,9 @@ async def timer_hour(hours: int):
             # get current days
             approve_days = users[member_i]["approval"]["days"]
             approve_dval = users[member_i]["approval"]["start_date"]
-            approve_date = datetime.datetime.strptime(approve_dval, '%Y-%m-%dT%H:%M:%S.%f')
+            approve_date = datetime.strptime(
+                approve_dval, "%Y-%m-%dT%H:%M:%S.%f"
+            )
 
             # check for users with approval days
             if approve_days > 0:
@@ -287,7 +291,7 @@ async def timer_hour(hours: int):
 
                     json_save(users, data_users)
 
-                today = datetime.now().strftime('%Y-%m-%dT%H:%M:%S.%f')
+                today = datetime.now().strftime("%Y-%m-%dT%H:%M:%S.%f")
                 # if its been a day since start_date
                 if (today - approve_date).days >= 1:
                     users = json_load(data_users)

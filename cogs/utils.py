@@ -62,16 +62,20 @@ async def get_member(string, guild, channel):
         else:
             if channel != None and type(channel) is discord.TextChannel:
                 embed_errr = discord.Embed(
-                    title="{}".format("Something went wrong"), description="", color=0xF5F5F5,
+                    title="{}".format("Something went wrong"),
+                    description="",
+                    color=0xF5F5F5,
                 )
 
-                embed_errr.add_field(name="Error", value="Can't find user", inline=False)
+                embed_errr.add_field(
+                    name="Error", value="Can't find user", inline=False
+                )
 
                 embed_errr.add_field(
                     name="Try to enter:", value=f"`member.id`", inline=False,
                 )
 
-                await channel.send(embed=embed_errr)     
+                await channel.send(embed=embed_errr)
 
     if channel != None and type(channel) is discord.TextChannel:
         embed_errr = discord.Embed(
