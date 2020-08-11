@@ -23,12 +23,16 @@ class Moderation(commands.Cog):
 
             member_obj = await get_member(member_i, ctx.guild, ctx.channel)
 
+            if type(member_obj) == str:
+                if "FAIL_NOTFOUND" in member_obj:
+                    member_obj = await self.client.fetch_user(int(member_obj[:-14]))        
             if member_obj is None:
-                return
+                return           
 
             if args_first == "" or not args_first.startswith("-"):  # permanent
 
-                await member_obj.ban(reason=args_first)
+                await ctx.guild.ban(member_obj, reason=" ".join(map(str, args_second)))
+
                 # create embed
                 embed = discord.Embed(title="Info", description="", color=color_done)
                 embed.add_field(
@@ -116,7 +120,7 @@ class Moderation(commands.Cog):
                 except:
                     pass
 
-                await member_obj.ban(reason=" ".join(map(str, args_second)))
+                await ctx.guild.ban(member_obj, reason=" ".join(map(str, args_second)))
                 # create embed
                 embed = discord.Embed(title="Info", description="", color=color_done)
                 embed.add_field(
@@ -130,7 +134,7 @@ class Moderation(commands.Cog):
                 )
                 await ctx.send(embed=embed)
 
-            json_save(members, data_users)
+                json_save(members, data_users)
 
 
 def setup(client):

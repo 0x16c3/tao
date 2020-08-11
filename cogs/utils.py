@@ -15,13 +15,15 @@ color_done = discord.Color(0x00FFFF)
 color_warn = discord.Color(0xFFFF00)
 color_errr = discord.Color(0xFF0000)
 
+
 def json_load(filename):
     with open(filename, "r") as f:
         return json.load(f)
 
+
 def json_save(data, filename):
     try:
-        with open(filename, 'w') as outfile:
+        with open(filename, "w") as outfile:
             json.dump(data, outfile)
     except:
         if os.path.exists(filename):
@@ -43,13 +45,33 @@ async def get_member(string, guild, channel):
 
     if "<" in string and ">" in string and "@" in string:
         var_type = "mention"
-        return await guild.fetch_member(int(mention_to_id(string)))
+        try:
+            return await guild.fetch_member(int(mention_to_id(string)))
+        except:
+            return f"{mention_to_id(string)}:FAIL_NOTFOUND"
     elif string.isdecimal():
         var_type = "id"
-        return await guild.fetch_member(int(string))
+        try:
+            return await guild.fetch_member(int(string))
+        except:
+            return f"{int(string)}:FAIL_NOTFOUND"
     else:
         var_type = "name"
-        return guild.get_member_named(string)
+        if guild.get_member_named(string):
+            return guild.get_member_named(string)
+        else:
+            if channel != None and type(channel) is discord.TextChannel:
+                embed_errr = discord.Embed(
+                    title="{}".format("Something went wrong"), description="", color=0xF5F5F5,
+                )
+
+                embed_errr.add_field(name="Error", value="Can't find user", inline=False)
+
+                embed_errr.add_field(
+                    name="Try to enter:", value=f"`member.id`", inline=False,
+                )
+
+                await channel.send(embed=embed_errr)     
 
     if channel != None and type(channel) is discord.TextChannel:
         embed_errr = discord.Embed(

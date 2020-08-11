@@ -91,9 +91,10 @@ class Eval(commands.Cog):
             "color_errr": color_errr,
             "data_guild": data_guild,
             "data_users": data_users,
-            "json_load" : json_load,
-            "json_save" : json_save,
+            "json_load": json_load,
+            "json_save": json_save,
             "math": math,
+            "get_member": get_member,
             "__import__": __import__,
         }
         exec(compile(parsed, filename="<ast>", mode="exec"), env)
