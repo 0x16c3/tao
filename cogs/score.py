@@ -206,9 +206,7 @@ class Score(commands.Cog):
                 # auto approval data
                 await Data.update_state_user(Data, users, target, "flag_approve", True)
 
-                await asyncio.sleep(0.5)
                 json_save(users, data_users)
-                await asyncio.sleep(0.5)
 
                 # update file
                 users = json_load(data_users)
@@ -226,7 +224,6 @@ class Score(commands.Cog):
                     Data, users, target, "start_date", date.today()
                 )
 
-                await asyncio.sleep(0.5)
                 json_save(users, data_users)
 
             string = "Sent to manual approval"

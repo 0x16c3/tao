@@ -15,14 +15,30 @@ color_done = discord.Color(0x00FFFF)
 color_warn = discord.Color(0xFFFF00)
 color_errr = discord.Color(0xFF0000)
 
+# apparently we need to use a custom 
+# encoder & decoder for the datetime object
+
+# subclass JSONEncoder
+class DateTimeEncoder(JSONEncoder):
+    #Override the default method
+    def default(self, obj):
+        if isinstance(obj, (datetime.date, datetime.datetime)):
+            return obj.isoformat()
+
+# custom Decoder
+def DecodeDateTime(empDict):
+    if 'joindate' in empDict:
+        empDict["joindate"] = dateutil.parser.parse(empDict["joindate"])
+        return empDict
+
 def json_load(filename):
     with open(filename, "r") as f:
-        return json.load(f)
+        return json.load(f, object_hook=DecodeDateTime)
 
 def json_save(data, filename):
     try:
         with open(filename, 'w') as outfile:
-            json.dump(data, outfile)
+            json.dump(data, outfile, cls=DateTimeEncoder)
     except:
         if os.path.exists(filename):
             os.unlink(filename)
