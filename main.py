@@ -257,7 +257,8 @@ async def timer_hour(hours: int):
 
             # get current days
             approve_days = users[member_i]["approval"]["days"]
-            approve_date = users[member_i]["approval"]["start_date"]
+            approve_dval = users[member_i]["approval"]["start_date"]
+            approve_date = datetime.datetime.strptime(approve_dval, '%Y-%m-%dT%H:%M:%S.%f')
 
             # check for users with approval days
             if approve_days > 0:
@@ -286,7 +287,7 @@ async def timer_hour(hours: int):
 
                     json_save(users, data_users)
 
-                today = date.today()
+                today = datetime.now().strftime('%Y-%m-%dT%H:%M:%S.%f')
                 # if its been a day since start_date
                 if (today - approve_date).days >= 1:
                     users = json_load(data_users)
