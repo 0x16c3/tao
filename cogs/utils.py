@@ -1,8 +1,5 @@
 import discord
 import json
-import datetime
-from json import JSONEncoder
-import dateutil.parser
 
 # guild data json
 data_guild = "cogs/_guild.json"
