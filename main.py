@@ -243,7 +243,6 @@ async def timer_hour(hours: int):
     await client.wait_until_ready()
 
     while client.is_ready():
-        await asyncio.sleep(3600 * hours)
 
         users = json_load(data_users)
 
@@ -261,7 +260,7 @@ async def timer_hour(hours: int):
             approve_days = users[member_i]["approval"]["days"]
             approve_dval = users[member_i]["approval"]["start_date"]
             approve_date = datetime.strptime(
-                approve_dval, "%Y-%m-%dT%H:%M:%S.%f"
+                string(approve_dval), "%Y-%m-%dT%H:%M:%S.%f"
             )
 
             # check for users with approval days
@@ -335,6 +334,8 @@ async def timer_hour(hours: int):
                 )
 
                 json_save(members, data_users)
+
+        await asyncio.sleep(3600 * hours)
 
 
 try:
