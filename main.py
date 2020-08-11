@@ -259,9 +259,10 @@ async def timer_hour(hours: int):
             # get current days
             approve_days = users[member_i]["approval"]["days"]
             approve_dval = users[member_i]["approval"]["start_date"]
-            approve_date = datetime.strptime(
-                string(approve_dval), "%Y-%m-%dT%H:%M:%S.%f"
-            )
+            if approve_dval != 0:
+                approve_date = datetime.strptime(
+                    str(approve_dval), "%Y-%m-%dT%H:%M:%S.%f"
+                )
 
             # check for users with approval days
             if approve_days > 0:
