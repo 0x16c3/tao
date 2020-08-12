@@ -71,7 +71,6 @@ async def on_guild_join(guild):
             type=discord.ActivityType.watching,
             name=f"{len(list(client.guilds))} guilds",
         ),
-        fetch_offline_members=True,
     )
 
 
