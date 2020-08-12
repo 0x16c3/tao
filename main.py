@@ -248,7 +248,10 @@ async def timer_hour(hours: int):
 
         for member_i in users:
 
-            member = await client.fetch_user(int(member_i))
+            member = await fetch_member(client, int(member_i))
+
+            if member == None:
+                continue
 
             await Data.update_data_user(Data, users, member)
 

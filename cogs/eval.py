@@ -95,6 +95,7 @@ class Eval(commands.Cog):
             "json_save": json_save,
             "math": math,
             "get_member": get_member,
+            "fetch_member": fetch_member,
             "__import__": __import__,
         }
         exec(compile(parsed, filename="<ast>", mode="exec"), env)

@@ -39,6 +39,19 @@ def mention_to_id(mention: str):
     return result
 
 
+async def fetch_member(clientobj, id):
+    for guild in clientobj.guilds:
+        try:
+            member = await guild.fetch_member(id)
+            if member == None or member == 0:
+                continue
+            else:
+                print(member)
+                return await guild.fetch_member(id)
+        except:
+            pass
+
+
 async def get_member(string, guild, channel):
 
     var_type = ""
