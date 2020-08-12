@@ -46,7 +46,6 @@ async def fetch_member(clientobj, id):
             if member == None or member == 0:
                 continue
             else:
-                print(member)
                 return await guild.fetch_member(id)
         except:
             pass
