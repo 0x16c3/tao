@@ -293,7 +293,10 @@ async def timer_hour(hours: int):
 
                     json_save(users, data_users)
 
-                today = datetime.now().strftime("%Y-%m-%dT%H:%M:%S.%f")
+                today_val = datetime.now().strftime("%Y-%m-%dT%H:%M:%S.%f")
+                today = datetime.strptime(
+                    str(today_val), "%Y-%m-%dT%H:%M:%S.%f"
+                )
                 # if its been a day since start_date
                 if (today - approve_date).days >= 1:
                     users = json_load(data_users)

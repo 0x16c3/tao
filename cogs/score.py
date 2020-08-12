@@ -271,6 +271,8 @@ class Score(commands.Cog):
                 string = "Bot user"
                 color = color_errr
 
+                await target.add_roles(approve_role)
+
                 embed1 = discord.Embed(
                     title="Tao", description="", color=color
                 )
