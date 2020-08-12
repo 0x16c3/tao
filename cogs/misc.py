@@ -241,7 +241,7 @@ class Misc(commands.Cog):
             embed_errr = discord.Embed(title="Error", description="", color=color_errr)
             embed_errr.add_field(
                 name="Invalid argument",
-                value="Available arguments: `-score`, `-verbose`, `-late`, `-auto`",
+                value="Available arguments: `-score`, `-verbose`, `-late`, `-auto`, `-strict`",
                 inline=False,
             )
             await ctx.send(embed=embed_errr)
@@ -255,6 +255,7 @@ class Misc(commands.Cog):
         state_vrbs = guilds[str(guild.id)]["verbose_enable"]
         state_late = guilds[str(guild.id)]["late_enable"]
         state_auto = guilds[str(guild.id)]["auto_enable"]
+        state_strc = guilds[str(guild.id)]["strict_enable"]
 
         json_save(guilds, data_guild)
 
@@ -266,6 +267,8 @@ class Misc(commands.Cog):
             await Data.set_config(Data, ctx, cfg, args, state_late)
         if cfg == "-auto":
             await Data.set_config(Data, ctx, cfg, args, state_auto)
+        if cfg == "-strict":
+            await Data.set_config(Data, ctx, cfg, args, state_strc)
 
     @commands.command(pass_context=True)
     async def help(self, ctx, args_first: str = "", args_second: str = ""):

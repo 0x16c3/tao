@@ -24,6 +24,7 @@ class Data(commands.Cog):
             guilds[id]["verbose_enable"] = False
             guilds[id]["late_enable"] = False
             guilds[id]["auto_enable"] = False
+            guilds[id]["strict_enable"] = False
             guilds[id]["chnl_notify"] = 0
             guilds[id]["chnl_approve"] = 0
             guilds[id]["chnl_approve_voice"] = 0
@@ -44,6 +45,8 @@ class Data(commands.Cog):
             guilds[id]["late_enable"] = False
         if not "auto_enable" in guilds[id]:
             guilds[id]["auto_enable"] = False
+        if not "strict_enable" in guilds[id]:
+            guilds[id]["strict_enable"] = False
         if not "chnl_notify" in guilds[id]:
             guilds[id]["chnl_notify"] = 0
         if not "chnl_approve" in guilds[id]:
@@ -273,6 +276,8 @@ class Data(commands.Cog):
             id=ch_approve_voice_id,
         )
 
+        """
+
         text_channel_list = []
         voice_channel_list = []
 
@@ -300,6 +305,8 @@ class Data(commands.Cog):
             time.sleep(1)
             if ch_v.overwrites_for(member_role).view_channel != False:
                 await ch_v.set_permissions(member_role, view_channel=True, speak=True)
+
+        """
 
         await approve_channel.set_permissions(
             approve_role, view_channel=True, read_message_history=False
@@ -544,6 +551,10 @@ class Data(commands.Cog):
                     await self.update_state_config(
                         self, guilds, guild, "auto_enable", True
                     )
+                elif cfg == "-strict":
+                    await self.update_state_config(
+                        self, guilds, guild, "strict_enable", True
+                    )
 
                 json_save(guilds, data_guild)
 
@@ -587,6 +598,10 @@ class Data(commands.Cog):
                 elif cfg == "-auto":
                     await self.update_state_config(
                         self, guilds, guild, "auto_enable", False
+                    )
+                elif cfg == "-strict":
+                    await self.update_state_config(
+                        self, guilds, guild, "strict_enable", False
                     )
 
                 json_save(guilds, data_guild)

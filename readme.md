@@ -25,6 +25,7 @@
     tao config -score <-enable/-disable>          : enable or disable the scoring system
     tao config -verbose <-enable/-disable>        : enable or disable verbose notifications
     tao config -late <-enable/-disable>           : enable or disable late scoring system
+    tao config -strict <-enable/-disable>         : enable or disable whether to ban alt accounts
 
 # bot commands:
     tao run -sort_user <user>                     : manually sort user

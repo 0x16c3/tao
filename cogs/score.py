@@ -177,6 +177,7 @@ class Score(commands.Cog):
         member_id = guilds[str(guild.id)]["role_member"]
         verbose = guilds[str(guild.id)]["verbose_enable"]
         auto = guilds[str(guild.id)]["auto_enable"]
+        strict = guilds[str(guild.id)]["strict_enable"]
 
         json_save(guilds, data_guild)
 
@@ -247,24 +248,42 @@ class Score(commands.Cog):
             except:
                 pass
         elif flag_type == 2:
-            string = "Banned user"
-            color = color_errr
+            if strict:
+                string = "Banned user"
+                color = color_errr
 
-            embed1 = discord.Embed(
-                title="You have been banned", description="", color=color
-            )
-            embed1.add_field(
-                name="You have been detected as an alt account",
-                value="If wrong, contact a staff member",
-                inline=False,
-            )
-            embed1.add_field(name="User score", value=str(score_val), inline=False)
-            try:
-                await target.send(embed=embed1)
-            except:
-                pass
+                embed1 = discord.Embed(
+                    title="You have been banned", description="", color=color
+                )
+                embed1.add_field(
+                    name="You have been detected as an alt account",
+                    value="If wrong, contact a staff member",
+                    inline=False,
+                )
+                embed1.add_field(name="User score", value=str(score_val), inline=False)
+                try:
+                    await target.send(embed=embed1)
+                except:
+                    pass
 
-            await target.ban(reason="tao: Alt account")
+                await target.ban(reason="tao: Alt account")
+            else:
+                string = "Bot user"
+                color = color_errr
+
+                embed1 = discord.Embed(
+                    title="Tao", description="", color=color
+                )
+                embed1.add_field(
+                    name="You have been detected as an alt account",
+                    value="If wrong, contact a staff member",
+                    inline=False,
+                )
+                embed1.add_field(name="User score", value=str(score_val), inline=False)
+                try:
+                    await target.send(embed=embed1)
+                except:
+                    pass
 
         if flag_type != -1:
             embed = discord.Embed(title="User flagged", description="", color=color)
