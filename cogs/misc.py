@@ -38,10 +38,9 @@ class Misc(commands.Cog):
         if not user:
             target = ctx.author
         else:
-            target = await get_member(user, ctx.guild, ctx.channel)      
+            target = await get_member(user, ctx.guild, ctx.channel)
 
-
-        if not target or FAIL_NOTFOUND" in target:
+        if not target or "FAIL_NOTFOUND" in target:
             embed_errr = discord.Embed(title="Error", description="", color=color_errr)
             embed_errr.add_field(
                 name="Invalid argument",
