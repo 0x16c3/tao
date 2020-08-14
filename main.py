@@ -178,7 +178,7 @@ async def on_message(message):
 
                 json_save(guilds, data_guild)
 
-            if late and not checked:
+            if late and not checked and channel_notify:
 
                 await Score.sort_user_auto(Score, channel_notify, message.author, True)
 
