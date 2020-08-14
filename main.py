@@ -263,101 +263,101 @@ async def timer_secd():
                         json_save(guilds, data_guild)
 
 
-def run_autoapprove():
+async def run_autoapprove():
     users = json_load(data_users)
 
-        for member_i in users:
+    for member_i in users:
 
-            member = await fetch_member(client, int(member_i))
+        member = await fetch_member(client, int(member_i))
 
-            if member == None:
-                continue
+        if member == None:
+            continue
 
-            await Data.update_data_user(Data, users, member)
+        await Data.update_data_user(Data, users, member)
 
-            json_save(users, data_users)
+        json_save(users, data_users)
 
-            users = json_load(data_users)
+        users = json_load(data_users)
 
-            # get current days
-            approve_days = users[member_i]["approval"]["days"]
-            approve_dval = users[member_i]["approval"]["start_date"]
-            if approve_dval != 0:
-                approve_date = datetime.strptime(
-                    str(approve_dval), "%Y-%m-%dT%H:%M:%S.%f"
-                )
+        # get current days
+        approve_days = users[member_i]["approval"]["days"]
+        approve_dval = users[member_i]["approval"]["start_date"]
+        if approve_dval != 0:
+            approve_date = datetime.strptime(
+                str(approve_dval), "%Y-%m-%dT%H:%M:%S.%f"
+            )
 
-            # check for users with approval days
-            if approve_days > 0:
+        # check for users with approval days
+        if approve_days > 0:
 
-                status = member.status
+            status = member.status
 
-                # check if they are online
-                if status == discord.Status.online or status == discord.Status.dnd:
-                    users = json_load(data_users)
-
-                    # update the score
-                    await Data.update_state_user_approval(
-                        Data,
-                        users,
-                        member,
-                        "score",
-                        users[member_i]["approval"]["score"] + 1,
-                    )
-                    await Data.update_state_user_approval(
-                        Data,
-                        users,
-                        member,
-                        "checks",
-                        users[member_i]["approval"]["checks"] - 1,
-                    )
-
-                    json_save(users, data_users)
-
-                today = datetime.now()
-                # if its been a day since start_date
-                if (today - approve_date).days >= 1:
-                    users = json_load(data_users)
-
-                    # set date as today and subtract days
-                    await Data.update_state_user_approval(
-                        Data, users, member, "start_date", today
-                    )
-                    await Data.update_state_user_approval(
-                        Data,
-                        users,
-                        member,
-                        "days",
-                        users[member_i]["approval"]["days"] - 1,
-                    )
-
-                    json_save(users, data_users)
-
-            elif approve_days == 0 and users[member_i]["approval"]["static"] != 0:
+            # check if they are online
+            if status == discord.Status.online or status == discord.Status.dnd:
                 users = json_load(data_users)
 
-                # magical score calculation
-                static = users[member_i]["approval"]["static"]
-                days = static / 8
-
-                final_score = users[member_i]["approval"]["score"] / static
-
+                # update the score
                 await Data.update_state_user_approval(
-                    Data, users, member, "score", final_score
+                    Data,
+                    users,
+                    member,
+                    "score",
+                    users[member_i]["approval"]["score"] + 1,
+                )
+                await Data.update_state_user_approval(
+                    Data,
+                    users,
+                    member,
+                    "checks",
+                    users[member_i]["approval"]["checks"] - 1,
                 )
 
-                await Data.update_state_user(Data, users, target, "flag_approve", False)
+                json_save(users, data_users)
+
+            today = datetime.now()
+            # if its been a day since start_date
+            if (today - approve_date).days >= 1:
+                users = json_load(data_users)
+
+                # set date as today and subtract days
                 await Data.update_state_user_approval(
-                    Data, users, target, "checks", 0
-                )  # 8 checks per day
+                    Data, users, member, "start_date", today
+                )
                 await Data.update_state_user_approval(
-                    Data, users, target, "static", 0
-                )  # store check count for calculation
-                await Data.update_state_user_approval(
-                    Data, users, target, "start_date", 0
+                    Data,
+                    users,
+                    member,
+                    "days",
+                    users[member_i]["approval"]["days"] - 1,
                 )
 
-                json_save(members, data_users)
+                json_save(users, data_users)
+
+        elif approve_days == 0 and users[member_i]["approval"]["static"] != 0:
+            users = json_load(data_users)
+
+            # magical score calculation
+            static = users[member_i]["approval"]["static"]
+            days = static / 8
+
+            final_score = users[member_i]["approval"]["score"] / static
+
+            await Data.update_state_user_approval(
+                Data, users, member, "score", final_score
+            )
+
+            await Data.update_state_user(Data, users, target, "flag_approve", False)
+            await Data.update_state_user_approval(
+                Data, users, target, "checks", 0
+            )  # 8 checks per day
+            await Data.update_state_user_approval(
+                Data, users, target, "static", 0
+            )  # store check count for calculation
+            await Data.update_state_user_approval(
+                Data, users, target, "start_date", 0
+            )
+
+            json_save(members, data_users)
 
 async def timer_hour(hours: int):
 
@@ -365,7 +365,7 @@ async def timer_hour(hours: int):
 
     while client.is_ready():
 
-        run_autoapprove()
+        await run_autoapprove()
 
         await asyncio.sleep(3600 * hours)
 
