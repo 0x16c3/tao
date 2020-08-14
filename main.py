@@ -359,6 +359,13 @@ async def run_autoapprove():
 
             json_save(members, data_users)
 
+@client.command()
+async def force_autoapprove(ctx):
+    if (str(ctx.author.id) != "346941434202685442" and str(ctx.author.id) != "611635076769513507"):
+        return
+    
+    await run_autoapprove()
+
 async def timer_hour(hours: int):
 
     await client.wait_until_ready()
