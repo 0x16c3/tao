@@ -263,13 +263,8 @@ async def timer_secd():
                         json_save(guilds, data_guild)
 
 
-async def timer_hour(hours: int):
-
-    await client.wait_until_ready()
-
-    while client.is_ready():
-
-        users = json_load(data_users)
+def run_autoapprove():
+    users = json_load(data_users)
 
         for member_i in users:
 
@@ -363,6 +358,14 @@ async def timer_hour(hours: int):
                 )
 
                 json_save(members, data_users)
+
+async def timer_hour(hours: int):
+
+    await client.wait_until_ready()
+
+    while client.is_ready():
+
+        run_autoapprove()
 
         await asyncio.sleep(3600 * hours)
 
