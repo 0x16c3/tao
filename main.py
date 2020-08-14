@@ -5,6 +5,8 @@ from discord.ext import commands
 from datetime import datetime, timedelta, date
 import asyncio
 
+import logging
+
 import os.path
 from os import path
 
@@ -31,6 +33,30 @@ client = commands.Bot(
     activity=discord.Game(name="initializing"),
 )
 client.remove_command("help")
+
+if not path.exists(data"cogs/_error.txt"_guild):
+    f = open("cogs/_error.txt", "w")
+    f.close()
+
+# Create a logging instance
+logger = logging.getLogger("tao")
+logger.setLevel(logging.ERROR) # you can set this to be DEBUG, INFO, ERROR
+
+# Assign a file-handler to that instance
+fh = logging.FileHandler("cogs/_error.txt")
+fh.setLevel(logging.INFO) # again, you can set this differently
+
+# Format your logs (optional)
+formatter = logging.Formatter('%(asctime)s - %(name)s - %(levelname)s - %(message)s')
+fh.setFormatter(formatter) # This will set the format to the file handler
+
+# Add the handler to your logging instance
+logger.addHandler(fh)
+
+try:
+    raise ValueError("an error occured")
+except ValueError as e:
+    logger.exception(e) # Will send the errors to the file
 
 
 @client.event
