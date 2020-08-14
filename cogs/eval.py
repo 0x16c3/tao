@@ -96,7 +96,6 @@ class Eval(commands.Cog):
             "math": math,
             "get_member": get_member,
             "fetch_member": fetch_member,
-            "run_autoapprove": run_autoapprove,
             "__import__": __import__,
         }
         exec(compile(parsed, filename="<ast>", mode="exec"), env)
