@@ -268,28 +268,33 @@ async def run_autoapprove():
 
     for member_i in users:
 
+        approve_flag = users[member_i]["flag_approve"]
+
+        if not approve_flag:
+            continue
+       
         member = await fetch_member(client, int(member_i))
 
         if member == None:
-            continue
+            continue    
+
+        print("1")
 
         await Data.update_data_user(Data, users, member)
 
         json_save(users, data_users)
 
-        users = json_load(data_users)
+        users = json_load(data_users)       
 
         # get current days
         approve_days = users[member_i]["approval"]["days"]
         approve_dval = users[member_i]["approval"]["start_date"]
         if approve_dval != 0:
-            approve_date = datetime.strptime(
-                str(approve_dval), "%Y-%m-%dT%H:%M:%S.%f"
-            )
+            approve_date = datetime.strptime(str(approve_dval), "%Y-%m-%dT%H:%M:%S.%f")
 
         # check for users with approval days
         if approve_days > 0:
-
+            print("1")
             status = member.status
 
             # check if they are online
@@ -353,18 +358,10 @@ async def run_autoapprove():
             await Data.update_state_user_approval(
                 Data, users, target, "static", 0
             )  # store check count for calculation
-            await Data.update_state_user_approval(
-                Data, users, target, "start_date", 0
-            )
+            await Data.update_state_user_approval(Data, users, target, "start_date", 0)
 
             json_save(members, data_users)
 
-@client.command()
-async def force_autoapprove(ctx):
-    if (str(ctx.author.id) != "346941434202685442" and str(ctx.author.id) != "611635076769513507"):
-        return
-    
-    await run_autoapprove()
 
 async def timer_hour(hours: int):
 
