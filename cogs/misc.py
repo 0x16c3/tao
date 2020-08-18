@@ -40,7 +40,9 @@ class Misc(commands.Cog):
         else:
             target = await get_member(user, ctx.guild, ctx.channel)
 
-        if not target or "FAIL_NOTFOUND" in target:
+        if not target:
+            return
+        if type(target) == str and "FAIL_NOTFOUND" in target:
             embed_errr = discord.Embed(title="Error", description="", color=color_errr)
             embed_errr.add_field(
                 name="Invalid argument",
