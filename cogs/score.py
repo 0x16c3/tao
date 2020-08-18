@@ -221,9 +221,12 @@ class Score(commands.Cog):
                 await Data.update_state_user_approval(
                     Data, users, target, "static", 8 * days
                 )  # store check count for calculation
-                await Data.update_state_user_approval(
-                    Data, users, target, "start_date", datetime.now().strftime("%Y-%m-%dT%H:%M:%S.%f")
-                )
+
+                time = datetime.now().strftime("%Y-%m-%dT%H:%M:%S.%f")
+                if time and type(time) == str:
+                    await Data.update_state_user_approval(
+                        Data, users, target, "start_date", today
+                    )
 
                 json_save(users, data_users)
 

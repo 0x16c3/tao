@@ -319,15 +319,19 @@ async def run_autoapprove():
 
                 json_save(users, data_users)
 
+
             today = datetime.now()
             # if its been a day since start_date
             if (today - approve_date).days >= 1:
                 users = json_load(data_users)
 
-                # set date as today and subtract days
-                await Data.update_state_user_approval(
-                    Data, users, member, "start_date", today
-                )
+                today_str = datetime.now().strftime("%Y-%m-%dT%H:%M:%S.%f")
+                if today_str and type(today_str) == str:
+                    # set date as today and subtract days
+                    await Data.update_state_user_approval(
+                        Data, users, target, "start_date", today_str
+                    )
+
                 await Data.update_state_user_approval(
                     Data,
                     users,
@@ -358,7 +362,7 @@ async def run_autoapprove():
             await Data.update_state_user_approval(
                 Data, users, target, "static", 0
             )  # store check count for calculation
-            await Data.update_state_user_approval(Data, users, target, "start_date", 0)
+            await Data.update_state_user_approval(Data, users, target, "start_date", "")
 
             json_save(members, data_users)
 
