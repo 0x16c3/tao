@@ -278,7 +278,6 @@ async def run_autoapprove():
         if member == None:
             continue    
 
-        print("1")
 
         await Data.update_data_user(Data, users, member)
 
@@ -294,7 +293,6 @@ async def run_autoapprove():
 
         # check for users with approval days
         if approve_days > 0:
-            print("1")
             status = member.status
 
             # check if they are online
