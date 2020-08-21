@@ -225,7 +225,7 @@ class Score(commands.Cog):
                 time = datetime.now().strftime("%Y-%m-%dT%H:%M:%S.%f")
                 if time and type(time) == str:
                     await Data.update_state_user_approval(
-                        Data, users, target, "start_date", today
+                        Data, users, target, "start_date", time
                     )
 
                 json_save(users, data_users)
@@ -276,9 +276,7 @@ class Score(commands.Cog):
 
                 await target.add_roles(approve_role)
 
-                embed1 = discord.Embed(
-                    title="Tao", description="", color=color
-                )
+                embed1 = discord.Embed(title="Tao", description="", color=color)
                 embed1.add_field(
                     name="You have been detected as an alt account",
                     value="If wrong, contact a staff member",
