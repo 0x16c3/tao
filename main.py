@@ -353,14 +353,14 @@ async def run_autoapprove():
                 Data, users, member, "score", final_score
             )
 
-            await Data.update_state_user(Data, users, target, "flag_approve", False)
+            await Data.update_state_user(Data, users, member, "flag_approve", False)
             await Data.update_state_user_approval(
-                Data, users, target, "checks", 0
+                Data, users, member, "checks", 0
             )  # 8 checks per day
             await Data.update_state_user_approval(
-                Data, users, target, "static", 0
+                Data, users, member, "static", 0
             )  # store check count for calculation
-            await Data.update_state_user_approval(Data, users, target, "start_date", "")
+            await Data.update_state_user_approval(Data, users, member, "start_date", "")
 
             json_save(members, data_users)
 
