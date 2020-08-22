@@ -31,7 +31,7 @@ class Moderation(commands.Cog):
 
             if args_first == "" or not args_first.startswith("-"):  # permanent
 
-                await ctx.guild.ban(member_obj, reason=" ".join(map(str, args_second)))
+                await ctx.guild.ban(member_obj, reason=" ".join(map(str, args_first)))
 
                 # create embed
                 embed = discord.Embed(title="Info", description="", color=color_done)
