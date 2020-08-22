@@ -327,7 +327,7 @@ async def run_autoapprove():
                 if today_str and type(today_str) == str:
                     # set date as today and subtract days
                     await Data.update_state_user_approval(
-                        Data, users, target, "start_date", today_str
+                        Data, users, member, "start_date", today_str
                     )
 
                 await Data.update_state_user_approval(
