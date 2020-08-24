@@ -90,6 +90,7 @@ async def get_member(string, guild, channel):
                 await channel.send(embed=embed_errr)
 
     if channel != None and type(channel) is discord.TextChannel:
+        """
         embed_errr = discord.Embed(
             title="{}".format("Something went wrong"), description="", color=0xF5F5F5,
         )
@@ -101,5 +102,6 @@ async def get_member(string, guild, channel):
         )
 
         await channel.send(embed=embed_errr)
+        """
 
     return None
