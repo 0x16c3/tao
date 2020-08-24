@@ -437,9 +437,6 @@ class Data(commands.Cog):
                     await ctx.send(embed=embed)
                     return
 
-        if args == "-repair":
-            
-
         if role_set:
             # create role
             await self.create_role(
