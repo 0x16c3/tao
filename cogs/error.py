@@ -21,6 +21,11 @@ class Error(commands.Cog):
         # get the original exception
         error = getattr(error, "original", error)
 
+        command = ctx.command
+
+        if command == None:
+            command = "Command"
+
         if isinstance(error, KeyError):
             # update file
             with open(data_guild, "r") as f:
@@ -40,7 +45,7 @@ class Error(commands.Cog):
         if isinstance(error, commands.CommandNotFound):
             embed = discord.Embed(
                 title="{}".format("Something went wrong"),
-                description="Exception in: `{}`".format(ctx.command),
+                description="Exception in: `{}`".format(command),
                 color=0xF5F5F5,
             )
 
@@ -52,7 +57,7 @@ class Error(commands.Cog):
         if isinstance(error, commands.BadArgument):
             embed = discord.Embed(
                 title="{}".format("Something went wrong"),
-                description="Exception in: `{}`".format(ctx.command),
+                description="Exception in: `{}`".format(command),
                 color=0xF5F5F5,
             )
 
@@ -77,7 +82,7 @@ class Error(commands.Cog):
 
             embed = discord.Embed(
                 title="{}".format("Something went wrong"),
-                description="Exception in: `{}`".format(ctx.command),
+                description="Exception in: `{}`".format(command),
                 color=0xF5F5F5,
             )
 
@@ -91,7 +96,7 @@ class Error(commands.Cog):
         if isinstance(error, commands.DisabledCommand):
             embed = discord.Embed(
                 title="{}".format("Something went wrong"),
-                description="Exception in: `{}`".format(ctx.command),
+                description="Exception in: `{}`".format(command),
                 color=0xF5F5F5,
             )
 
@@ -107,7 +112,7 @@ class Error(commands.Cog):
         if isinstance(error, commands.CommandOnCooldown):
             embed = discord.Embed(
                 title="{}".format("Something went wrong"),
-                description="Exception in: `{}`".format(ctx.command),
+                description="Exception in: `{}`".format(command),
                 color=0xF5F5F5,
             )
 
@@ -134,7 +139,7 @@ class Error(commands.Cog):
 
             embed = discord.Embed(
                 title="{}".format("Something went wrong"),
-                description="Exception in: `{}`".format(ctx.command),
+                description="Exception in: `{}`".format(command),
                 color=0xF5F5F5,
             )
 
@@ -152,7 +157,7 @@ class Error(commands.Cog):
         if isinstance(error, commands.UserInputError):
             embed = discord.Embed(
                 title="{}".format("Something went wrong"),
-                description="Exception in: `{}`".format(ctx.command),
+                description="Exception in: `{}`".format(command),
                 color=0xF5F5F5,
             )
 
@@ -167,7 +172,7 @@ class Error(commands.Cog):
             try:
                 embed = discord.Embed(
                     title="{}".format("Something went wrong"),
-                    description="Exception in: `{}`".format(ctx.command),
+                    description="Exception in: `{}`".format(command),
                     color=0xF5F5F5,
                 )
 
@@ -185,7 +190,7 @@ class Error(commands.Cog):
         if isinstance(error, commands.CheckFailure):
             embed = discord.Embed(
                 title="{}".format("Something went wrong"),
-                description="Exception in: `{}`".format(ctx.command),
+                description="Exception in: `{}`".format(command),
                 color=0xF5F5F5,
             )
 

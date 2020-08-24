@@ -362,7 +362,7 @@ async def run_autoapprove():
             )  # store check count for calculation
             await Data.update_state_user_approval(Data, users, member, "start_date", "")
 
-            json_save(members, data_users)
+            json_save(users, data_users)
 
 
 async def timer_hour(hours: int):
