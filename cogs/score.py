@@ -232,7 +232,19 @@ class Score(commands.Cog):
 
             string = "Sent to manual approval"
             color = color_warn
-            await target.add_roles(approve_role)
+            try:
+                await target.add_roles(approve_role)
+            except discord.Forbidden:
+                ForbiddenEmbed = discord.Embed(
+                    title="{}".format("Something went wrong"),
+                    description="",
+                    color=0xF5F5F5,
+                )
+
+                ForbiddenEmbed.add_field(name="Error", value="Bot missing permissions", inline=False)
+
+                await channel.send(embed=ForbiddenEmbed)
+
 
             if member_role != everyone_role:
                 await target.remove_roles(member_role)
@@ -271,7 +283,7 @@ class Score(commands.Cog):
 
                 await target.ban(reason="tao: Alt account")
             else:
-                string = "Bot user"
+                string = "Alt account"
                 color = color_errr
 
                 await target.add_roles(approve_role)

@@ -30,6 +30,7 @@ class Data(commands.Cog):
             guilds[id]["chnl_approve_voice"] = 0
             guilds[id]["role_approve"] = 0
             guilds[id]["role_member"] = 0
+            guilds[id]["role_silence"] = 0
             guilds[id]["banned_members"] = {}
             return
 
@@ -56,6 +57,8 @@ class Data(commands.Cog):
         if not "role_approve" in guilds[id]:
             guilds[id]["role_approve"] = 0
         if not "role_member" in guilds[id]:
+            guilds[id]["role_member"] = 0
+        if not "role_silence" in guilds[id]:
             guilds[id]["role_member"] = 0
         if not "banned_members" in guilds[id]:
             guilds[id]["banned_members"] = {}
@@ -433,6 +436,9 @@ class Data(commands.Cog):
                     )
                     await ctx.send(embed=embed)
                     return
+
+        if args == "-repair":
+            
 
         if role_set:
             # create role

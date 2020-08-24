@@ -27,7 +27,9 @@ class Error(commands.Cog):
                 guilds = json.load(f)
 
             await Data.update_data(Data, guilds, ctx.guild)
-            await Data.update_state_config(Data, guilds, ctx.guild, "setup_complete", False)
+            await Data.update_state_config(
+                Data, guilds, ctx.guild, "setup_complete", False
+            )
 
             with open(data_guild, "w") as f:
                 json.dump(guilds, f)
@@ -38,7 +40,7 @@ class Error(commands.Cog):
         if isinstance(error, commands.CommandNotFound):
             embed = discord.Embed(
                 title="{}".format("Something went wrong"),
-                description="",
+                description="Exception in: `{}`".format(ctx.command),
                 color=0xF5F5F5,
             )
 
@@ -50,7 +52,7 @@ class Error(commands.Cog):
         if isinstance(error, commands.BadArgument):
             embed = discord.Embed(
                 title="{}".format("Something went wrong"),
-                description="",
+                description="Exception in: `{}`".format(ctx.command),
                 color=0xF5F5F5,
             )
 
@@ -75,7 +77,7 @@ class Error(commands.Cog):
 
             embed = discord.Embed(
                 title="{}".format("Something went wrong"),
-                description="",
+                description="Exception in: `{}`".format(ctx.command),
                 color=0xF5F5F5,
             )
 
@@ -89,7 +91,7 @@ class Error(commands.Cog):
         if isinstance(error, commands.DisabledCommand):
             embed = discord.Embed(
                 title="{}".format("Something went wrong"),
-                description="",
+                description="Exception in: `{}`".format(ctx.command),
                 color=0xF5F5F5,
             )
 
@@ -105,7 +107,7 @@ class Error(commands.Cog):
         if isinstance(error, commands.CommandOnCooldown):
             embed = discord.Embed(
                 title="{}".format("Something went wrong"),
-                description="",
+                description="Exception in: `{}`".format(ctx.command),
                 color=0xF5F5F5,
             )
 
@@ -132,7 +134,7 @@ class Error(commands.Cog):
 
             embed = discord.Embed(
                 title="{}".format("Something went wrong"),
-                description="",
+                description="Exception in: `{}`".format(ctx.command),
                 color=0xF5F5F5,
             )
 
@@ -150,7 +152,7 @@ class Error(commands.Cog):
         if isinstance(error, commands.UserInputError):
             embed = discord.Embed(
                 title="{}".format("Something went wrong"),
-                description="",
+                description="Exception in: `{}`".format(ctx.command),
                 color=0xF5F5F5,
             )
 
@@ -165,7 +167,7 @@ class Error(commands.Cog):
             try:
                 embed = discord.Embed(
                     title="{}".format("Something went wrong"),
-                    description="",
+                    description="Exception in: `{}`".format(ctx.command),
                     color=0xF5F5F5,
                 )
 
@@ -183,7 +185,7 @@ class Error(commands.Cog):
         if isinstance(error, commands.CheckFailure):
             embed = discord.Embed(
                 title="{}".format("Something went wrong"),
-                description="",
+                description="Exception in: `{}`".format(ctx.command),
                 color=0xF5F5F5,
             )
 
@@ -197,7 +199,7 @@ class Error(commands.Cog):
             return
 
         # ignore all and print
-        print("Ignoring exception in command {}:".format(ctx.command), file=sys.stderr)
+        # print("Ignoring exception in command {}:".format(ctx.command), file=sys.stderr)
 
 
 def setup(client):

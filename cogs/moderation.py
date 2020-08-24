@@ -25,9 +25,10 @@ class Moderation(commands.Cog):
 
             if type(member_obj) == str:
                 if "FAIL_NOTFOUND" in member_obj:
-                    member_obj = await self.client.fetch_user(int(member_obj[:-14]))        
+                    member_obj = await self.client.fetch_user(int(member_obj[:-14]))
+
             if member_obj is None:
-                return           
+                return
 
             if args_first == "" or not args_first.startswith("-"):  # permanent
 
