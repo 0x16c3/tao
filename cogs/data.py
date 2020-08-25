@@ -279,8 +279,6 @@ class Data(commands.Cog):
             id=ch_approve_voice_id,
         )
 
-        """
-
         text_channel_list = []
         voice_channel_list = []
 
@@ -295,10 +293,6 @@ class Data(commands.Cog):
                     approve_role, read_messages=False, read_message_history=False
                 )
             time.sleep(1)
-            if ch.overwrites_for(member_role).read_messages != False:
-                await ch.set_permissions(
-                    member_role, read_messages=True, read_message_history=True
-                )
 
         for ch_v in voice_channel_list:
             if ch_v.overwrites_for(approve_role).view_channel != False:
@@ -306,10 +300,6 @@ class Data(commands.Cog):
                     approve_role, view_channel=False, speak=False
                 )
             time.sleep(1)
-            if ch_v.overwrites_for(member_role).view_channel != False:
-                await ch_v.set_permissions(member_role, view_channel=True, speak=True)
-
-        """
 
         await approve_channel.set_permissions(
             approve_role, view_channel=True, read_message_history=False
