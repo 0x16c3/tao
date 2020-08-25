@@ -208,9 +208,7 @@ if __name__ == "__main__":
 
 
 async def timer_secd():
-
     await client.wait_until_ready()
-
     while client.is_ready():
         await asyncio.sleep(1)
 
@@ -267,23 +265,21 @@ async def run_autoapprove():
     users = json_load(data_users)
 
     for member_i in users:
-
         approve_flag = users[member_i]["flag_approve"]
 
         if not approve_flag:
             continue
-       
+
         member = await fetch_member(client, int(member_i))
 
         if member == None:
-            continue    
-
+            continue
 
         await Data.update_data_user(Data, users, member)
 
         json_save(users, data_users)
 
-        users = json_load(data_users)       
+        users = json_load(data_users)
 
         # get current days
         approve_days = users[member_i]["approval"]["days"]
@@ -316,7 +312,6 @@ async def run_autoapprove():
                 )
 
                 json_save(users, data_users)
-
 
             today = datetime.now()
             # if its been a day since start_date
@@ -366,13 +361,9 @@ async def run_autoapprove():
 
 
 async def timer_hour(hours: int):
-
     await client.wait_until_ready()
-
     while client.is_ready():
-
         await run_autoapprove()
-
         await asyncio.sleep(3600 * hours)
 
 
@@ -382,4 +373,3 @@ try:
     client.run(TOKEN)
 except KeyboardInterrupt:
     print("exit")
-

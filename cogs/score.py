@@ -241,10 +241,11 @@ class Score(commands.Cog):
                     color=0xF5F5F5,
                 )
 
-                ForbiddenEmbed.add_field(name="Error", value="Bot missing permissions", inline=False)
+                ForbiddenEmbed.add_field(
+                    name="Error", value="Bot missing permissions", inline=False
+                )
 
                 await channel.send(embed=ForbiddenEmbed)
-
 
             if member_role != everyone_role:
                 await target.remove_roles(member_role)
