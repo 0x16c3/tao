@@ -185,6 +185,10 @@ class Score(commands.Cog):
         approve_role = discord.utils.get(guild.roles, id=approve_id)
         member_role = discord.utils.get(guild.roles, id=member_id)
 
+        if !approve_role or !member_role:
+            await Data.setup_notify(Data, channel)
+            return
+
         string = ""
         color = color_main
 
