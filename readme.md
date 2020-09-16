@@ -42,4 +42,7 @@
                                                     -h = hour
                                                     -d = day
                                                     -w = week
+    tao unban <user;user1;..>                     : unban user
+    tao kick <user;user1;..>                      : kick user
+    tao clear <amount>                            : clear messages from current channel
 ```

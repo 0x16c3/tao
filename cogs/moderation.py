@@ -3,6 +3,7 @@ import discord
 import json
 from discord.ext import commands
 from datetime import datetime, timedelta
+import time
 
 from .data import Data
 from .utils import *
@@ -136,6 +137,107 @@ class Moderation(commands.Cog):
                 await ctx.send(embed=embed)
 
                 json_save(members, data_users)
+
+    @commands.command(pass_context=True)
+    @commands.has_permissions(ban_members=True)
+    async def unban(self, ctx, member: str):
+
+        var_type = "None"
+        member_array = member.split(";")
+
+        for member_i in member_array:
+
+            member_obj = await get_member(member_i, ctx.guild, ctx.channel)
+
+            if type(member_obj) == str:
+                if "FAIL_NOTFOUND" in member_obj:
+                    member_obj = await self.client.fetch_user(int(member_obj[:-14]))
+
+            if member_obj is None:
+                return
+
+            await ctx.guild.unban(member_obj)
+
+            guilds = json_load(data_guild)
+
+            await Data.update_banned_member(Data, guilds, ctx.guild, member_obj, 1)
+
+            json_save(guilds, data_guild)
+
+            # create embed
+            embed = discord.Embed(title="Info", description="", color=color_done)
+            embed.add_field(
+                name="Member unbanned",
+                value=member_obj.name
+                + "#"
+                + member_obj.discriminator
+                + " has been unbanned",
+                inline=False,
+            )
+            await ctx.send(embed=embed)
+
+    @commands.command(pass_context=True)
+    @commands.has_permissions(ban_members=True)
+    async def kick(self, ctx, member: str, *args_first):
+
+        var_type = "None"
+        member_array = member.split(";")
+
+        for member_i in member_array:
+
+            member_obj = await get_member(member_i, ctx.guild, ctx.channel)
+
+            if type(member_obj) == str:
+                if "FAIL_NOTFOUND" in member_obj:
+                    member_obj = await self.client.fetch_user(int(member_obj[:-14]))
+
+            if member_obj is None:
+                return
+
+            await ctx.guild.kick(member_obj, reason=" ".join(map(str, args_first)))
+
+            # create embed
+            embed = discord.Embed(title="Info", description="", color=color_done)
+            embed.add_field(
+                name="Member kicked",
+                value=member_obj.name
+                + "#"
+                + member_obj.discriminator
+                + " has been kicked",
+                inline=False,
+            )
+            await ctx.send(embed=embed)
+
+    @commands.command(pass_context=True)
+    @commands.has_permissions(ban_members=True)
+    async def clear(self, ctx, amount: int):
+
+        if amount > 99 or amount < 1:
+            embed = discord.Embed(
+                title="{}".format("Something went wrong"),
+                description="Exception in: `clear`",
+                color=color_errr,
+            )
+
+            embed.add_field(
+                name="Error",
+                value="Maximum 99 messages can be pruned in a single call",
+                inline=True,
+            )
+
+            await ctx.send(embed=embed)
+        else:
+
+            await ctx.channel.purge(limit=amount + 1)
+
+            embed = discord.Embed(title="Info", description="", color=color_done)
+            embed.add_field(
+                name="Channel cleared",
+                value=str(amount) + " messages have been cleared",
+                inline=False,
+            )
+            await ctx.send(embed=embed, delete_after=4)
+
 
 
 def setup(client):
