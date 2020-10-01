@@ -27,11 +27,23 @@ cogs = [
     "cogs.error",
 ]
 
+# setup intents
+intents = discord.Intents()
+intents.guilds = True
+intents.members = True
+intents.bans = True
+intents.presences = True
+intents.messages = True
+intents.guild_messages = True
+intents.reactions = True
+intents.guild_reactions = True
+
 # setup client object
 client = commands.Bot(
     command_prefix="tao ",
     status=discord.Status.idle,
     activity=discord.Game(name="initializing"),
+    intents=intents,
 )
 
 # remove the help command
@@ -185,7 +197,9 @@ async def on_message(message):
 
             # get notification channel
             channel_notify = discord.utils.get(
-                client.get_all_channels(), guild__name=message.guild.name, id=channel,
+                client.get_all_channels(),
+                guild__name=message.guild.name,
+                id=channel,
             )
 
             json_save(guilds, data_guild)
