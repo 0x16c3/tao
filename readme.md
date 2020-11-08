@@ -13,36 +13,27 @@
 
 ### Usage
 
-```
-
-# helper functions:
-    tao                                           : meta information
-    tao info <user>                               : user information
-    tao help                                      : command information
-
-# initialize and config:
-    tao init [-reset]                             : set role and channel configuration [or reset]
-    tao config -score <-enable/-disable>          : enable or disable the scoring system
-    tao config -verbose <-enable/-disable>        : enable or disable verbose notifications
-    tao config -late <-enable/-disable>           : enable or disable late scoring system
-    tao config -strict <-enable/-disable>         : enable or disable whether to ban alt accounts
-
-# bot commands:
-    tao run -sort_user <user>                     : manually sort user
-    tao run -send_score_info <user>               : get user score
-    tao run -set_flag <flag>                      : set user flag
-                                                    -0 = send notification
-                                                    -1 = send to manual approval
-                                                    -2 = ban
-                                                    -3 = valid account (no action)
-
-# moderation commands:
-    tao ban <user;user1;..> [-time] [reason]      : ban user
-                                                    -m = minute
-                                                    -h = hour
-                                                    -d = day
-                                                    -w = week
-    tao unban <user;user1;..>                     : unban user
-    tao kick <user;user1;..>                      : kick user
-    tao clear <amount>                            : clear messages from current channel
-```
+|                                            |                                                                                                                                  |
+| ------------------------------------------ | -------------------------------------------------------------------------------------------------------------------------------- |
+| **Helper functions**                       |                                                                                                                                  |
+| `tao`                                      | `meta information`                                                                                                               |
+| `tao info <user>`                          | `user information`                                                                                                               |
+| `tao help`                                 | `command information`                                                                                                            |
+|                                            | `---`                                                                                                                            |
+| **Initialize and configure**               |                                                                                                                                  |
+| `tao init [-reset]`                        | `set role and channel configuration [or reset]`                                                                                  |
+| `tao config -score <-enable/-disable>`     | `enable or disable the scoring system`                                                                                           |
+| `tao config -verbose <-enable/-disable>`   | `enable or disable verbose notifications`                                                                                        |
+| `tao config -late <-enable/-disable>`      | `enable or disable late scoring system`                                                                                          |
+| `tao config -strict <-enable/-disable>`    | `enable or disable whether to ban alt accounts`                                                                                  |
+|                                            | `---`                                                                                                                            |
+| **Bot commands**                           |                                                                                                                                  |
+| `tao run -sort_user <user> `               | `manually sort user`                                                                                                             |
+| `tao run -send_score_info <user> `         | `get user score`                                                                                                                 |
+| `tao run -set_flag <flag> `                | `set user flag` <br>`-0 = send notification`<br>`-1 = send to manual approval`<br>`-2 = ban`<br>`-3 = valid account (no action)` |
+|                                            | `---`                                                                                                                            |
+| **Moderation commands**                    |                                                                                                                                  |
+| `tao ban <user;user1;..> [-time] [reason]` | `ban user` <br>`-m = minute`<br>`-h = hour`<br>`-d = day`<br>`-w = week`                                                         |
+| `tao unban <user;user1;..>`                | `unban user`                                                                                                                     |
+| `tao kick <user;user1;..>`                 | `kick user`                                                                                                                      |
+| `tao clear <amount>`                       | `clear messages from current channel`                                                                                            |
