@@ -168,7 +168,9 @@ class Data(commands.Cog):
 
         # get existing channel
         channel_existing = discord.utils.get(
-            self.client.get_all_channels(), guild__name=ctx.guild.name, name=name,
+            self.client.get_all_channels(),
+            guild__name=ctx.guild.name,
+            name=name,
         )
 
         # if there is an existing channel
@@ -196,7 +198,9 @@ class Data(commands.Cog):
 
             # get created channel
             channel = discord.utils.get(
-                self.client.get_all_channels(), guild__name=ctx.guild.name, name=name,
+                self.client.get_all_channels(),
+                guild__name=ctx.guild.name,
+                name=name,
             )
 
             # update file
@@ -271,7 +275,9 @@ class Data(commands.Cog):
         member_role = discord.utils.get(guild.roles, id=member_id)
 
         approve_channel = discord.utils.get(
-            self.client.get_all_channels(), guild__name=guild.name, id=ch_approve_id,
+            self.client.get_all_channels(),
+            guild__name=guild.name,
+            id=ch_approve_id,
         )
         approve_voice_channel = discord.utils.get(
             self.client.get_all_channels(),
@@ -344,7 +350,9 @@ class Data(commands.Cog):
         # create embed
         embed_waiting = discord.Embed(title="Setup", description="", color=color_main)
         embed_waiting.add_field(
-            name="Please wait", value="Processing request...", inline=False,
+            name="Please wait",
+            value="Processing request...",
+            inline=False,
         )
         waiting_msg = None
 
@@ -505,11 +513,15 @@ class Data(commands.Cog):
             )
             if cfg_state:
                 embed_errr.add_field(
-                    name="Current value", value="`enabled`", inline=False,
+                    name="Current value",
+                    value="`enabled`",
+                    inline=False,
                 )
             else:
                 embed_errr.add_field(
-                    name="Current value", value="`disabled`", inline=False,
+                    name="Current value",
+                    value="`disabled`",
+                    inline=False,
                 )
             await ctx.send(embed=embed_errr)
         if args == "-enable":

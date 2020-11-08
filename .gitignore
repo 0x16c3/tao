@@ -1,6 +1,8 @@
 __pycache__
 .vscode
+
 tmp
+
 cogs/_guild.json
 cogs/_user.json
 cogs/_error.txt
