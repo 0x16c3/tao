@@ -197,9 +197,7 @@ async def on_message(message):
 
             # get notification channel
             channel_notify = discord.utils.get(
-                client.get_all_channels(),
-                guild__name=message.guild.name,
-                id=channel,
+                client.get_all_channels(), guild__name=message.guild.name, id=channel,
             )
 
             json_save(guilds, data_guild)

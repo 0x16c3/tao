@@ -371,9 +371,7 @@ class Score(commands.Cog):
                 color=color_done,
             )
             embed_info.add_field(
-                name="User score:",
-                value=str(scr_val),
-                inline=True,
+                name="User score:", value=str(scr_val), inline=True,
             )
             age = await self.get_age_account(self, target)
             age_clamped = max(min(age, 150), 0)
@@ -406,9 +404,7 @@ class Score(commands.Cog):
             else:
                 mbl = 0
             embed_info.add_field(
-                name="On mobile:",
-                value=str(mbl_val) + " : +" + str(mbl),
-                inline=True,
+                name="On mobile:", value=str(mbl_val) + " : +" + str(mbl), inline=True,
             )
             ntr = 0
             if ntr_val:
@@ -416,27 +412,19 @@ class Score(commands.Cog):
             else:
                 ntr = 0
             embed_info.add_field(
-                name="Nitro:",
-                value=str(ntr_val) + " : +" + str(ntr),
-                inline=True,
+                name="Nitro:", value=str(ntr_val) + " : +" + str(ntr), inline=True,
             )
             if manual:
                 embed_info.add_field(
-                    name="Manual sorting",
-                    value="User manually sorted",
-                    inline=True,
+                    name="Manual sorting", value="User manually sorted", inline=True,
                 )
             elif late:
                 embed_info.add_field(
-                    name="Late sorting",
-                    value="User manually sorted",
-                    inline=True,
+                    name="Late sorting", value="User manually sorted", inline=True,
                 )
             else:
                 embed_info.add_field(
-                    name="Auto sorting",
-                    value="User automatically sorted",
-                    inline=True,
+                    name="Auto sorting", value="User automatically sorted", inline=True,
                 )
             await channel.send(embed=embed_info)
         elif run:
@@ -446,9 +434,7 @@ class Score(commands.Cog):
                 color=color_done,
             )
             embed_info.add_field(
-                name="User score:",
-                value=str(scr_val),
-                inline=True,
+                name="User score:", value=str(scr_val), inline=True,
             )
             age = await self.get_age_account(self, target)
             age_clamped = max(min(age, 150), 0)
@@ -481,9 +467,7 @@ class Score(commands.Cog):
             else:
                 mbl = 0
             embed_info.add_field(
-                name="On mobile:",
-                value=str(mbl_val) + " : +" + str(mbl),
-                inline=True,
+                name="On mobile:", value=str(mbl_val) + " : +" + str(mbl), inline=True,
             )
             ntr = 0
             if ntr_val:
@@ -491,27 +475,19 @@ class Score(commands.Cog):
             else:
                 ntr = 0
             embed_info.add_field(
-                name="Nitro:",
-                value=str(ntr_val) + " : +" + str(ntr),
-                inline=True,
+                name="Nitro:", value=str(ntr_val) + " : +" + str(ntr), inline=True,
             )
             if manual:
                 embed_info.add_field(
-                    name="Manual sorting",
-                    value="User manually sorted",
-                    inline=True,
+                    name="Manual sorting", value="User manually sorted", inline=True,
                 )
             elif late:
                 embed_info.add_field(
-                    name="Late sorting",
-                    value="User manually sorted",
-                    inline=True,
+                    name="Late sorting", value="User manually sorted", inline=True,
                 )
             else:
                 embed_info.add_field(
-                    name="Auto sorting",
-                    value="User automatically sorted",
-                    inline=True,
+                    name="Auto sorting", value="User automatically sorted", inline=True,
                 )
             await channel.send(embed=embed_info)
 

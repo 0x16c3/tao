@@ -64,9 +64,7 @@ class Error(commands.Cog):
             embed.add_field(name="Error", value="Invalid type", inline=False)
 
             embed.add_field(
-                name="Details",
-                value=f"`Bad argument`",
-                inline=False,
+                name="Details", value=f"`Bad argument`", inline=False,
             )
 
             await ctx.send(embed=embed)

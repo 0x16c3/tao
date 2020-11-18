@@ -84,9 +84,7 @@ async def get_member(string, guild, channel):
                 )
 
                 embed_errr.add_field(
-                    name="Try to enter:",
-                    value=f"`member.id`",
-                    inline=False,
+                    name="Try to enter:", value=f"`member.id`", inline=False,
                 )
 
                 await channel.send(embed=embed_errr)

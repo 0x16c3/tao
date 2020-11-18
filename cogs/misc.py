@@ -150,9 +150,7 @@ class Misc(commands.Cog):
             return
 
         channel = discord.utils.get(
-            self.client.get_all_channels(),
-            guild__name=guild.name,
-            id=data_ch,
+            self.client.get_all_channels(), guild__name=guild.name, id=data_ch,
         )
 
         if command == "":
@@ -299,9 +297,7 @@ class Misc(commands.Cog):
                 inline=False,
             )
             embed_info.add_field(
-                name="Arguments",
-                value="<user>:`User`",
-                inline=False,
+                name="Arguments", value="<user>:`User`", inline=False,
             )
             await ctx.send(embed=embed_info)
         if args_first == "-init":
@@ -315,9 +311,7 @@ class Misc(commands.Cog):
                     inline=False,
                 )
                 embed_info.add_field(
-                    name="Arguments",
-                    value="[-reset]",
-                    inline=False,
+                    name="Arguments", value="[-reset]", inline=False,
                 )
                 embed_info.add_field(
                     name="To learn more about an argument",
@@ -380,9 +374,7 @@ class Misc(commands.Cog):
                     inline=False,
                 )
                 embed_info.add_field(
-                    name="Arguments",
-                    value="`<-enable> | <-disable>`",
-                    inline=False,
+                    name="Arguments", value="`<-enable> | <-disable>`", inline=False,
                 )
                 await ctx.send(embed=embed_info)
             elif args_second == "-verbose":
@@ -397,9 +389,7 @@ class Misc(commands.Cog):
                     inline=False,
                 )
                 embed_info.add_field(
-                    name="Arguments",
-                    value="`<-enable> | <-disable>`",
-                    inline=False,
+                    name="Arguments", value="`<-enable> | <-disable>`", inline=False,
                 )
                 await ctx.send(embed=embed_info)
             elif args_second == "-late":
@@ -414,9 +404,7 @@ class Misc(commands.Cog):
                     inline=False,
                 )
                 embed_info.add_field(
-                    name="Arguments",
-                    value="`<-enable> | <-disable>`",
-                    inline=False,
+                    name="Arguments", value="`<-enable> | <-disable>`", inline=False,
                 )
                 await ctx.send(embed=embed_info)
             else:
@@ -437,9 +425,7 @@ class Misc(commands.Cog):
                     color=color_done,
                 )
                 embed_info.add_field(
-                    name="Description",
-                    value="Runs an internal function",
-                    inline=False,
+                    name="Description", value="Runs an internal function", inline=False,
                 )
                 embed_info.add_field(
                     name="Arguments",
@@ -464,9 +450,7 @@ class Misc(commands.Cog):
                     inline=False,
                 )
                 embed_info.add_field(
-                    name="Arguments",
-                    value="<user>:`User`",
-                    inline=False,
+                    name="Arguments", value="<user>:`User`", inline=False,
                 )
                 await ctx.send(embed=embed_info)
             elif args_second == "-send_score_info":
@@ -476,14 +460,10 @@ class Misc(commands.Cog):
                     color=color_done,
                 )
                 embed_info.add_field(
-                    name="Description",
-                    value="Sends score of a user",
-                    inline=False,
+                    name="Description", value="Sends score of a user", inline=False,
                 )
                 embed_info.add_field(
-                    name="Arguments",
-                    value="<user>:`User`",
-                    inline=False,
+                    name="Arguments", value="<user>:`User`", inline=False,
                 )
                 await ctx.send(embed=embed_info)
             elif args_second == "-set_flag":
@@ -498,9 +478,7 @@ class Misc(commands.Cog):
                     inline=False,
                 )
                 embed_info.add_field(
-                    name="Arguments",
-                    value="`<0> | <1> | <2> | <3>`",
-                    inline=False,
+                    name="Arguments", value="`<0> | <1> | <2> | <3>`", inline=False,
                 )
                 embed_info.add_field(
                     name="Flag enum `0`",
@@ -513,9 +491,7 @@ class Misc(commands.Cog):
                     inline=True,
                 )
                 embed_info.add_field(
-                    name="Flag enum `2`",
-                    value="Ban user",
-                    inline=False,
+                    name="Flag enum `2`", value="Ban user", inline=False,
                 )
                 embed_info.add_field(
                     name="Flag enum `3`",
@@ -561,9 +537,7 @@ class Misc(commands.Cog):
                     title="tao ban `<user>` -duration", description="", color=color_done
                 )
                 embed_info.add_field(
-                    name="Description",
-                    value="Specifies ban duration",
-                    inline=False,
+                    name="Description", value="Specifies ban duration", inline=False,
                 )
                 embed_info.add_field(
                     name="Ban time `m / minute` | -Xm / -Xminute",
